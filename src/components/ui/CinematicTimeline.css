@@ -452,6 +452,9 @@
 
 .ct-slide--1991 .ct-slide__content {
   margin-top: 24px;
+  /* Shifted right — dialed back from 10% (too much) to 5% of the
+     block's own width — 1991 only. */
+  transform: translateX(5%);
 }
 .ct-slide--1993 .ct-slide__title {
   /* "SIDCO Partnership" specifically dialed down from the shared baseline
@@ -483,6 +486,8 @@
 .ct-slide--1997 .ct-slide__content {
   /* Nudged down slightly from the shared baseline position — 1997 only. */
   margin-top: 24px;
+  /* Shifted right 10% of the block's own width — 1997 only. */
+  transform: translateX(10%);
 }
 
 .ct-slide--1997 .ct-slide__year-display {
