@@ -125,12 +125,22 @@
    kerning, not the wide tracking this had drifted to — matched below. */
 .ct-slide__year-display {
   font-family: 'Playfair Display', 'Fraunces', Georgia, serif;
-  font-size: clamp(68px, 16.42vw, 342px);
+  /* 10% smaller than the original clamp(68px, 16.42vw, 342px) — same
+     "X% smaller than the shared baseline" convention already used below
+     for the 2000/2024 override (which itself got the same 10% cut, see
+     that rule). */
+  font-size: clamp(61px, 14.78vw, 308px);
   font-weight: 400;
   /* Solid-color fallback for browsers without background-clip: text. */
   color: #004385;
   line-height: 1;
   letter-spacing: 0;
+  /* Shared 10% downward nudge, every year across all six slides — moves
+     just the numeral itself, not .ct-slide__content as a whole (title/
+     description below it stay put). 10% of the numeral's own line-height
+     box, so it scales with the clamp() font-size instead of a fixed px
+     offset. */
+  transform: translateY(10%);
   /* Playfair Display defaults to old-style figures: "9" drops a descender
      below the baseline (reads taller) while "1" sits at x-height (reads
      shorter) — uneven digit heights the reference doesn't have. Force
@@ -160,7 +170,10 @@
    gold). Purely decorative. */
 .ct-slide__underline {
   position: relative;
-  width: clamp(140px, 36.3vw, 620px);
+  /* Scaled down to match .ct-slide__year-display's own 10% cut
+     (140/36.3vw/620 -> 126/32.7vw/558), so the rule stays proportional
+     to the numeral instead of overhanging it. */
+  width: clamp(126px, 32.7vw, 558px);
   height: 2px;
   background: #004385;
   margin: 18px 0 22px;
@@ -471,6 +484,19 @@
   /* Nudged down slightly from the shared baseline position — 1997 only. */
   margin-top: 24px;
 }
+
+.ct-slide--1997 .ct-slide__year-display {
+  /* Another 10% off the shared baseline (61/14.78vw/308 -> 55/13.3vw/277),
+     1997 only. */
+  font-size: clamp(55px, 13.3vw, 277px);
+}
+
+.ct-slide--1997 .ct-slide__underline {
+  /* Scaled to match 1997's own further 10% cut, same math as the
+     shared baseline underline (126/32.7vw/558 -> 113/29.4vw/502). */
+  width: clamp(113px, 29.4vw, 502px);
+}
+
 .ct-slide--1998 .ct-slide__title {
   /* Same treatment as 1993/1997/1991: reduced size, tighter tracking,
      slightly bolder than the shared baseline. */
@@ -483,17 +509,27 @@
   margin-top: 24px;
 }
 
+.ct-slide--1998 .ct-slide__year-display {
+  /* Same further 10% cut as 1997 (61/14.78vw/308 -> 55/13.3vw/277). */
+  font-size: clamp(55px, 13.3vw, 277px);
+}
+
+.ct-slide--1998 .ct-slide__underline {
+  /* Same further 10% cut as 1997 (126/32.7vw/558 -> 113/29.4vw/502). */
+  width: clamp(113px, 29.4vw, 502px);
+}
+
 .ct-slide--2000 .ct-slide__year-display {
   /* Numeral "2000" specifically, 20% smaller than the shared baseline
-     (68/16.42vw/342 -> 54/13.14vw/274). */
-  font-size: clamp(54px, 13.14vw, 274px);
+     (68/16.42vw/342 -> 54/13.14vw/274), then the same further 10% cut
+     the shared baseline itself just took (54/13.14vw/274 -> 49/11.83vw/247). */
+  font-size: clamp(49px, 11.83vw, 247px);
 }
 
 .ct-slide--2000 .ct-slide__underline {
-  /* Scaled down to match the 20%-smaller "2000" numeral above it (shared
-     baseline 140/36.3vw/620 -> 112/29.04vw/496), so the rule stays
-     proportional to the numeral instead of overhanging it. */
-  width: clamp(112px, 29.04vw, 496px);
+  /* Scaled to match "2000"'s own further 10% cut, same math as the
+     shared baseline underline just above (112/29.04vw/496 -> 101/26.1vw/446). */
+  width: clamp(101px, 26.1vw, 446px);
 }
 
 .ct-slide--2000 .ct-slide__title {
@@ -509,15 +545,15 @@
 }
 
 .ct-slide--2024 .ct-slide__year-display {
-  /* Same treatment as 2000: numeral 20% smaller than the shared baseline
-     (68/16.42vw/342 -> 54/13.14vw/274). */
-  font-size: clamp(54px, 13.14vw, 274px);
+  /* Same treatment as 2000: numeral 20% smaller than the shared baseline,
+     then the same further 10% cut the shared baseline itself just took
+     (54/13.14vw/274 -> 49/11.83vw/247). */
+  font-size: clamp(49px, 11.83vw, 247px);
 }
 
 .ct-slide--2024 .ct-slide__underline {
-  /* Scaled to match the 20%-smaller numeral, same as 2000
-     (140/36.3vw/620 -> 112/29.04vw/496). */
-  width: clamp(112px, 29.04vw, 496px);
+  /* Same further 10% cut as 2000 (112/29.04vw/496 -> 101/26.1vw/446). */
+  width: clamp(101px, 26.1vw, 446px);
 }
 
 .ct-slide--2024 .ct-slide__title {

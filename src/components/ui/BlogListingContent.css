@@ -211,7 +211,13 @@
    page's own cream so the overlap zone reads as the photo softly
    receding, not a hard seam. Matches the image's own box in width/
    position so the fade only ever touches the photo, never the empty
-   cream to its right. */
+   cream to its right.
+   Tried the Projects card's dark rgba(0,0,0,...) scrim here instead —
+   reverted. .bp__hero-title-text's own solid cream box (box-decoration-
+   break: clone) already overlaps onto the photo by design; against the
+   cream fade that box blends in, but against black it read as a hard
+   rectangle cut into the image. Cream is what actually makes this
+   layout work. */
 .bp__hero-shade {
   position: absolute;
   top: 0;

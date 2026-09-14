@@ -44,7 +44,7 @@ const milestones = [
   {
     year: '1998',
     title: 'Construction Era',
-    description: 'Entered construction, winning projects close to 5 million sq.ft.',
+    description: 'Entered construction, winning projects close to **5 million sq.ft.** — turning years of land aggregation into real, delivered developments.',
     stat: '5M',
     statLabel: 'Sq.Ft Projects',
     image: '/timeline-1998.webp',
@@ -53,7 +53,7 @@ const milestones = [
   {
     year: '2000',
     title: 'Corporate Giants',
-    description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu.',
+    description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu, aggregating industrial-grade parcels built to national corporate standards.',
     stat: '40',
     statLabel: 'Acres for Pepsi',
     image: '/timeline-2000.webp',
@@ -62,7 +62,7 @@ const milestones = [
   {
     year: '2024',
     title: 'Legacy Continues',
-    description: 'Over **5,000+** acres of land aggregated.',
+    description: 'Over **5,000+** acres aggregated across residential, commercial and industrial real estate, backed by a 100% litigation-free record.',
     stat: '5,000+',
     statLabel: 'Acres Aggregated',
     image: '/timeline-2024.webp',
