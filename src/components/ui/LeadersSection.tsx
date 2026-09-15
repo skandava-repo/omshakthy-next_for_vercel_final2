@@ -50,7 +50,7 @@ const leaders: Leader[] = [
     size: 'cover',
   },
   {
-    name: 'Shakthy',
+    name: 'Sakthi Buwaneshwari M',
     role: 'Executive Director',
     tag: 'To Be Announced',
     // No distinct photo exists — every "Shakthi" asset in /public/leaders
