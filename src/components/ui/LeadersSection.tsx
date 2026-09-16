@@ -53,11 +53,15 @@ const leaders: Leader[] = [
     name: 'Sakthi Buwaneshwari M',
     role: 'Executive Director',
     tag: 'To Be Announced',
-    // No distinct photo exists — every "Shakthi" asset in /public/leaders
-    // (md-cutout.png) is byte-identical to manigantan.png. That's someone
-    // else's actual face, not a placeholder, so it doesn't belong here.
-    pos: 'center 15%',
-    size: 'cover',
+    // Real distinct photo now provided — the old md-cutout.png (byte-
+    // identical to manigantan.png, someone else's face) is still not
+    // used anywhere.
+    img: '/leaders/sakthi.jpg',
+    // Zoomed in on the face — same "auto <height>%" zoom trick as
+    // chairman/manigantan above, instead of the plain 'cover' every
+    // other entry here that doesn't need extra zoom uses.
+    pos: 'center 4%',
+    size: 'auto 180%',
   },
 ]
 
