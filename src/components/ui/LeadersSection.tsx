@@ -45,14 +45,14 @@ const leaders: Leader[] = [
     name: 'Rajib Kumar Hota',
     role: 'Executive Director',
     tag: 'Governance & Ethics',
-    img: '/leaders/hota.png',
+    img: '/leaders/hota.jpg',
     pos: 'center 22%',
     size: 'cover',
   },
   {
     name: 'Sakthi Buwaneshwari M',
     role: 'Executive Director',
-    tag: 'To Be Announced',
+    tag: 'Operations & Excellence',
     // Real distinct photo now provided — the old md-cutout.png (byte-
     // identical to manigantan.png, someone else's face) is still not
     // used anywhere.
@@ -60,8 +60,8 @@ const leaders: Leader[] = [
     // Zoomed in on the face — same "auto <height>%" zoom trick as
     // chairman/manigantan above, instead of the plain 'cover' every
     // other entry here that doesn't need extra zoom uses.
-    pos: 'center 4%',
-    size: 'auto 180%',
+    pos: 'center 5%',
+    size: 'auto 210%',
   },
 ]
 
