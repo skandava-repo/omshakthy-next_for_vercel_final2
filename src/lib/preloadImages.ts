@@ -25,32 +25,32 @@ export function preloadImages(urls: string[]) {
 // hero slideshow first, then the property grid (both visible within the
 // first couple of scrolls on Home).
 export const HERO_PRELOAD_IMAGES = [
-  '/hero-new-3.png',
-  '/hero-slide-9.png',
-  '/hero-slide-3.png',
-  '/hero-slide-1.png',
-  '/hero-slide-8.png',
-  '/hero-slide-2.png',
-  '/hero-new-2.png',
+  '/hero-new-3.webp',
+  '/hero-slide-9.webp',
+  '/hero-slide-3.webp',
+  '/hero-slide-1.webp',
+  '/hero-slide-8.webp',
+  '/hero-slide-2.webp',
+  '/hero-new-2.webp',
 ]
 
 export const PROPERTY_PRELOAD_IMAGES = [
-  '/canopus-magha.png',
-  '/regalia.png',
-  '/elite-grand.png',
-  '/mathura.png',
-  '/property-5.png',
-  '/property-6.png',
+  '/canopus-magha.webp',
+  '/regalia.webp',
+  '/elite-grand.webp',
+  '/mathura.webp',
+  '/property-5.webp',
+  '/property-6.webp',
 ]
 
 // Financial Partners logo strip (TrustedPartnersSection) — small files, but
 // warming them here means they're already cached by the time the user
 // scrolls that far down the page.
 export const PARTNER_PRELOAD_IMAGES = [
-  '/partners/hdfc.png',
-  '/partners/icici.png',
-  '/partners/axis.png',
-  '/partners/kotak.png',
-  '/partners/idfc-first.png',
-  '/partners/bajaj-finserv.png',
+  '/partners/hdfc.webp',
+  '/partners/icici.webp',
+  '/partners/axis.webp',
+  '/partners/kotak.webp',
+  '/partners/idfc-first.webp',
+  '/partners/bajaj-finserv.webp',
 ]

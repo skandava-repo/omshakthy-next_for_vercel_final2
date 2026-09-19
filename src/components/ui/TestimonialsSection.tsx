@@ -32,7 +32,7 @@ const reviews: Review[] = [
       'Owning a flat in Santha Towers is a symbol of security for my retired life. The team was transparent, on-time and truly cared. [PLACEHOLDER — replace with the rest of the real quote.] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
     name: 'Jalaja Madanmohan',
     detail: 'B103 – OmShakthy Santha Towers',
-    photo: '/testimonials/jalaja.png',
+    photo: '/testimonials/jalaja.webp',
     rating: 5,
   },
   {
@@ -40,7 +40,7 @@ const reviews: Review[] = [
       "They went above and beyond — providing reticulated gas at no extra cost even though it wasn't part of the original agreement. That's OmShakthy. [PLACEHOLDER — replace with the rest of the real quote.] Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
     name: 'D. Dhanasekaran',
     detail: 'OmShakthy Santha Towers',
-    photo: '/testimonials/dhanasekaran.png',
+    photo: '/testimonials/dhanasekaran.webp',
     rating: 5,
     video: true,
     videoDuration: '0:48',
@@ -50,7 +50,7 @@ const reviews: Review[] = [
       'We invested in Regalia at launch price. In 18 months, the land value has appreciated by over 22%. Best investment of my life. [PLACEHOLDER — replace with the rest of the real quote.] Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
     name: 'Suresh Rajan',
     detail: 'OmShakthy Regalia, Avadi',
-    photo: '/testimonials/suresh.png',
+    photo: '/testimonials/suresh.webp',
     rating: 5,
   },
   {
@@ -58,7 +58,7 @@ const reviews: Review[] = [
       'The construction quality is exceptional. Every detail shows their commitment to excellence and customer satisfaction. [PLACEHOLDER — replace with the rest of the real quote.] Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     name: 'Priya Sharma',
     detail: 'OmShakthy Heights',
-    photo: '/testimonials/priya.png',
+    photo: '/testimonials/priya.webp',
     rating: 5,
     video: true,
     videoDuration: '1:05',
@@ -68,7 +68,7 @@ const reviews: Review[] = [
       'Great location, amazing amenities, and the after-sales service is outstanding. I recommend OmShakthy to all my friends. [PLACEHOLDER — replace with the rest of the real quote.] Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
     name: 'Rajesh Kumar',
     detail: 'OmShakthy Crown',
-    photo: '/testimonials/rajesh.png',
+    photo: '/testimonials/rajesh.webp',
     rating: 5,
   },
   {
@@ -76,7 +76,7 @@ const reviews: Review[] = [
       'The best real estate investment I could have made. OmShakthy delivered exactly what they promised. [PLACEHOLDER — replace with the rest of the real quote.] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, sed quia.',
     name: 'Anitha Patel',
     detail: 'OmShakthy Residency',
-    photo: '/testimonials/anitha.jpg',
+    photo: '/testimonials/anitha.webp',
     rating: 5,
     video: true,
     videoDuration: '0:36',
@@ -86,7 +86,7 @@ const reviews: Review[] = [
       'Getting the keys to our first home together was one of the happiest days of our lives. OmShakthy made the entire journey smooth, transparent and stress-free. [PLACEHOLDER — replace with the rest of the real quote.] At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.',
     name: 'Vikram & Meera Iyer',
     detail: 'OmShakthy Meadows, Guduvancheri',
-    photo: '/testimonials/vikram-meera.jpg',
+    photo: '/testimonials/vikram-meera.webp',
     rating: 5,
     video: true,
     videoDuration: '0:52',
@@ -276,7 +276,7 @@ function FeaturedCard({ review, reduce, activeKey }: { review: Review; reduce: b
     <div className="tw-featured-stage">
       <article className="tw-featured">
         <div className="tw-featured-brand">
-          <img src="/omshakthy-logo.png" alt="" className="tw-featured-brand-mark" />
+          <img src="/omshakthy-logo.webp" alt="" className="tw-featured-brand-mark" />
           OMSHAKTHY
         </div>
         <span className="tw-featured-quotemark" aria-hidden>

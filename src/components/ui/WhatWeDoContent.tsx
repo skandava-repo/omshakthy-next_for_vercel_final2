@@ -37,7 +37,7 @@ const entries: Entry[] = [
     ref: 'REF. OSH/LA — SURVEYED',
     desc: 'Immense knowledge of land and its value, sound research and extended expertise in the realms of real estate properties.',
     stat: '58.4M sq.ft',
-    image: '/tp/tp-land-aggregation.jpg',
+    image: '/tp/tp-land-aggregation.webp',
   },
   {
     code: '02',
@@ -45,7 +45,7 @@ const entries: Entry[] = [
     ref: 'REF. OSH/RD — LOGGED',
     desc: 'Utmost care in revitalization efforts to improve community life across all residential projects that are undertaken.',
     stat: '46.1M sq.ft',
-    image: '/tp/tp-residential.jpg',
+    image: '/tp/tp-residential.webp',
   },
   {
     code: '03',
@@ -53,7 +53,7 @@ const entries: Entry[] = [
     ref: 'REF. OSH/HM — LOGGED',
     desc: 'Qualified and well trained individuals that provide quick and relevant solutions for all forms of support services.',
     stat: '32.7M sq.ft',
-    image: '/tp/tp-hospitality-facade.jpg',
+    image: '/tp/tp-hospitality-facade.webp',
   },
   {
     code: '04',
@@ -61,7 +61,7 @@ const entries: Entry[] = [
     ref: 'REF. OSH/CP — LOGGED',
     desc: 'Complete transparency in price, regulations, schedule and documentation allows for smooth execution of commercial projects.',
     stat: '38.9M sq.ft',
-    image: '/tp/tp-commercial.jpg',
+    image: '/tp/tp-commercial.webp',
   },
   {
     code: '05',
@@ -69,7 +69,7 @@ const entries: Entry[] = [
     ref: 'REF. OSH/SC — LOGGED',
     desc: 'Complete transparency in price, regulations, schedule and documentation allows for smooth execution of commercial projects.',
     stat: '35.3M sq.ft',
-    image: '/tp/tp-supply-chain.jpg',
+    image: '/tp/tp-supply-chain.webp',
   },
 ]
 

@@ -17,7 +17,7 @@ export default function AboutPage() {
       {/* Same footer illustration override as the Projects page — the
           colorful 3D building render at the smaller size, instead of
           the site-wide monochrome skyline. */}
-      <Footer decoSrc="/footer-building.png" decoClassName="ft__deco--sm" />
+      <Footer decoSrc="/footer-building.webp" decoClassName="ft__deco--sm" />
     </>
   )
 }

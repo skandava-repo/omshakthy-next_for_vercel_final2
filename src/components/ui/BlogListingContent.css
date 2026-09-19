@@ -721,6 +721,83 @@
   color: var(--bp-blue);
 }
 
+/* ---------------- more: plain grid, appended below everything ----------------
+   Deliberately NOT the .bp__grid feature/list split above — a flat,
+   even grid that only grows downward as Load More reveals more rows,
+   so it never reshapes the curated sections above it. */
+.bp__more {
+  max-width: 1280px;
+  margin: clamp(3rem, 6vh, 4rem) auto 0;
+  padding-top: clamp(1.5rem, 3vh, 2rem);
+  border-top: 1px solid var(--bp-line);
+}
+.bp__more-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  margin: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+}
+.bp__more-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.3rem, 2.4vw, 1.8rem);
+}
+.bp__more-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.bp__more-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.9 / 1;
+  object-fit: cover;
+  border-radius: 3px;
+  margin-bottom: 0.55rem;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bp__more-card:hover .bp__more-img {
+  transform: scale(1.04);
+}
+.bp__more-body {
+  min-width: 0;
+}
+.bp__more-card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.12vw, 0.9rem);
+  line-height: 1.25;
+  margin: 0 0 0.4rem;
+  transition: color 0.3s ease;
+}
+.bp__more-card:hover .bp__more-card-title {
+  color: var(--bp-blue);
+}
+
+.bp__load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 4vh, 3rem);
+}
+.bp__load-more-btn {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--bp-blue);
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 2rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.bp__load-more-btn:hover {
+  background: var(--bp-blue-light);
+  transform: translateY(-1px);
+}
+
 /* Owns the small library honestly instead of padding the page to look
    like a busier newsroom than it is. */
 .bp__note {
@@ -781,5 +858,8 @@
      collapse to nearly nothing (just enough for the title). */
   .bp__banner-img {
     min-height: 240px;
+  }
+  .bp__more-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }

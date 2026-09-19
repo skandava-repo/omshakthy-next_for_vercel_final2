@@ -144,7 +144,7 @@ const IntroSection = () => {
             {/* Grayed-out base — always fully visible */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/omshakthy-logo.png"
+              src="/omshakthy-logo.webp"
               alt=""
               aria-hidden="true"
               className="intro-loading__logo intro-loading__logo--base"
@@ -152,7 +152,7 @@ const IntroSection = () => {
             {/* Colour layer — clipped in from the left as progress increases */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/omshakthy-logo.png"
+              src="/omshakthy-logo.webp"
               alt="OmShakthy"
               className="intro-loading__logo intro-loading__logo--fill"
               style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}

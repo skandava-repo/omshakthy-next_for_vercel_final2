@@ -31,35 +31,35 @@ const rows: Row[] = [
     title: 'Land Aggregation',
     desc: 'Research-led acquisition across appraised, title-clear parcels.',
     value: 58.4,
-    image: '/tp/tp-land-aggregation.jpg',
+    image: '/tp/tp-land-aggregation.webp',
   },
   {
     code: '02',
     title: 'Residential Development',
     desc: 'Community-scale housing delivered end to end, on schedule.',
     value: 46.1,
-    image: '/tp/tp-residential.jpg',
+    image: '/tp/tp-residential.webp',
   },
   {
     code: '03',
     title: 'Hospitality Management',
     desc: 'Trained operating teams running hospitality assets in-house.',
     value: 32.7,
-    image: '/tp/tp-hospitality-facade.jpg',
+    image: '/tp/tp-hospitality-facade.webp',
   },
   {
     code: '04',
     title: 'Commercial Projects',
     desc: 'Transparent execution — price, permits, schedule, documentation.',
     value: 38.9,
-    image: '/tp/tp-commercial.jpg',
+    image: '/tp/tp-commercial.webp',
   },
   {
     code: '05',
     title: 'Supply Chain Management',
     desc: 'Vertically integrated procurement and materials logistics.',
     value: 35.3,
-    image: '/tp/tp-supply-chain.jpg',
+    image: '/tp/tp-supply-chain.webp',
   },
 ]
 
@@ -163,7 +163,7 @@ const CapabilityStatementContent = () => {
     <main className="cs" data-header-theme="light">
       <div className="cs__bg" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/tp/tp-overall.jpg" alt="" />
+        <img src="/tp/tp-overall.webp" alt="" />
         <span className="cs__bg-scrim" />
       </div>
 

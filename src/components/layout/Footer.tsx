@@ -12,7 +12,7 @@ interface FooterProps {
   decoClassName?: string
 }
 
-const Footer = ({ decoSrc = '/footer-mono.png', decoClassName }: FooterProps) => {
+const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName }: FooterProps) => {
   return (
     <>
     <footer className="ft">
@@ -21,7 +21,7 @@ const Footer = ({ decoSrc = '/footer-mono.png', decoClassName }: FooterProps) =>
           {/* Brand */}
           <div className="ft__brand">
             <Link href="/" className="ft__logo">
-              <img src="/omshakthy-logo.png" alt="OmShakthy Homes" className="ft__logo-img" />
+              <img src="/omshakthy-logo.webp" alt="OmShakthy Homes" className="ft__logo-img" />
             </Link>
             <p className="ft__tagline">
               OmShakthy Agencies (Madras) Private Ltd. Building trust in real

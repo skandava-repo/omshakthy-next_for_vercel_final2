@@ -6,7 +6,7 @@ export function getOrganizationSchema() {
     name: 'OmShakthy Homes',
     alternateName: 'OmShakthy Agencies (Madras) Private Limited',
     url: 'https://www.omshakthy.com',
-    logo: 'https://www.omshakthy.com/omshakthy-logo.png',
+    logo: 'https://www.omshakthy.com/omshakthy-logo.webp',
     description:
       'OmShakthy Homes — generating real assets since 1991. Best plot developers in Chennai offering CMDA & DTCP approved residential plots.',
     foundingDate: '1991',

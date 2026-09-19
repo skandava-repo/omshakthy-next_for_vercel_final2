@@ -170,12 +170,12 @@
      overflow: hidden clips it cleanly. */
   left: -62px;
   bottom: 0;
-  /* Slight width increase per request (was clamp(260px, 24vw, 420px)). */
-  width: clamp(290px, 27vw, 460px);
+  /* 10% bigger again (was clamp(290px, 27vw, 460px)). */
+  width: clamp(300px, 28.7vw, 470px);
   height: auto;
   z-index: 1;
-  /* Was 0.95 — reduced further per request. */
-  opacity: 0.8;
+  /* Opacity removed per request — was 0.8 (previously reduced from
+     0.95). Full opacity now. */
   pointer-events: none;
 }
 

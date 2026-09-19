@@ -1,0 +1,53 @@
+/* Prose styling for the extracted article body — same blue/ink palette
+   BlogPostContent.tsx's own C object uses, kept in a plain .css file
+   rather than styled-jsx to match every other component in this site
+   (each pairs a .tsx with its own .css, e.g. BlogListingContent.css). */
+
+.blog-post-body h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: #0b1f3a;
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  scroll-margin-top: 7rem;
+}
+
+.blog-post-body h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: #0b1f3a;
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.75rem;
+  scroll-margin-top: 7rem;
+}
+
+.blog-post-body h4 {
+  color: #004385;
+  font-size: 1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.blog-post-body p {
+  margin: 0 0 1rem;
+  line-height: 1.75;
+  color: #0b1f3a;
+}
+
+.blog-post-body ul {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.blog-post-body li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.blog-post-body a {
+  color: #0d6bb2;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.blog-post-body strong {
+  color: #0b1f3a;
+}

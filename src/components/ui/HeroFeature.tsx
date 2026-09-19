@@ -27,7 +27,7 @@ import Link from 'next/link'
 import { useSectionEnter } from '@/lib/useSectionEnter'
 import './HeroFeature.css'
 
-const LAUREL = '/leaders/emblem.png'
+const LAUREL = '/leaders/emblem.webp'
 const PROFILE_HREF = '/about'
 
 interface Leader {
@@ -54,10 +54,10 @@ const leaders: Leader[] = [
     name: 'R. Ramachanthran',
     role: 'Founder',
     data: 'EST. 1991 · 30+ YEARS',
-    image: '/leaders/founder-cutout.png',
+    image: '/leaders/founder-cutout.webp',
     // 1060x1484 portrait — tall card, figure carries most of the width.
     figure: { width: '66%', height: '108%', bottom: '-5%' },
-    shape: { src: '/leaders/founder-cutout.png', w: '62%', h: '100%' },
+    shape: { src: '/leaders/founder-cutout.webp', w: '62%', h: '100%' },
     points: [
       'Founded OmShakthy Agencies (Madras) Pvt Ltd in the year 1991',
       'The group went on to become the preferred land aggregator for corporates & State Government',
@@ -69,7 +69,7 @@ const leaders: Leader[] = [
     name: 'N R Manigantan',
     role: 'Managing Director',
     data: '20+ YEARS · ₹2,500CR → ₹5,000CR',
-    image: '/leaders/md-cutout.png',
+    image: '/leaders/md-cutout.webp',
     // 558x447 landscape — wide card, figure sits right of the content column.
     figure: { width: '48%', height: '120%', bottom: '-8%' },
     points: [
@@ -83,7 +83,7 @@ const leaders: Leader[] = [
     name: 'Rajib Kumar Hota',
     role: 'Executive Director',
     data: 'BAR COUNCIL · LIBA',
-    image: '/leaders/hota-avatar.png',
+    image: '/leaders/hota-avatar.webp',
     // 232x232 square, already circle-masked — an inset avatar, not a cut-out.
     figure: { width: '34%', height: '64%', bottom: '16%' },
     prose:

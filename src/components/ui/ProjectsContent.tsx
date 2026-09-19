@@ -41,6 +41,16 @@ const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace" }
 const ease = [0.16, 1, 0.3, 1] as const
 
+// Cheap 2-layer shadow, not .hero-slider__title's full 8-layer stack —
+// that one has 4 large-blur glows (up to 150px) which are fine on
+// Hero's small clamp(24-42px) text but were genuinely janking scroll
+// here once applied to this page's much larger text-6xl heading (the
+// browser has to rasterize that blur radius over a far bigger glyph
+// area, repeatedly, on every repaint). One tight offset shadow plus one
+// moderate blur gives the same "reads over any photo" legibility for a
+// fraction of the paint cost.
+const heroTextShadow = '2px 2px 4px rgba(0,0,0,0.85), 0 0 24px rgba(0,0,0,0.55)'
+
 const Reveal = ({
   children,
   delay = 0,
@@ -86,13 +96,44 @@ interface Project {
   image: string
   name: string
   location: string
+  /* Back to two states per request — a 'Completed' state briefly
+     existed here (Mathura/Kanopus Mithila were 'Sold' but their own
+     pages show real, live prices, not "Sold Out") but was folded back
+     into 'Ongoing' rather than 'Sold': both still have a real price on
+     their own page, which 'Ongoing' honestly reflects — 'Sold' stays
+     reserved for the one project whose own page literally says
+     "Price: Sold Out" (Elite Orchard). */
   status: 'Ongoing' | 'Sold'
   type: string
   price: string
   /* Numeric ₹-lakh value for real price-range bucketing — null for
-     sold-out projects, which have no live asking price to bucket. */
+     sold-out projects (no live asking price to bucket) or ones priced
+     per-sq.ft rather than as a single lakh figure. */
   priceLakh: number | null
   link?: string
+  /* CSS object-position override for the card photo — most images
+     center fine by default; a couple (their gate sign sits high, with
+     a lot of empty sky above it) read better shifted down so the crop
+     favors the entrance itself. */
+  imagePosition?: string
+}
+
+// Badge label/color/definition per status — surfaced as an actual
+// legend below the filter bar rather than left for a visitor to guess
+// at what each badge means.
+const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color: string; def: string }> = {
+  Ongoing: {
+    label: 'Ongoing',
+    bg: 'rgba(13,107,178,0.1)',
+    color: C.blue,
+    def: 'Actively sold — current pricing available.',
+  },
+  Sold: {
+    label: 'Sold Out',
+    bg: 'rgba(180,83,9,0.1)',
+    color: '#B45309',
+    def: 'No plots or units remain available.',
+  },
 }
 
 /* Real data — the same array PropertyGrid.tsx (home page) already
@@ -100,12 +141,79 @@ interface Project {
    original 2.3-2.8MB public/*.png files) since this page shows them
    at a larger, more prominent size than the home slider does. */
 const projects: Project[] = [
-  { image: '/projects/canopus-magha.jpg', name: 'Kanopus Magha', location: 'Guduvanchery, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹25L onwards', priceLakh: 25 },
-  { image: '/projects/regalia.jpg', name: 'OmShakthy Regalia', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹32L onwards', priceLakh: 32, link: '/regalia' },
-  { image: '/projects/elite-grand.jpg', name: 'Elite Grand', location: 'Thirumullaivoyal, Chennai', status: 'Ongoing', type: 'Premium Plots', price: '₹28L onwards', priceLakh: 28 },
-  { image: '/projects/mathura.jpg', name: 'OmShakthy Mathura', location: 'Tambaram, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
-  { image: '/projects/property-5.jpg', name: 'Kanopus Mithila', location: 'Vandalur, Chennai', status: 'Sold', type: 'Gated Community', price: 'Sold Out', priceLakh: null },
-  { image: '/projects/property-6.jpg', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Sold', type: 'Industrial', price: 'Sold Out', priceLakh: null },
+  // Location corrected: canopus-magha-lp.html's own copy explicitly
+  // says "Enveloped in the epicenter of Avadi" — 'Guduvanchery' looks
+  // like leftover boilerplate copy-pasted from a different project (the
+  // same class of error regalia-lp.html itself had once, for Regalia).
+  // /kanopus-magha is now a real page (src/data/projects/kanopus-magha.json).
+  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹25L onwards', priceLakh: 25, link: '/kanopus-magha' },
+  // Location corrected: 'Avadi' was wrong — regalia-lp.html on the
+  // original site repeatedly and explicitly places this project in
+  // Tambaram ("Omshakthy Regalia Tambaram location," 70 acres/961
+  // plots matching that paragraph's own numbers exactly). Avadi looks
+  // like leftover boilerplate copy-pasted from a different project.
+  { image: '/projects/regalia.webp', name: 'OmShakthy Regalia', location: 'Tambaram, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹32L onwards', priceLakh: 32, link: '/regalia', imagePosition: '50% 31%' },
+  // Location corrected: elite-grand-lp.html's own copy explicitly says
+  // "Strategically Located Near Guduvanchery" — 'Thirumullaivoyal' was
+  // wrong. /elite-grand is now a real page.
+  { image: '/projects/elite-grand.webp', name: 'Elite Grand', location: 'Guduvanchery, Chennai', status: 'Ongoing', type: 'Premium Plots', price: '₹28L onwards', priceLakh: 28, link: '/elite-grand', imagePosition: '50% 35%' },
+  // Location corrected: mathura-lp.html's own real FAQ says plainly
+  // "OmShakthy Mathura is a residential plot development project
+  // located in Chromepet" — 'Tambaram' was wrong. /mathura is now a
+  // real page. Status corrected too: this was marked 'Sold' with
+  // price "Sold Out", but mathura-lp's own live spec table shows a
+  // real price ("22.5 Lakhs") — it's a "Completed Project" on the
+  // site's own footer nav (construction/layout finished), not sold out.
+  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹22.5L onwards', priceLakh: 22.5, link: '/mathura' },
+  // Location corrected: canopus-mithila-lp.html's own "Locations
+  // Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
+  // Vehicles Factory) places this in the Avadi corridor — 'Vandalur'
+  // was wrong. /kanopus-mithila is now a real page. Status corrected
+  // too: canopus-mithila-lp's own live spec table shows a real price
+  // ("₹3,500/- per Sq.Ft."), not "Sold Out" — same fix as Mathura.
+  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹3,500 / Sq.Ft', priceLakh: null, link: '/kanopus-mithila' },
+  // Location left as-is, flagged rather than guessed: industrial-park-lp.html
+  // names no specific locality at all (title/meta both just say
+  // "Chennai"), and its own real drive times (Airport 10 min, Tambaram
+  // Railway Station 15 min) don't actually match Sriperumbudur (a
+  // 40+ min drive from the airport) — but with nothing more specific
+  // stated on the source page, this wasn't replaced with a guess.
+  // Status corrected: this was marked 'Sold' with price "Sold Out",
+  // but industrial-park-lp's own live spec table has never had a real
+  // price at all — it's a literal, unfilled "Price: XXXX" on the real
+  // site, and the page still has a live, active "Book a Free Site
+  // Visit" form and no "Sold Out" banner anywhere. That's a project
+  // still being sold with an unset price, not a sold-out one — the
+  // site's own footer nav lists it under Ongoing too. /industrial-park
+  // is now a real page.
+  { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Ongoing', type: 'Industrial', price: 'Price on Request', priceLakh: null, link: '/industrial-park' },
+  // Location corrected: elite-orchard-lp.html's own "Locations Nearby"
+  // list (Guduvanchery Railway Station, Kilambakkam Bus Terminal,
+  // Mahindra World City, Potheri Railway Station, ORR) places this in
+  // Guduvanchery — 'Paruthipattu, Avadi' was wrong. /elite-orchard is
+  // now a real page.
+  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/elite-orchard' },
+  // The 7 entries below are real, older completed projects that were
+  // missing entirely — confirmed against the live site's own
+  // /completed-projects carousel (checked directly, not the mirror,
+  // since it isn't in the 131-page mirror this rebuild is otherwise
+  // built from). None of these 7 have a "KNOW MORE" link anywhere on
+  // the live site either — they're portfolio-only entries there too,
+  // so no `link` here either rather than inventing a page the real
+  // site itself never built. Sizes/acreage/location are the live
+  // site's own stated figures, word for word.
+  { image: '/projects-legacy/omshakthy-eden.webp', name: 'OmShakthy Eden', location: 'Kundrathur, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
+  // Same real "OMSHAKTHY Elite" gate photo HeroSlider.tsx/GalleryContent.tsx
+  // already reference — HeroSlider.tsx had mislabeled it "Elite Grand"
+  // (a different, unrelated project with its own real photo), fixed in
+  // the same pass as this entry.
+  { image: '/hero-slide-3.webp', name: 'OmShakthy Elite Phase 1', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Land', price: 'Sold Out', priceLakh: null },
+  // Same real gate photo HeroSlider.tsx/GalleryContent.tsx/PropertyGrid.tsx
+  // already use for this project — one file everywhere it appears.
+  { image: '/hero-slide-1.webp', name: 'OmShakthy Santha Towers', location: 'Avadi, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
+  { image: '/projects-legacy/omshakthy-sara-courtyard.webp', name: 'OmShakthy Sara Courtyard', location: 'K.K. Nagar, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
+  { image: '/projects-legacy/omshakthy-santha-patio.webp', name: 'OmShakthy Santha Patio', location: 'Adyar, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
+  { image: '/projects-legacy/omshakthy-temple-nagar.webp', name: 'OmShakthy Temple Nagar', location: 'Kundrathur, Chennai', status: 'Sold', type: 'Residential Land', price: 'Sold Out', priceLakh: null },
 ]
 
 const statusOptions = ['All Status', 'Ongoing', 'Sold'] as const
@@ -154,9 +262,9 @@ const ProjectsContent = () => {
     <main style={{ backgroundColor: '#fff', color: C.ink, ...body }}>
       {/* ---------------- Hero ---------------- */}
       <section
-        className="relative flex items-end min-h-[46vh] pt-40 pb-14 px-6 md:px-10"
+        className="relative flex items-end min-h-[69vh] pt-48 pb-20 px-6 md:px-10"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 100%), url('/projects/explore-bg.jpg')`,
+          backgroundImage: `url('/projects/explore-bg.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -167,7 +275,7 @@ const ProjectsContent = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
             className="flex items-center gap-4 mb-3"
-            style={{ ...mono, fontSize: '0.8rem', letterSpacing: '0.2em', color: C.mist, textTransform: 'uppercase' }}
+            style={{ ...mono, fontSize: '0.8rem', letterSpacing: '0.2em', color: C.mist, textTransform: 'uppercase', textShadow: heroTextShadow }}
           >
             <span style={{ width: 36, height: 1.5, background: C.mist, display: 'inline-block' }} />
             Our Projects
@@ -177,20 +285,10 @@ const ProjectsContent = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease }}
             className="text-4xl md:text-6xl font-bold"
-            style={{ ...display, color: '#fff' }}
+            style={{ ...display, color: '#fff', textShadow: heroTextShadow }}
           >
             Landmark Developments Across Tamil Nadu
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease }}
-            className="mt-4 max-w-xl text-base md:text-lg"
-            style={{ color: 'rgba(255,255,255,0.86)' }}
-          >
-            From ongoing residential plots to sold-out gated communities — 35 years of real
-            estate, project by project.
-          </motion.p>
         </div>
       </section>
 
@@ -209,7 +307,7 @@ const ProjectsContent = () => {
           real aerial photo tried here didn't work out, reverted. */}
       <section className="relative overflow-hidden px-6 md:px-10 pt-16 pb-16" style={{ backgroundColor: '#fff' }} data-header-theme="light">
         <motion.img
-          src="/about/building-sketch.png"
+          src="/about/building-sketch.webp"
           alt=""
           aria-hidden
           className="absolute left-1/2 w-[900px] md:w-[1300px] max-w-none pointer-events-none select-none hidden sm:block"
@@ -308,6 +406,28 @@ const ProjectsContent = () => {
               Reset Filters
             </button>
           </div>
+
+          {/* Status legend — what each badge on the cards below actually
+              means. Back to two states per request (Ongoing/Sold Out) —
+              a third "Completed" state briefly existed here, folded
+              back into Ongoing rather than dropped, since the two
+              projects it covered (Mathura, Kanopus Mithila) genuinely
+              still have a real price on their own page, not "Sold
+              Out". */}
+          <Reveal className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6">
+            {(Object.keys(STATUS_STYLE) as Project['status'][]).map((s) => (
+              <span key={s} className="inline-flex items-center gap-2 text-xs" style={{ ...body, color: C.slate }}>
+                <span
+                  className="inline-flex items-center gap-1 rounded-full uppercase"
+                  style={{ ...body, padding: '0.15rem 0.5rem', background: STATUS_STYLE[s].bg, fontSize: 9, fontWeight: 800, letterSpacing: '0.1em', color: STATUS_STYLE[s].color }}
+                >
+                  <span className="rounded-full flex-shrink-0" style={{ width: 5, height: 5, background: 'currentColor' }} />
+                  {STATUS_STYLE[s].label}
+                </span>
+                {STATUS_STYLE[s].def}
+              </span>
+            ))}
+          </Reveal>
         </div>
       </section>
 
@@ -371,7 +491,9 @@ const ProjectsContent = () => {
                     src={p.image}
                     alt={p.name}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={p.status === 'Sold' ? { filter: 'grayscale(0.5) brightness(0.7)' } : undefined}
+                    style={{
+                      ...(p.imagePosition ? { objectPosition: p.imagePosition } : {}),
+                    }}
                     loading="lazy"
                   />
 
@@ -394,18 +516,18 @@ const ProjectsContent = () => {
                       style={{
                         ...body,
                         padding: '0.2rem 0.5rem',
-                        background: p.status === 'Ongoing' ? 'rgba(13,107,178,0.1)' : 'rgba(180,83,9,0.1)',
+                        background: STATUS_STYLE[p.status].bg,
                         fontSize: 9,
                         fontWeight: 800,
                         letterSpacing: '0.12em',
-                        color: p.status === 'Ongoing' ? C.blue : '#B45309',
+                        color: STATUS_STYLE[p.status].color,
                       }}
                     >
                       <span
                         className="rounded-full flex-shrink-0"
                         style={{ width: 5, height: 5, background: 'currentColor' }}
                       />
-                      {p.status === 'Ongoing' ? 'Ongoing' : 'Sold Out'}
+                      {STATUS_STYLE[p.status].label}
                     </span>
                     <h3
                       className="uppercase"

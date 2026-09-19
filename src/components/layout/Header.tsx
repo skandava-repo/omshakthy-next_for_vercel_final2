@@ -102,12 +102,12 @@ const Header = () => {
           {/* Logo — left aligned */}
           <Link href="/" className="site-nav__logo">
             <img
-              src="/omshakthy-logo.png"
+              src="/omshakthy-logo.webp"
               alt="OmShakthy Homes"
               className="site-nav__logo-img site-nav__logo-img--light"
             />
             <img
-              src="/omshakthy-logo.png"
+              src="/omshakthy-logo.webp"
               alt="OmShakthy Homes"
               className="site-nav__logo-img site-nav__logo-img--dark"
             />

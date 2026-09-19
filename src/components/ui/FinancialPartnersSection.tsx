@@ -14,12 +14,12 @@ import './FinancialPartnersSection.css'
    ============================================================ */
 
 const partnerLogos = [
-  { name: 'HDFC Bank', file: '/partners/hdfc.png' },
-  { name: 'ICICI Bank', file: '/partners/icici.png' },
-  { name: 'Axis Bank', file: '/partners/axis.png' },
-  { name: 'Kotak Mahindra Bank', file: '/partners/kotak.png' },
-  { name: 'IDFC FIRST Bank', file: '/partners/idfc-first.png' },
-  { name: 'Bajaj Finserv', file: '/partners/bajaj-finserv.png' },
+  { name: 'HDFC Bank', file: '/partners/hdfc.webp' },
+  { name: 'ICICI Bank', file: '/partners/icici.webp' },
+  { name: 'Axis Bank', file: '/partners/axis.webp' },
+  { name: 'Kotak Mahindra Bank', file: '/partners/kotak.webp' },
+  { name: 'IDFC FIRST Bank', file: '/partners/idfc-first.webp' },
+  { name: 'Bajaj Finserv', file: '/partners/bajaj-finserv.webp' },
 ]
 
 const EASE = [0.16, 1, 0.3, 1] as const

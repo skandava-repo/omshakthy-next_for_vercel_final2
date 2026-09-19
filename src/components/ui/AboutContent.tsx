@@ -33,6 +33,14 @@ const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace" }
 const ease = [0.16, 1, 0.3, 1] as const
 
+// Cheap 2-layer shadow, not .hero-slider__title's full 8-layer stack —
+// that one's 4 large-blur glows (up to 150px) are fine on Hero's small
+// text but janked scroll badly once applied to this page's much larger
+// text-7xl heading (bigger glyph area to rasterize the blur over, every
+// repaint). One tight offset shadow plus one moderate blur gives the
+// same legibility for a fraction of the paint cost.
+const heroTextShadow = '2px 2px 4px rgba(0,0,0,0.85), 0 0 24px rgba(0,0,0,0.55)'
+
 /* ---------- Reveal: SSR-safe "focus pull" reveal on scroll ----------
    Was a plain fade + rise. Now blur(6px)->0 and scale(0.96)->1 ride
    alongside the same opacity/y — content settles into focus as it
@@ -341,17 +349,17 @@ const FeatureIcon = ({ name, size = 30 }: { name: string; size?: number }) => (
 
 const whyChooseUs = [
   {
-    img: '/projects/regalia.jpg',
+    img: '/projects/regalia.webp',
     title: 'Clear & Verified Titles',
     desc: 'Every property undergoes meticulous legal verification. With DTCP and CMDA approved developments wherever applicable and a 100% litigation-free history, your investment begins with complete peace of mind.',
   },
   {
-    img: '/projects/canopus-magha.jpg',
+    img: '/projects/canopus-magha.webp',
     title: 'Locations That Grow With You',
     desc: 'We identify emerging growth corridors before they become market hotspots, so our customers benefit from superior appreciation and long-term returns.',
   },
   {
-    img: '/projects/property-6.jpg',
+    img: '/projects/property-6.webp',
     title: 'Expertise Across Every Asset Class',
     desc: 'From a 600 sq.ft residential plot to multi-acre industrial developments, we bring decades of expertise across residential, commercial, industrial, logistics, and hospitality real estate.',
   },
@@ -390,9 +398,9 @@ const AboutContent = () => {
     <main style={{ backgroundColor: '#fff', color: C.ink, ...body }}>
       {/* ---------------- Hero ---------------- */}
       <section
-        className="relative flex items-end min-h-[40vh] pt-20 pb-8 px-4 md:px-6"
+        className="relative flex items-end min-h-[70vh] pt-40 pb-20 px-4 md:px-6"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(0,67,133,0.42) 0%, rgba(13,107,178,0.25) 100%), url('/about/hero.jpg')`,
+          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 100%), url('/about/hero.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -403,20 +411,10 @@ const AboutContent = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
             className="text-5xl md:text-7xl font-bold"
-            style={{ ...display, color: '#fff' }}
+            style={{ ...display, color: '#fff', textShadow: heroTextShadow }}
           >
             About OmShakthy Homes
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.12, ease }}
-            className="mt-5 max-w-xl text-base md:text-lg"
-            style={{ color: 'rgba(255,255,255,0.86)' }}
-          >
-            Chennai&rsquo;s most trusted real estate brand, with over 35 years of expertise in
-            creating exceptional residential, commercial, and institutional developments.
-          </motion.p>
         </div>
       </section>
 
@@ -431,7 +429,7 @@ const AboutContent = () => {
             painted behind them automatically since it's absolute with
             no z-index and they're normal flow. */}
         <img
-          src="/about/building-sketch.png"
+          src="/about/building-sketch.webp"
           alt=""
           aria-hidden
           className="absolute -left-20 md:-left-32 w-[820px] md:w-[1280px] pointer-events-none select-none hidden sm:block"
@@ -461,7 +459,7 @@ const AboutContent = () => {
                 scale on top of it would double-animate the same box. */}
             <div className="rounded-[28px] overflow-hidden" style={{ boxShadow: '0 24px 60px -20px rgba(11,31,58,0.25)' }}>
               <AutoSlide
-                images={['/about/loc-9.png', '/about/loc-2.jpg', '/about/loc-3.jpg', '/about/loc-4.jpg']}
+                images={['/about/loc-9.webp', '/about/loc-2.webp', '/about/loc-3.webp', '/about/loc-4.webp']}
                 alt="OmShakthy Homes development"
                 imgClassName="w-full h-[420px] object-cover"
                 delay={0.1}
@@ -474,7 +472,7 @@ const AboutContent = () => {
         <section className="relative px-4 md:px-6 pb-10">
           <div className="max-w-[1180px] mx-auto rounded-[28px] overflow-hidden relative" style={{ boxShadow: '0 24px 60px -20px rgba(11,31,58,0.25)' }}>
             <ImageReveal
-              src="/about/loc-7.jpg"
+              src="/about/loc-7.webp"
               imgClassName="w-full h-[360px] md:h-[440px] object-cover"
               imgStyle={{ filter: 'brightness(0.55)' }}
             />
@@ -488,7 +486,7 @@ const AboutContent = () => {
               viewport={{ once: true, margin: '-10%' }}
               transition={{ duration: 0.7, delay: 0.55, ease }}
             >
-              <img src="/omshakthy-logo.png" alt="OmShakthy Homes" className="w-20 h-20 md:w-28 md:h-28 object-contain" style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.4))' }} />
+              <img src="/omshakthy-logo.webp" alt="OmShakthy Homes" className="w-20 h-20 md:w-28 md:h-28 object-contain" style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.4))' }} />
               <span className="tracking-[0.3em] text-sm md:text-base font-semibold uppercase" style={{ color: '#fff' }}>
                 OmShakthy Homes
               </span>
@@ -691,7 +689,7 @@ const AboutContent = () => {
             </div>
           </div>
           <div className="relative min-h-[280px]">
-            <img src="/footer-mono.png" alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.9 }} />
+            <img src="/footer-mono.webp" alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.9 }} />
           </div>
         </Reveal>
       </section>

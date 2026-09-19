@@ -7,27 +7,27 @@ const pillars = [
   {
     title: 'Land Aggregation',
     desc: 'Immense knowledge of land and its value, sound research and extended expertise in the realms of real estate properties.',
-    image: '/tp/tp-land-aggregation.jpg',
+    image: '/tp/tp-land-aggregation.webp',
   },
   {
     title: 'Residential Development',
     desc: 'Utmost care in revitalization efforts to improve community life across all residential projects that are undertaken.',
-    image: '/tp/tp-residential.jpg',
+    image: '/tp/tp-residential.webp',
   },
   {
     title: 'Hospitality Management',
     desc: 'Qualified and well trained individuals that provide quick and relevant solutions for all forms of support services.',
-    image: '/tp/tp-hospitality-facade.jpg',
+    image: '/tp/tp-hospitality-facade.webp',
   },
   {
     title: 'Commercial Projects',
     desc: 'Complete transparency in price, regulations, schedule and documentation allows for smooth execution of commercial projects.',
-    image: '/tp/tp-commercial.jpg',
+    image: '/tp/tp-commercial.webp',
   },
   {
     title: 'Supply Chain Management',
     desc: 'Complete transparency in price, regulations, schedule and documentation allows for smooth execution of commercial projects.',
-    image: '/tp/tp-supply-chain.jpg',
+    image: '/tp/tp-supply-chain.webp',
   },
 ]
 

@@ -13,54 +13,76 @@ interface Property {
   link?: string
 }
 
+// Locations + links kept in sync with ProjectsContent.tsx — see that
+// file's own per-project comments for exactly what each location fix
+// is sourced from (each project's own real landing page, extracted
+// into src/data/projects/*.json).
 const properties: Property[] = [
   {
-    image: '/canopus-magha.png',
+    image: '/canopus-magha.webp',
     name: 'Kanopus Magha',
-    location: 'Guduvanchery, Chennai',
+    location: 'Avadi, Chennai',
     status: 'Ongoing',
     type: 'Residential Plots',
     price: '₹25L onwards',
+    link: '/kanopus-magha',
   },
   {
-    image: '/regalia.png',
+    image: '/regalia.webp',
     name: 'OmShakthy Regalia',
-    location: 'Avadi, Chennai',
+    location: 'Tambaram, Chennai',
     status: 'Ongoing',
     type: 'Gated Community',
     price: '₹32L onwards',
     link: '/regalia',
   },
   {
-    image: '/elite-grand.png',
+    image: '/elite-grand.webp',
     name: 'Elite Grand',
-    location: 'Thirumullaivoyal, Chennai',
+    location: 'Guduvanchery, Chennai',
     status: 'Ongoing',
     type: 'Premium Plots',
     price: '₹28L onwards',
+    link: '/elite-grand',
   },
   {
-    image: '/mathura.png',
+    image: '/mathura.webp',
     name: 'OmShakthy Mathura',
-    location: 'Tambaram, Chennai',
-    status: 'Sold',
+    location: 'Chromepet, Chennai',
+    // Status: mathura-lp's own live spec table shows a real price
+    // (22.5 Lakhs), not "Sold Out" — see ProjectsContent.tsx's comment
+    // on this same entry for why this is 'Ongoing' rather than 'Sold'.
+    status: 'Ongoing',
     type: 'Residential Plots',
-    price: 'Sold Out',
+    price: '₹22.5L onwards',
+    link: '/mathura',
   },
   {
-    image: '/property-5.png',
-    name: 'Kanopus Mithila',
-    location: 'Vandalur, Chennai',
-    status: 'Sold',
-    type: 'Gated Community',
-    price: 'Sold Out',
-  },
-  {
-    image: '/property-6.png',
+    image: '/property-6.webp',
     name: 'Industrial Park',
+    // Location left as-is, flagged rather than guessed — see
+    // ProjectsContent.tsx's comment on this same entry for why.
     location: 'Sriperumbudur, Chennai',
-    status: 'Sold',
+    // Status corrected: industrial-park-lp's own price field has never
+    // been filled in (literal "XXXX" on the real site) and the page
+    // still runs an active "Book a Free Site Visit" form with no
+    // "Sold Out" banner — not actually sold out.
+    status: 'Ongoing',
     type: 'Industrial',
+    price: 'Price on Request',
+    link: '/industrial-park',
+  },
+  {
+    // Same real "Santha Towers" gate photo HeroSlider.tsx/GalleryContent.tsx
+    // already use — one file referenced everywhere this project appears,
+    // rather than a separate copy that could drift out of sync later.
+    // No dedicated page exists for it anywhere, even on the live site,
+    // so no `link` here either.
+    image: '/hero-slide-1.webp',
+    name: 'OmShakthy Santha Towers',
+    location: 'Avadi, Chennai',
+    status: 'Sold',
+    type: 'Residential Apartment',
     price: 'Sold Out',
   },
 ]

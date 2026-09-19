@@ -18,7 +18,7 @@ export default function ProjectsPage() {
           the site-wide monochrome skyline, and at a smaller size — both
           per request, and both scoped to just this page via Footer's
           own props rather than touching the shared .ft__deco rule. */}
-      <Footer decoSrc="/footer-building.png" decoClassName="ft__deco--sm" />
+      <Footer decoSrc="/footer-building.webp" decoClassName="ft__deco--sm" />
     </>
   )
 }

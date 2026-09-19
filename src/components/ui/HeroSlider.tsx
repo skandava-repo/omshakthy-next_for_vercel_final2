@@ -3,13 +3,16 @@ import { useState, useEffect } from 'react'
 import './HeroSlider.css'
 
 const slides = [
-  { image: '/hero-new-3.png', title: 'OmShakthy Regalia' },
-  { image: '/hero-slide-9.png', title: 'Elite Apartments' },
-  { image: '/hero-slide-3.png', title: 'Elite Grand' },
-  { image: '/hero-slide-1.png', title: 'OmShakthy Santha' },
-  { image: '/hero-slide-8.png', title: 'Elite Apartments' },
-  { image: '/hero-slide-2.png', title: 'Kanopus Magha' },
-  { image: '/hero-new-2.png', title: 'Premium Living' },
+  { image: '/hero-new-3.webp', title: 'OmShakthy Regalia' },
+  { image: '/hero-slide-9.webp', title: 'Elite Apartments' },
+  // Was mislabeled 'Elite Grand' — this is the real "OMSHAKTHY Elite"
+  // gate photo, which is Elite Phase 1's (a different, older project;
+  // Elite Grand has its own real photo elsewhere in this rebuild).
+  { image: '/hero-slide-3.webp', title: 'OmShakthy Elite Phase 1' },
+  { image: '/hero-slide-1.webp', title: 'OmShakthy Santha' },
+  { image: '/hero-slide-8.webp', title: 'Elite Apartments' },
+  { image: '/hero-slide-2.webp', title: 'Kanopus Magha' },
+  { image: '/hero-new-2.webp', title: 'Premium Living' },
 ]
 
 const HeroSlider = () => {
@@ -50,7 +53,7 @@ const HeroSlider = () => {
             i === current ? 'hero-slider__slide--active' : ''
           } ${i === prev ? 'hero-slider__slide--prev' : ''}`}
         >
-          <img src={slide.image} alt={slide.title} style={{ objectPosition: ['/hero-slide-9.png', '/hero-slide-8.png'].includes(slide.image) ? 'center 35%' : 'center 20%' }} />
+          <img src={slide.image} alt={slide.title} style={{ objectPosition: ['/hero-slide-9.webp', '/hero-slide-8.webp'].includes(slide.image) ? 'center 35%' : 'center 20%' }} />
         </div>
       ))}
 

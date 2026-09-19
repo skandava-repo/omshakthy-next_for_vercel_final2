@@ -38,35 +38,35 @@ const chapters: Chapter[] = [
     title: 'Land Aggregation',
     desc: 'Research-led acquisition across appraised, title-clear parcels.',
     stat: '58.4M sq.ft assembled',
-    image: '/tp/tp-land-aggregation.jpg',
+    image: '/tp/tp-land-aggregation.webp',
   },
   {
     code: '02',
     title: 'Residential Development',
     desc: 'Community-scale housing delivered end to end, on schedule.',
     stat: '46.1M sq.ft delivered',
-    image: '/tp/tp-residential.jpg',
+    image: '/tp/tp-residential.webp',
   },
   {
     code: '03',
     title: 'Hospitality Management',
     desc: 'Trained operating teams running hospitality assets in-house.',
     stat: '32.7M sq.ft managed',
-    image: '/tp/tp-hospitality-facade.jpg',
+    image: '/tp/tp-hospitality-facade.webp',
   },
   {
     code: '04',
     title: 'Commercial Projects',
     desc: 'Transparent execution — price, permits, schedule, documentation.',
     stat: '38.9M sq.ft built',
-    image: '/tp/tp-commercial.jpg',
+    image: '/tp/tp-commercial.webp',
   },
   {
     code: '05',
     title: 'Supply Chain Management',
     desc: 'Vertically integrated procurement and materials logistics.',
     stat: '35.3M sq.ft supplied',
-    image: '/tp/tp-supply-chain.jpg',
+    image: '/tp/tp-supply-chain.webp',
   },
 ]
 
@@ -169,7 +169,7 @@ const SiteReelContent = () => {
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tp/tp-overall.jpg" alt="An OmShakthy site" />
+          <img src="/tp/tp-overall.webp" alt="An OmShakthy site" />
           <span className="sr__hero-scrim" aria-hidden="true" />
         </motion.div>
 

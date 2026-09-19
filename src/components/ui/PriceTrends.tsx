@@ -51,7 +51,7 @@ export const blogs = [
     title: 'How to Pay Avadi Municipality Property Tax Online',
     excerpt:
       'Paying your Avadi property tax online is fast, secure and skips the queues. A simple step-by-step guide for homeowners.',
-    image: '/blog/b1.jpg',
+    image: '/blog/b1.webp',
   },
   {
     date: 'Jan 21, 2023',
@@ -60,7 +60,7 @@ export const blogs = [
     title: "Why Guduvancheri is Chennai's Next Growth Corridor",
     excerpt:
       'Metro expansion, SIPCOT corridors and new townships are turning Guduvancheri into one of the fastest-appreciating belts in the city.',
-    image: '/blog/b2.jpg',
+    image: '/blog/b2.webp',
   },
   {
     date: 'Jun 21, 2022',
@@ -69,7 +69,7 @@ export const blogs = [
     title: 'Life at Omshakthy: Community & Milestones',
     excerpt:
       'From community drives to milestone celebrations — a look at the people, culture and moments that shape life across Omshakthy.',
-    image: '/blog/b3.jpg',
+    image: '/blog/b3.webp',
   },
   {
     date: 'Mar 12, 2025',
@@ -78,7 +78,7 @@ export const blogs = [
     title: 'Inside OmShakthy Regalia: A Gated Community Taking Shape in Avadi',
     excerpt:
       'DTCP-approved layouts, blacktop roads and clear titles — a look at how Regalia is shaping up as one of Avadi’s ongoing gated-community developments.',
-    image: '/regalia.png',
+    image: '/regalia.webp',
   },
   {
     date: 'May 6, 2025',
@@ -87,7 +87,7 @@ export const blogs = [
     title: 'Documents to Check Before You Buy a Plot in Chennai',
     excerpt:
       'Patta, EC, DTCP approval and RERA registration — the paperwork checklist every buyer should verify before signing on a residential plot.',
-    image: '/wc/wc-land.jpg',
+    image: '/wc/wc-land.webp',
   },
 ]
 
