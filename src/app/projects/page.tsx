@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import ProjectsContent from '@/components/ui/ProjectsContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/projects' },
   title: 'Projects',
   description:
     'Explore OmShakthy Homes ongoing, upcoming and completed residential, industrial and land aggregation projects across Chennai.',

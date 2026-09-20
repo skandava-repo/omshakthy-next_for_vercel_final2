@@ -1,15 +1,46 @@
 import type { MetadataRoute } from 'next'
+import { getAllProjectSlugs } from '@/lib/projects'
+import { getAllBlogSlugs } from '@/lib/blog'
 
+// Was hand-maintained and drifted badly out of sync with the real app
+// — 7 URLs listed against 140+ that actually exist. The 6 real project
+// pages (everything getAllProjectSlugs() finds under src/data/projects)
+// and all 131 real blog posts (getAllBlogSlugs()) are now pulled from
+// the same source the routes themselves are generated from, so this
+// can't drift again. Regalia keeps its own hand-written entry below —
+// it isn't one of the six, it has its own separate page/template.
+//
+// Deliberately NOT included: /blog2 and /what-we-do2 through
+// /what-we-do8 — near-duplicate variants of /blog and /what-we-do, not
+// meant to compete with the originals for the same search terms.
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.omshakthy.com'
+  const now = new Date()
+
+  const projectPages: MetadataRoute.Sitemap = getAllProjectSlugs().map((slug) => ({
+    url: `${baseUrl}/${slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  }))
+
+  const blogPosts: MetadataRoute.Sitemap = getAllBlogSlugs().map((slug) => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: now,
+    changeFrequency: 'yearly',
+    priority: 0.5,
+  }))
 
   return [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/projects`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/regalia`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${baseUrl}/gallery`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
+    { url: baseUrl, lastModified: now, changeFrequency: 'weekly', priority: 1 },
+    { url: `${baseUrl}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/projects`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/regalia`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    ...projectPages,
+    { url: `${baseUrl}/gallery`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/what-we-do`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    ...blogPosts,
+    { url: `${baseUrl}/contact`, lastModified: now, changeFrequency: 'yearly', priority: 0.5 },
   ]
 }

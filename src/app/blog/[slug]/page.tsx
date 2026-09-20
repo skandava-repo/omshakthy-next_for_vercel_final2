@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import BlogPostContent from '@/components/ui/BlogPostContent'
 import { getAllBlogSlugs, getBlogPost } from '@/lib/blog'
+import { getBreadcrumbSchema } from '@/lib/schema-org'
 import summary from '@/data/blog/summary.json'
 
 // Prerenders all 131 real posts extracted from the old mirror site
@@ -24,6 +25,7 @@ export async function generateMetadata({
   return {
     title: post.seoTitle,
     description: post.description,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -50,8 +52,15 @@ export default async function BlogPostPage({
     .slice(0, 3)
     .map((s) => ({ slug: s.slug, title: s.title }))
 
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Blog', path: '/blog' },
+    { name: post.title, path: `/blog/${post.slug}` },
+  ])
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
       <BlogPostContent post={post} related={related} />
       <Footer />

@@ -118,21 +118,17 @@ interface Project {
   imagePosition?: string
 }
 
-// Badge label/color/definition per status — surfaced as an actual
-// legend below the filter bar rather than left for a visitor to guess
-// at what each badge means.
-const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color: string; def: string }> = {
+// Badge label/color per status, shown on each project card.
+const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color: string }> = {
   Ongoing: {
     label: 'Ongoing',
     bg: 'rgba(13,107,178,0.1)',
     color: C.blue,
-    def: 'Actively sold — current pricing available.',
   },
   Sold: {
     label: 'Sold Out',
     bg: 'rgba(180,83,9,0.1)',
     color: '#B45309',
-    def: 'No plots or units remain available.',
   },
 }
 
@@ -220,42 +216,28 @@ const statusOptions = ['All Status', 'Ongoing', 'Sold'] as const
 const typeOptions = ['All Types', ...Array.from(new Set(projects.map((p) => p.type)))]
 const locationOptions = ['All Locations', ...Array.from(new Set(projects.map((p) => p.location)))]
 
-/* Real buckets built from our actual three price points (25L/28L/32L)
-   — not the reference's 0-250k/250k-500k/... scale, which is Barbados
-   villa pricing and has no relationship to our ₹-lakh land pricing. */
-const priceRangeOptions = [
-  { label: 'All Prices', test: (_: number | null) => true },
-  { label: 'Up to ₹25L', test: (v: number | null) => v !== null && v <= 25 },
-  { label: '₹25L – ₹30L', test: (v: number | null) => v !== null && v > 25 && v <= 30 },
-  { label: 'Above ₹30L', test: (v: number | null) => v !== null && v > 30 },
-] as const
-
 const ProjectsContent = () => {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<(typeof statusOptions)[number]>('All Status')
   const [type, setType] = useState('All Types')
   const [location, setLocation] = useState('All Locations')
-  const [priceRange, setPriceRange] = useState<string>(priceRangeOptions[0].label)
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    const rangeTest = priceRangeOptions.find((r) => r.label === priceRange)?.test ?? (() => true)
     return projects.filter((p) => {
       const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.location.toLowerCase().includes(q)
       const matchesStatus = status === 'All Status' || p.status === status
       const matchesType = type === 'All Types' || p.type === type
       const matchesLocation = location === 'All Locations' || p.location === location
-      const matchesPrice = priceRange === priceRangeOptions[0].label || rangeTest(p.priceLakh)
-      return matchesQuery && matchesStatus && matchesType && matchesLocation && matchesPrice
+      return matchesQuery && matchesStatus && matchesType && matchesLocation
     })
-  }, [search, status, type, location, priceRange])
+  }, [search, status, type, location])
 
   const resetFilters = () => {
     setSearch('')
     setStatus('All Status')
     setType('All Types')
     setLocation('All Locations')
-    setPriceRange(priceRangeOptions[0].label)
   }
 
   return (
@@ -372,7 +354,7 @@ const ProjectsContent = () => {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as (typeof statusOptions)[number])}
@@ -381,20 +363,6 @@ const ProjectsContent = () => {
             >
               {statusOptions.map((s) => (
                 <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-            {/* Real bucketed price filter, matching the reference's
-                field (a "Price range" dropdown is the 6th field in the
-                actual mirror) — built from our own three real ₹-lakh
-                price points, not their Barbados villa scale. */}
-            <select
-              value={priceRange}
-              onChange={(e) => setPriceRange(e.target.value)}
-              className="px-5 py-3.5 rounded-full text-sm outline-none"
-              style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-            >
-              {priceRangeOptions.map((r) => (
-                <option key={r.label} value={r.label}>{r.label}</option>
               ))}
             </select>
             <button
@@ -406,28 +374,6 @@ const ProjectsContent = () => {
               Reset Filters
             </button>
           </div>
-
-          {/* Status legend — what each badge on the cards below actually
-              means. Back to two states per request (Ongoing/Sold Out) —
-              a third "Completed" state briefly existed here, folded
-              back into Ongoing rather than dropped, since the two
-              projects it covered (Mathura, Kanopus Mithila) genuinely
-              still have a real price on their own page, not "Sold
-              Out". */}
-          <Reveal className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6">
-            {(Object.keys(STATUS_STYLE) as Project['status'][]).map((s) => (
-              <span key={s} className="inline-flex items-center gap-2 text-xs" style={{ ...body, color: C.slate }}>
-                <span
-                  className="inline-flex items-center gap-1 rounded-full uppercase"
-                  style={{ ...body, padding: '0.15rem 0.5rem', background: STATUS_STYLE[s].bg, fontSize: 9, fontWeight: 800, letterSpacing: '0.1em', color: STATUS_STYLE[s].color }}
-                >
-                  <span className="rounded-full flex-shrink-0" style={{ width: 5, height: 5, background: 'currentColor' }} />
-                  {STATUS_STYLE[s].label}
-                </span>
-                {STATUS_STYLE[s].def}
-              </span>
-            ))}
-          </Reveal>
         </div>
       </section>
 

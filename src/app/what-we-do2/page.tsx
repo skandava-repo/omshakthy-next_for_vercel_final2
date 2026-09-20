@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import CapabilityStatementContent from '@/components/ui/CapabilityStatementContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/what-we-do' },
   title: 'What We Do',
   description:
     'Land aggregation, residential development, hospitality management, commercial projects and supply chain — one integrated capability statement.',

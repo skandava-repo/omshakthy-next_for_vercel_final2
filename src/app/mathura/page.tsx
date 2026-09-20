@@ -3,6 +3,7 @@ import ProjectLandingContent from '@/components/ui/ProjectLandingContent'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { getProjectData } from '@/lib/projects'
+import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
 // Real content extracted from mathura-lp.html — see
 // src/data/projects/mathura.json. Its own real FAQ states plainly
@@ -13,6 +14,7 @@ import { getProjectData } from '@/lib/projects'
 // — this page's own live spec table shows a real price (22.5 Lakhs),
 // not "Sold Out"; a prior pass here had mismarked it.
 export const metadata: Metadata = {
+  alternates: { canonical: '/mathura' },
   title: 'OmShakthy Mathura — Residential Plots in Chromepet | OmShakthy Homes',
   description:
     'OmShakthy Mathura is a residential plot development in Chromepet, Chennai — 110 CMDA & RERA approved plots across 3.55 acres, starting from ₹22.5 Lakhs.',
@@ -24,8 +26,24 @@ export const metadata: Metadata = {
 
 export default function MathuraPage() {
   const data = getProjectData('mathura')!
+  // Breadcrumb on every project page; FAQ schema only for the ones with
+  // real FAQ content in their data file (getFAQSchema was written
+  // earlier but never actually wired into any page until now).
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Projects', path: '/projects' },
+    { name: data.name, path: '/mathura' },
+  ])
+  const faqSchema =
+    data.faq.length > 0
+      ? getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
+      : null
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      )}
       <Header />
       <ProjectLandingContent data={data} />
       <Footer />

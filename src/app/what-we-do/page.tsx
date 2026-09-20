@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import WhatWeDoContent from '@/components/ui/WhatWeDoContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/what-we-do' },
   title: 'What We Do',
   description:
     'Land aggregation, residential development, hospitality management, commercial projects and supply chain — the five disciplines behind everything OmShakthy builds.',

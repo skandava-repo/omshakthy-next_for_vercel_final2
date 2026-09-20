@@ -42,3 +42,21 @@ export function getFAQSchema(faqs: { question: string; answer: string }[]) {
     })),
   }
 }
+
+// items: ordered from the homepage down to the current page, each
+// {name, path} with path relative to the site root (e.g. '/projects').
+// The current page itself is included as the last item, same as
+// Google's own BreadcrumbList examples.
+export function getBreadcrumbSchema(items: { name: string; path: string }[]) {
+  const baseUrl = 'https://www.omshakthy.com'
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: `${baseUrl}${item.path}`,
+    })),
+  }
+}

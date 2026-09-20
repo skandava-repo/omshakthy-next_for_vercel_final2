@@ -1,9 +1,10 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, animate } from 'framer-motion'
+import { motion, AnimatePresence, useInView, animate, useScroll, useTransform } from 'framer-motion'
 import FinancialPartnersSection from './FinancialPartnersSection'
 import SiteLinksSection from './SiteLinksSection'
 import type { ProjectData } from '@/lib/projects'
+import './ProjectLandingContent.css'
 
 /* ProjectLandingContent — the same page RegaliaContent.tsx built by
    hand, made reusable once six more real project landing pages needed
@@ -32,15 +33,35 @@ const C = {
   paperMuted: 'rgba(251, 248, 242, 0.66)',
   inkMuted: 'rgba(11, 31, 58, 0.68)',
   hairLight: 'rgba(13, 107, 178, 0.35)',
+  // A single warm accent, used sparingly (kicker rules, ornament
+  // glyphs, a hover edge on cards) — a navy+gold pairing reads as
+  // "premium township" the same way it does on the real gate signage
+  // several of these projects now use (Elite Grand's own real render
+  // uses this same maroon+gold palette). Never a background, never
+  // body text — an accent line/glyph only, so it stays a flourish
+  // rather than competing with the site's actual blue identity.
+  gold: '#C9A227',
+  goldSoft: 'rgba(201, 162, 39, 0.35)',
 }
 const darkGradient = 'linear-gradient(180deg, #004385 0%, #0D6BB2 100%)'
 const WHATSAPP_NUMBER = '919150088097'
+// Real tree cutout, used as a soft corner/ divider accent rather than a
+// literal photo of anything project-specific — same restraint as the
+// site's icon set: decoration, not a claim about what's actually on
+// site.
+const TREE = '/decor/tree-accent.webp'
 
 const display: React.CSSProperties = { fontFamily: "'Fraunces', Georgia, serif", lineHeight: 1.05, letterSpacing: '-0.01em', fontWeight: 400 }
 const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans-serif", lineHeight: 1.6, fontWeight: 400 }
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace", letterSpacing: '0.16em', textTransform: 'uppercase', fontSize: '1.0rem', fontWeight: 700 }
 const easeLux = [0.16, 1, 0.3, 1] as const
 
+// Same "focus pull" reveal AboutContent.tsx uses — was a plain fade+
+// rise here; now blur(6px)->0 and scale(0.96)->1 ride alongside the
+// same opacity/y, so content settles into focus as it scrolls in
+// rather than just fading up. Brought over deliberately: this page
+// had its own simpler Reveal while About had the richer one, and
+// there was no real reason for the two to differ.
 const Reveal = ({ children, delay = 0, className, style }: { children: React.ReactNode; delay?: number; className?: string; style?: React.CSSProperties }) => {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -49,18 +70,242 @@ const Reveal = ({ children, delay = 0, className, style }: { children: React.Rea
     <motion.div
       className={className}
       style={style}
-      variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, delay, ease: easeLux } } }}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-12%' }}
+      initial={{ opacity: 0, y: 28, scale: 0.96, filter: 'blur(6px)' }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      viewport={{ once: true, margin: '-10%' }}
+      transition={{ duration: 0.75, delay, ease: easeLux }}
     >
       {children}
     </motion.div>
   )
 }
 
-const Kicker = ({ children, color = C.blue }: { children: React.ReactNode; color?: string }) => (
-  <span className="block mb-4" style={{ ...mono, color }}>{children}</span>
+// Same word-by-word rise AboutContent.tsx's KineticHeading uses — each
+// word sits in its own overflow-hidden mask and slides up into place
+// with its own stagger, so the copy itself is what's moving rather
+// than a box fading in around it. Used for this page's main section
+// headings (the ones that used to be a plain <h2> inside Reveal).
+const KineticHeading = ({
+  text,
+  className,
+  style,
+  delay = 0,
+}: {
+  text: string
+  className?: string
+  style?: React.CSSProperties
+  delay?: number
+}) => {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const words = text.split(' ')
+  if (!mounted) {
+    return <h2 className={className} style={style}>{text}</h2>
+  }
+  return (
+    <h2 className={className} style={style}>
+      {words.map((w, i) => (
+        // Gap between words is a margin on the wrapper, not a literal
+        // space character inside the animated text — a trailing space
+        // baked into an inline-block's content gets trimmed at the box
+        // edge by normal whitespace collapsing, which was silently
+        // running every heading's words together ("LocationsNearby").
+        <span
+          key={i}
+          style={{
+            display: 'inline-block',
+            overflow: 'hidden',
+            paddingBottom: '0.15em',
+            marginBottom: '-0.15em',
+            marginRight: i < words.length - 1 ? '0.28em' : 0,
+          }}
+        >
+          <motion.span
+            style={{ display: 'inline-block' }}
+            initial={{ y: '110%', rotate: 4 }}
+            whileInView={{ y: '0%', rotate: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, delay: delay + i * 0.08, ease: easeLux }}
+          >
+            {w}
+          </motion.span>
+        </span>
+      ))}
+    </h2>
+  )
+}
+
+// A single oversized outline numeral, stroke-only and low-opacity —
+// same device AboutContent.tsx's "Where We Build" marquee uses for its
+// ghost "09". Real counts only (amenity count, connectivity count),
+// never a made-up decoration.
+const GhostNumeral = ({ n, color }: { n: number | string; color: string }) => (
+  <span
+    aria-hidden
+    className="absolute select-none pointer-events-none hidden md:block"
+    style={{
+      ...display,
+      top: '-2.5rem',
+      right: 0,
+      fontSize: 'clamp(6rem, 13vw, 10rem)',
+      fontWeight: 700,
+      lineHeight: 1,
+      color: 'transparent',
+      WebkitTextStroke: `1.5px ${color}`,
+      opacity: 0.5,
+    }}
+  >
+    {typeof n === 'number' ? String(n).padStart(2, '0') : n}
+  </span>
+)
+
+// Same curtain-wipe photo entrance as AboutContent.tsx's ImageReveal —
+// a solid panel slides away right-to-left while the photo itself
+// settles from a slight zoom+blur into focus. Boxed/rounded usage
+// (unlike the Hero's own full-bleed inline version of this device).
+const ImageReveal = ({
+  src,
+  alt = '',
+  imgClassName,
+  imgStyle,
+  delay = 0,
+  panelColor = C.gold,
+}: {
+  src: string
+  alt?: string
+  imgClassName?: string
+  imgStyle?: React.CSSProperties
+  delay?: number
+  panelColor?: string
+}) => {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) {
+    return (
+      <div className="relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={alt} className={imgClassName} style={imgStyle} />
+      </div>
+    )
+  }
+  return (
+    <div className="relative">
+      <motion.img
+        src={src}
+        alt={alt}
+        className={imgClassName}
+        style={imgStyle}
+        initial={{ scale: 1.18, filter: 'blur(6px)' }}
+        whileInView={{ scale: 1, filter: 'blur(0px)' }}
+        viewport={{ once: true, margin: '-10%' }}
+        transition={{ duration: 1.3, delay: delay + 0.15, ease: easeLux }}
+      />
+      <motion.div
+        className="absolute inset-0"
+        style={{ background: panelColor, transformOrigin: 'right center' }}
+        initial={{ scaleX: 1 }}
+        whileInView={{ scaleX: 0 }}
+        viewport={{ once: true, margin: '-10%' }}
+        transition={{ duration: 0.85, delay, ease: easeLux }}
+      />
+    </div>
+  )
+}
+
+const Kicker = ({ children, color = C.blue, center = false }: { children: React.ReactNode; color?: string; center?: boolean }) => (
+  <span className={`mb-4 ${center ? 'flex flex-col items-center' : 'block'}`}>
+    <span style={{ ...mono, color }}>{children}</span>
+    {/* Small gold rule under every kicker — the one place this page's
+        accent color shows up consistently, so it reads as a deliberate
+        motif rather than decoration in only one spot. */}
+    <span
+      className="block mt-2 rounded-full"
+      style={{ width: 34, height: 2.5, background: C.gold }}
+    />
+  </span>
+)
+
+// Soft, low-opacity foliage anchored to a corner — real tree cutout,
+// never full-strength (never mistaken for site photography), just
+// enough presence to keep a section from reading as flat color.
+// `side` mirrors it left/right, `tone` swaps between the warm original
+// greens (light backgrounds) and a duotone-navy recolor (dark-gradient
+// sections, where full green would fight the blue).
+const TreeAccent = ({
+  side = 'left',
+  tone = 'natural',
+  size = 340,
+  bottom = -40,
+  opacity = 0.22,
+}: {
+  side?: 'left' | 'right'
+  tone?: 'natural' | 'navy'
+  size?: number
+  bottom?: number
+  opacity?: number
+}) => (
+  <div
+    aria-hidden
+    className="absolute pointer-events-none select-none hidden md:block"
+    style={{
+      [side]: -size * 0.22,
+      bottom,
+      width: size,
+      height: size,
+      opacity,
+      filter: tone === 'navy' ? 'grayscale(1) brightness(0.6) sepia(1) hue-rotate(175deg) saturate(3)' : undefined,
+      transform: side === 'right' ? 'scaleX(-1)' : undefined,
+    }}
+  >
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src={TREE} alt="" className="w-full h-full object-contain object-bottom" />
+  </div>
+)
+
+// A thin rule + diamond glyph, used between a section's kicker/heading
+// block and its body content on the more "heritage" sections (Since
+// 1991, Mission/Vision) — a small classical flourish rather than the
+// plain gap every other section uses.
+const OrnamentDivider = ({ color }: { color: string }) => (
+  <div className="flex items-center justify-center gap-3 my-6" aria-hidden>
+    <span style={{ width: 44, height: 1, background: color, opacity: 0.4 }} />
+    <span style={{ width: 7, height: 7, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0 }} />
+    <span style={{ width: 44, height: 1, background: color, opacity: 0.4 }} />
+  </div>
+)
+
+// Small gold corner brackets on two opposite corners — a framed-print
+// treatment for the one piece of embedded, non-decorative media on the
+// page (the map), so it reads as a deliberately presented plate rather
+// than a plain iframe with rounded corners.
+const CornerFrame = ({ children }: { children: React.ReactNode }) => (
+  <div className="relative">
+    {[
+      { top: -10, left: -10, borderWidth: '3px 0 0 3px' },
+      { bottom: -10, right: -10, borderWidth: '0 3px 3px 0' },
+    ].map((pos, i) => (
+      <span
+        key={i}
+        aria-hidden
+        className="absolute hidden md:block"
+        style={{ width: 36, height: 36, borderColor: C.gold, borderStyle: 'solid', ...pos }}
+      />
+    ))}
+    {children}
+  </div>
+)
+
+// A single oversized serif quote mark, laid behind a statement rather
+// than beside it — the classic "editorial pull-quote" device, in gold
+// so it reads as ornament rather than a second layer of text.
+const GoldQuoteMark = () => (
+  <span
+    aria-hidden
+    className="block leading-none select-none"
+    style={{ ...display, fontSize: '5rem', color: C.gold, opacity: 0.45, height: '2.2rem', marginBottom: '0.25rem' }}
+  >
+    &ldquo;
+  </span>
 )
 
 const CountUp = ({ to, format = (n: number) => Math.round(n).toLocaleString('en-IN') }: { to: number; format?: (n: number) => string }) => {
@@ -164,12 +409,12 @@ const SiteVisitForm = ({ projectName }: { projectName: string }) => {
       <p className="text-sm mb-6" style={{ color: C.slate }}>Furnish your details below to book a free site visit</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required
-          className="px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
+          className="pl-input px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
         <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone" type="tel"
-          className="px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
+          className="pl-input px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
         <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="email"
-          className="px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
-        <button type="submit" className="mt-2 px-6 py-3 rounded-full text-sm font-semibold" style={{ ...body, backgroundColor: C.blue, color: '#fff' }}>
+          className="pl-input px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
+        <button type="submit" className="pl-gold-btn mt-2 px-6 py-3 rounded-full text-sm font-semibold" style={{ ...body, backgroundColor: C.blue, color: '#fff' }}>
           Book a Free Site Visit
         </button>
       </form>
@@ -178,23 +423,14 @@ const SiteVisitForm = ({ projectName }: { projectName: string }) => {
 }
 
 // Walks the list of sections this project actually has and assigns a
-// background to each so no two adjacent sections repeat — needed
-// because which sections exist (narrative, FAQ, map) varies per
-// project, so a hardcoded alternating sequence can't be trusted.
+// strict two-tone alternation — white (paper) first, then the dark
+// navy gradient, back to white, and so on — so which sections exist
+// (narrative, FAQ, map) varies per project but the white/blue/white
+// rhythm itself never breaks. 'panel' stays a valid bg for any section
+// that opts out of the alternation explicitly, but the walk itself
+// no longer assigns it.
 function assignBackgrounds<T extends { id: string }>(sections: T[]): (T & { bg: 'paper' | 'panel' | 'dark' })[] {
-  const order: Array<'paper' | 'panel' | 'dark'> = ['dark', 'paper', 'panel']
-  let cursor = 0
-  let prev: string | null = null
-  return sections.map((s) => {
-    let bg = order[cursor % order.length]
-    if (bg === prev) {
-      cursor += 1
-      bg = order[cursor % order.length]
-    }
-    cursor += 1
-    prev = bg
-    return { ...s, bg }
-  })
+  return sections.map((s, i) => ({ ...s, bg: i % 2 === 0 ? 'paper' : 'dark' }))
 }
 const bgStyle = (bg: 'paper' | 'panel' | 'dark') =>
   bg === 'dark' ? { background: darkGradient } : { backgroundColor: bg === 'paper' ? C.paper : C.panel, color: C.ink }
@@ -203,6 +439,17 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
   const address = `${data.name}, Chennai`
   const hasNarrative = data.narrativeSections.length > 0
   const hasFaq = data.faq.length > 0
+  // Real accordion now (was every answer sitting open at once) — first
+  // question starts expanded so the section doesn't read as empty rows
+  // of questions-only on first paint.
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+
+  // Hero video parallax — the same scroll-tied scale/drift
+  // RegaliaContent.tsx's own cinematic hero uses.
+  const heroRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroVideoScale = useTransform(heroProgress, [0, 1], [1, 1.18])
+  const heroVideoY = useTransform(heroProgress, [0, 1], ['0%', '14%'])
 
   const sectionIds = [
     'specs', 'connectivity',
@@ -215,17 +462,65 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
 
   return (
     <div style={{ backgroundColor: C.paper }}>
-      {/* ---------------- Hero ---------------- */}
-      <section className="relative min-h-[80vh] flex items-end px-6 md:px-16 pb-16 pt-32" style={{ backgroundColor: C.ink }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={data.heroImage} alt={data.name} className="absolute inset-0 w-full h-full object-cover opacity-60" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,31,58,0.1) 0%, rgba(11,31,58,0.85) 100%)' }} />
+      {/* ---------------- Hero ----------------
+          Bigger, more theatrical than a plain "photo + heading": a
+          gold rule + serif kicker line ahead of the name and a much
+          larger display size. No TreeAccent cutouts here (unlike every
+          section below) — the video backdrop already carries its own
+          real depth and motion, so the corner foliage just competed
+          with it instead of framing it the way it does over a static
+          section background. The backdrop itself is the same cinematic
+          video treatment RegaliaContent.tsx's own hero uses —
+          autoplaying, muted, freezing on its final frame rather than
+          looping, with a live scroll-tied scale/drift as the visitor
+          scrolls past it. */}
+      <section ref={heroRef} className="relative min-h-[88vh] flex items-end overflow-hidden px-6 md:px-16 pb-20 pt-32" style={{ backgroundColor: C.ink }}>
+        <motion.video
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ scale: heroVideoScale, y: heroVideoY }}
+          src="/project-hero-video.mp4"
+          autoPlay
+          muted
+          playsInline
+          onEnded={(e) => {
+            // freeze on the final frame instead of looping, same as
+            // Regalia's own hero
+            const v = e.currentTarget
+            v.pause()
+            if (v.duration) v.currentTime = v.duration
+          }}
+        />
+        {/* Curtain-wipe entrance — same device AboutContent.tsx's
+            ImageReveal uses (a solid panel wipes away right-to-left)
+            — in gold rather than ink since ink is already the
+            section's own background and wouldn't read as a distinct
+            reveal against itself. Runs once, on load, over the video
+            that's already begun playing underneath — this is the very
+            first thing a visitor sees on the page. */}
+        <motion.div
+          className="absolute inset-0"
+          style={{ background: C.gold, transformOrigin: 'right center' }}
+          initial={{ scaleX: 1 }}
+          animate={{ scaleX: 0 }}
+          transition={{ duration: 0.9, ease: easeLux }}
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,31,58,0.05) 0%, rgba(11,31,58,0.28) 55%, rgba(11,31,58,0.65) 100%)' }} />
+        {/* Vignette + a faint gold glow low in the frame — depth behind
+            the title without a second hard-edged rectangle. */}
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(120% 70% at 50% 100%, rgba(201,162,39,0.16) 0%, rgba(201,162,39,0) 60%)' }} />
         <div className="relative max-w-6xl mx-auto w-full">
           <Reveal>
             {data.type && <Kicker color={C.mist}>{data.type}</Kicker>}
-            <h1 className="text-4xl md:text-6xl mb-6" style={{ ...display, color: '#fff' }}>{data.name}</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          {/* KineticHeading animates its own words — not wrapped in
+              Reveal, which would double-animate the same text as a
+              whole block on top of each word's own rise. */}
+          <KineticHeading
+            text={data.name}
+            className="text-5xl md:text-8xl mb-7"
+            style={{ ...display, color: '#fff', fontWeight: 500, textShadow: '0 2px 40px rgba(0,0,0,0.35)' }}
+          />
+          <Reveal delay={0.1} className="flex flex-wrap items-center gap-4">
             <a
               href={`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(`Hi, I'm interested in ${data.name}. Could you share more details?`)}`}
               target="_blank"
@@ -235,24 +530,37 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
             >
               Enquire on WhatsApp
             </a>
+            {/* Thin gold-bordered ghost button — the one place a second,
+                lighter-weight CTA style earns its keep, echoing the gold
+                kicker rule rather than repeating the solid white pill. */}
+            <a
+              href="#visit"
+              className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
+              style={{ ...body, color: '#fff', border: `1px solid ${C.goldSoft}` }}
+            >
+              Book a Site Visit
+            </a>
           </Reveal>
         </div>
       </section>
 
       {/* ---------------- Specifications ---------------- */}
       {data.specs.length > 0 && (
-        <section className="px-6 md:px-16 py-20" style={bgStyle(bgs.specs)}>
-          <div className="max-w-6xl mx-auto">
-            <Reveal className="mb-12">
-              <Kicker color={bgs.specs === 'dark' ? C.mist : C.blue}>Specifications</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.specs === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
-                The Plot, In Numbers
-              </h2>
-            </Reveal>
+        <section className="relative overflow-hidden px-6 md:px-16 py-20" style={bgStyle(bgs.specs)}>
+          <TreeAccent side="right" tone={bgs.specs === 'dark' ? 'navy' : 'natural'} size={240} bottom={-20} opacity={bgs.specs === 'dark' ? 0.14 : 0.1} />
+          <div className="relative max-w-6xl mx-auto">
+            <div className="mb-12">
+              <Reveal><Kicker color={bgs.specs === 'dark' ? C.mist : C.blue}>Specifications</Kicker></Reveal>
+              <KineticHeading
+                text="The Plot, In Numbers"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: bgs.specs === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+              />
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {data.specs.map((s, i) => (
                 <Reveal key={s.label} delay={i * 0.05}>
-                  <div className="h-full rounded-2xl bg-white p-6 text-center" style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}>
+                  <div className="pl-stat-card h-full rounded-2xl bg-white p-6 text-center" style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}>
                     <div className="flex justify-center"><StatIcon name={SPEC_ICONS[i % SPEC_ICONS.length]} /></div>
                     <p className="mt-4 text-lg md:text-xl font-bold" style={{ ...display, color: C.ink }}>{s.value}</p>
                     <p className="mt-1 text-sm" style={{ color: C.slate }}>{s.label}</p>
@@ -266,27 +574,64 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
 
       {/* ---------------- Connectivity ---------------- */}
       {data.connectivity.length > 0 && (
-        <section className="px-6 md:px-16 py-20" style={bgStyle(bgs.connectivity)}>
-          <div className="max-w-5xl mx-auto">
-            <Reveal className="mb-12">
-              <Kicker color={bgs.connectivity === 'dark' ? C.mist : C.blue}>Connectivity</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.connectivity === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
-                Locations Nearby
-              </h2>
+        <section className="relative overflow-hidden px-6 md:px-16 py-20" style={bgStyle(bgs.connectivity)}>
+          {/* Lamp-post photo anchored to the left edge, fading out into
+              the section's own background toward the right rather than
+              a hard-edged rectangle — the same "a real place, not a
+              stock backdrop" read the gate photos give the rest of the
+              site, here standing in for the streets/city this section's
+              list of nearby locations is actually about. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/decor/lamp-post.webp"
+            alt=""
+            aria-hidden
+            className="absolute inset-y-0 left-0 w-[45%] md:w-[34%] h-full object-cover hidden sm:block"
+            style={{
+              opacity: bgs.connectivity === 'dark' ? 0.4 : 0.22,
+              WebkitMaskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 92%)',
+              maskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 92%)',
+            }}
+          />
+          <div className="relative z-10 max-w-5xl mx-auto">
+            {/* Ghost numeral is the real count of locations listed below —
+                same "decoration that's actually true" restraint as
+                AboutContent.tsx's "09" corridors. */}
+            <GhostNumeral n={data.connectivity.length} color={bgs.connectivity === 'dark' ? C.goldSoft : C.panel} />
+            <div className="mb-12">
+              <Reveal><Kicker color={bgs.connectivity === 'dark' ? C.mist : C.blue}>Connectivity</Kicker></Reveal>
+              <KineticHeading
+                text="Locations Nearby"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: bgs.connectivity === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+              />
               {data.connectivityIntro && (
-                <p className="mt-4 max-w-2xl" style={{ color: bgs.connectivity === 'dark' ? C.paperMuted : C.slate }}>
-                  {data.connectivityIntro}
-                </p>
+                <Reveal delay={0.1}>
+                  <p className="mt-4 max-w-2xl" style={{ color: bgs.connectivity === 'dark' ? '#fff' : C.slate, fontWeight: 500 }}>
+                    {data.connectivityIntro}
+                  </p>
+                </Reveal>
               )}
-            </Reveal>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
               {data.connectivity.map((item, i) => {
                 const { name, time } = splitConnectivity(item)
                 return (
                   <Reveal key={item} delay={i * 0.03}>
                     <div className="flex items-baseline justify-between py-3" style={{ borderBottom: `1px solid ${C.hairLight}` }}>
-                      <span style={{ color: bgs.connectivity === 'dark' ? C.paperMuted : C.inkMuted }}>{name}</span>
-                      {time && <span style={{ ...mono, color: C.blue, fontSize: '0.9rem', flexShrink: 0, marginLeft: '1rem' }}>{time}</span>}
+                      <span className="flex items-baseline gap-3">
+                        <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0 }} />
+                        {/* C.paperMuted is only 66% opacity — read as
+                            dim against this section's own dark navy
+                            background. Full paper white instead. */}
+                        <span style={{ color: bgs.connectivity === 'dark' ? '#fff' : C.inkMuted, fontWeight: 600 }}>{name}</span>
+                      </span>
+                      {/* Was hardcoded to C.blue — invisible on this
+                          section's own dark navy background since the
+                          two colors are nearly identical. Switches to
+                          gold there instead, matching the bullet dot
+                          beside each location name. */}
+                      {time && <span style={{ ...mono, color: bgs.connectivity === 'dark' ? C.gold : C.blue, fontSize: '0.9rem', flexShrink: 0, marginLeft: '1rem' }}>{time}</span>}
                     </div>
                   </Reveal>
                 )
@@ -328,35 +673,47 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
       {/* ---------------- Key figures — same company-wide real facts Regalia's page uses ---------------- */}
       <section className="px-6 md:px-16 py-24" style={bgStyle(bgs.keyfigures)}>
         <div className="max-w-7xl mx-auto">
-          <Reveal className="text-center mb-16">
-            <Kicker color={bgs.keyfigures === 'dark' ? C.mist : C.blue}>By The Numbers</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.keyfigures === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
-              Thirty-plus years. Zero title disputes.
-            </h2>
-          </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: 'map', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Acres successfully aggregated & developed' },
-              { icon: 'building', to: 30, format: (n: number) => `${Math.round(n)}+`, label: 'Landmark projects delivered' },
-              { icon: 'layers', to: 2, format: (n: number) => `${Math.round(n)} Lakh+`, label: 'Sq.Ft commercial space leased' },
-              { icon: 'users', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Happy customers since 1991' },
-            ].map((s, i) => (
-              <Reveal key={s.label} delay={i * 0.08}>
-                <div className="h-full rounded-2xl bg-white p-6 text-center" style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}>
-                  <div className="flex justify-center"><StatIcon name={s.icon} /></div>
-                  <div className="mt-4 text-3xl md:text-4xl font-bold" style={{ ...display, color: C.ink }}><CountUp to={s.to} format={s.format} /></div>
-                  <p className="mt-2 text-sm" style={{ color: C.slate }}>{s.label}</p>
-                </div>
-              </Reveal>
-            ))}
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={bgs.keyfigures === 'dark' ? C.mist : C.blue}>By The Numbers</Kicker></Reveal>
+            <KineticHeading
+              text="Thirty-plus years. Zero title disputes."
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: bgs.keyfigures === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+            />
           </div>
+          <CornerFrame>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: 'map', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Acres successfully aggregated & developed' },
+                { icon: 'building', to: 30, format: (n: number) => `${Math.round(n)}+`, label: 'Landmark projects delivered' },
+                { icon: 'layers', to: 2, format: (n: number) => `${Math.round(n)} Lakh+`, label: 'Sq.Ft commercial space leased' },
+                { icon: 'users', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Happy customers since 1991' },
+              ].map((s, i) => (
+                <Reveal key={s.label} delay={i * 0.08}>
+                  <div className="pl-stat-card h-full rounded-2xl bg-white p-6 text-center" style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}>
+                    <div className="flex justify-center"><StatIcon name={s.icon} /></div>
+                    <div className="mt-4 text-3xl md:text-4xl font-bold" style={{ ...display, color: C.ink }}><CountUp to={s.to} format={s.format} /></div>
+                    <p className="mt-2 text-sm" style={{ color: C.slate }}>{s.label}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </CornerFrame>
         </div>
       </section>
 
-      {/* ---------------- Since 1991 ---------------- */}
-      <section className="px-6 md:px-16 py-28 text-center" style={bgStyle(bgs.since1991)}>
-        <div className="max-w-3xl mx-auto">
-          <Reveal><Kicker color={bgs.since1991 === 'dark' ? C.mist : C.blue}>Est. 1991 · Chennai</Kicker></Reveal>
+      {/* ---------------- Since 1991 ----------------
+          The one section that's explicitly about heritage/legacy, so
+          it's the one that earns the ornament divider and flanking
+          trees rather than the plain kicker+statement every other
+          section uses — restraint elsewhere is what makes this feel
+          special here instead of everywhere. */}
+      <section className="relative overflow-hidden px-6 md:px-16 py-32 text-center" style={bgStyle(bgs.since1991)}>
+        <TreeAccent side="left" tone={bgs.since1991 === 'dark' ? 'navy' : 'natural'} size={280} bottom={-30} opacity={bgs.since1991 === 'dark' ? 0.18 : 0.14} />
+        <TreeAccent side="right" tone={bgs.since1991 === 'dark' ? 'navy' : 'natural'} size={280} bottom={-30} opacity={bgs.since1991 === 'dark' ? 0.18 : 0.14} />
+        <div className="relative max-w-3xl mx-auto">
+          <Reveal><Kicker center color={bgs.since1991 === 'dark' ? C.mist : C.blue}>Est. 1991 · Chennai</Kicker></Reveal>
+          <OrnamentDivider color={bgs.since1991 === 'dark' ? C.paperMuted : C.hairLight} />
           <Reveal delay={0.1}>
             <p className="text-2xl md:text-4xl" style={{ ...display, color: bgs.since1991 === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
               Incorporated in 1991 to consolidate land for the future — industries, Special Economic
@@ -366,26 +723,82 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         </div>
       </section>
 
+      {/* ---------------- Signature photo ----------------
+          Same full-bleed "brand moment" AboutContent.tsx closes its
+          own heritage block with: the project's own hero photo again,
+          darkened, with the OmShakthy mark held centered over it — a
+          deliberate pause between the legacy statement above and the
+          amenities detail below, rather than another kicker+heading
+          panel. Reuses data.heroImage rather than a new asset. */}
+      <section className="relative px-4 md:px-6 pb-10" style={{ backgroundColor: bgs.since1991 === 'dark' ? C.blueDeep : C.paper }}>
+        <div className="max-w-[1180px] mx-auto rounded-[28px] overflow-hidden relative" style={{ boxShadow: '0 24px 60px -20px rgba(11,31,58,0.25)' }}>
+          <ImageReveal
+            src={data.heroImage}
+            alt={data.name}
+            imgClassName="w-full h-[320px] md:h-[420px] object-cover"
+            imgStyle={{ filter: 'brightness(0.55)' }}
+          />
+          <motion.div
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, delay: 0.55, ease: easeLux }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/omshakthy-logo.webp" alt="OmShakthy Homes" className="w-20 h-20 md:w-28 md:h-28 object-contain" style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.4))' }} />
+            <span className="tracking-[0.3em] text-sm md:text-base font-semibold uppercase" style={{ color: '#fff' }}>
+              OmShakthy Homes
+            </span>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ---------------- Amenities ---------------- */}
       {data.amenities.length > 0 && (
-        <section className="px-6 md:px-16 py-28" style={bgStyle(bgs.amenities)}>
-          <div className="max-w-7xl mx-auto">
-            <Reveal className="text-center mb-16">
-              <Kicker color={bgs.amenities === 'dark' ? C.mist : C.blue}>Amenities</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.amenities === 'dark' ? C.paper : C.ink }}>
-                Where Lifestyle Meets Coziness
-              </h2>
+        <section className="relative overflow-hidden px-6 md:px-16 py-28" style={bgStyle(bgs.amenities)}>
+          {/* A real playground, not a stock lifestyle render — grounds
+              "Where Lifestyle Meets Coziness" in an actual place rather
+              than the icon grid alone. Sits along the floor of the
+              section, fading up into the background rather than a hard
+              rectangle, so the icons above stay perfectly legible. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/decor/playground.webp"
+            alt=""
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 w-full h-[220px] md:h-[300px] object-cover hidden sm:block"
+            style={{
+              opacity: bgs.amenities === 'dark' ? 0.22 : 0.28,
+              WebkitMaskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 95%)',
+              maskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 95%)',
+            }}
+          />
+          <TreeAccent side="left" tone={bgs.amenities === 'dark' ? 'navy' : 'natural'} size={260} bottom={-20} opacity={bgs.amenities === 'dark' ? 0.16 : 0.12} />
+          <div className="relative z-10 max-w-7xl mx-auto">
+            {/* Real count of the amenities listed below, same restraint
+                as the Connectivity ghost numeral above. */}
+            <GhostNumeral n={data.amenities.length} color={bgs.amenities === 'dark' ? C.goldSoft : C.panel} />
+            <div className="text-center mb-16">
+              <Reveal><Kicker center color={bgs.amenities === 'dark' ? C.mist : C.blue}>Amenities</Kicker></Reveal>
+              <KineticHeading
+                text="Where Lifestyle Meets Coziness"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: bgs.amenities === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+              />
               {data.amenitiesIntro && (
-                <p className="mt-4 max-w-2xl mx-auto" style={{ color: bgs.amenities === 'dark' ? C.paperMuted : C.slate }}>
-                  {data.amenitiesIntro}
-                </p>
+                <Reveal delay={0.1}>
+                  <p className="mt-4 max-w-2xl mx-auto" style={{ color: bgs.amenities === 'dark' ? C.paperMuted : C.slate }}>
+                    {data.amenitiesIntro}
+                  </p>
+                </Reveal>
               )}
-            </Reveal>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
               {data.amenities.map((label, i) => (
                 <Reveal key={label} delay={i * 0.05} className="text-center">
                   <motion.div
-                    className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center bg-white"
+                    className="pl-amenity-ring w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center bg-white"
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.3, ease: easeLux }}
                   >
@@ -400,14 +813,16 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
       )}
 
       {/* ---------------- Mission / Vision ---------------- */}
-      <section className="px-6 md:px-16 py-28" style={bgStyle(bgs.mission)}>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="relative overflow-hidden px-6 md:px-16 py-28" style={bgStyle(bgs.mission)}>
+        <TreeAccent side="left" tone={bgs.mission === 'dark' ? 'navy' : 'natural'} size={230} bottom={-30} opacity={bgs.mission === 'dark' ? 0.14 : 0.1} />
+        <div className="relative max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           {[
             { t: 'Our Mission', p: 'To turn every rupee of trust into a real, title-clear asset that lasts for generations.' },
             { t: 'Our Vision', p: "To be South India's most trusted steward of land — where legacy is engineered, not imagined." },
           ].map((m, i) => (
             <Reveal key={m.t} delay={i * 0.1}>
               <Kicker color={bgs.mission === 'dark' ? C.mist : C.blue}>{m.t}</Kicker>
+              <GoldQuoteMark />
               <p className="text-2xl md:text-3xl" style={{ ...display, color: bgs.mission === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>{m.p}</p>
             </Reveal>
           ))}
@@ -416,23 +831,65 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
 
       {/* ---------------- FAQ — only if this project's real page had one ---------------- */}
       {hasFaq && (
-        <section className="px-6 md:px-16 py-28" style={bgStyle(bgs.faq)}>
-          <div className="max-w-4xl mx-auto">
-            <Reveal className="text-center mb-16">
-              <Kicker color={bgs.faq === 'dark' ? C.mist : C.blue}>Good to Know</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.faq === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
-                Frequently Asked Questions
-              </h2>
-            </Reveal>
+        <section className="relative overflow-hidden px-6 md:px-16 py-28" style={bgStyle(bgs.faq)}>
+          <TreeAccent side="right" tone={bgs.faq === 'dark' ? 'navy' : 'natural'} size={230} bottom={-30} opacity={bgs.faq === 'dark' ? 0.14 : 0.1} />
+          <div className="relative max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <Reveal><Kicker center color={bgs.faq === 'dark' ? C.mist : C.blue}>Good to Know</Kicker></Reveal>
+              <KineticHeading
+                text="Frequently Asked Questions"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: bgs.faq === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+              />
+            </div>
             <div>
-              {data.faq.map((f, i) => (
-                <Reveal key={f.q} delay={i * 0.04}>
-                  <div className="py-7" style={{ borderTop: `1px solid ${C.hairLight}` }}>
-                    <h3 className="text-lg md:text-xl mb-3" style={{ ...display, color: bgs.faq === 'dark' ? C.paper : C.ink }}>{f.q}</h3>
-                    <p style={{ color: bgs.faq === 'dark' ? C.paperMuted : C.slate }}>{f.a}</p>
-                  </div>
-                </Reveal>
-              ))}
+              {/* Real accordion — only the open question shows its
+                  answer, toggled by the gold +/− mark rather than every
+                  answer sitting permanently expanded. */}
+              {data.faq.map((f, i) => {
+                const isOpen = openFaq === i
+                return (
+                  <Reveal key={f.q} delay={i * 0.04}>
+                    <div style={{ borderTop: `1px solid ${C.hairLight}` }}>
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaq(isOpen ? null : i)}
+                        className="w-full flex items-center justify-between gap-4 py-7 text-left"
+                      >
+                        <h3 className="text-lg md:text-xl" style={{ ...display, color: bgs.faq === 'dark' ? C.paper : C.ink }}>{f.q}</h3>
+                        <span
+                          aria-hidden
+                          className="flex-shrink-0 flex items-center justify-center rounded-full"
+                          style={{
+                            width: 28, height: 28,
+                            border: `1.5px solid ${C.gold}`,
+                            color: C.gold,
+                            fontSize: '1.1rem',
+                            lineHeight: 1,
+                            transform: isOpen ? 'rotate(45deg)' : 'none',
+                            transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
+                        >
+                          +
+                        </span>
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: easeLux }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            <p className="pb-7" style={{ color: bgs.faq === 'dark' ? C.paperMuted : C.slate }}>{f.a}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </Reveal>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -450,16 +907,20 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
               Find Us on the Map
             </h2>
           </Reveal>
-          <Reveal delay={0.08} className="rounded-2xl overflow-hidden mb-6" style={{ height: 360 }}>
-            <iframe
-              title={`${data.name} location`}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <Reveal delay={0.08} className="mb-6">
+            <CornerFrame>
+              <div className="rounded-2xl overflow-hidden" style={{ height: 360 }}>
+                <iframe
+                  title={`${data.name} location`}
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            </CornerFrame>
           </Reveal>
           <Reveal delay={0.16}>
             <a
@@ -475,9 +936,13 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         </div>
       </section>
 
-      {/* ---------------- Book a Free Site Visit ---------------- */}
-      <section className="px-6 md:px-16 py-24" style={bgStyle(bgs.visit)}>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
+      {/* ---------------- Book a Free Site Visit ----------------
+          Bookends the hero's flanking trees at the other end of the
+          page, at low opacity so it stays a closing flourish rather
+          than competing with the form. */}
+      <section id="visit" className="relative overflow-hidden px-6 md:px-16 py-24" style={bgStyle(bgs.visit)}>
+        <TreeAccent side="right" tone={bgs.visit === 'dark' ? 'navy' : 'natural'} size={240} bottom={-20} opacity={bgs.visit === 'dark' ? 0.14 : 0.1} />
+        <div className="relative max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
           <Reveal>
             <Kicker color={bgs.visit === 'dark' ? C.mist : C.blue}>Take the First Step</Kicker>
             <h2 className="text-2xl md:text-4xl mb-6" style={{ ...display, color: bgs.visit === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>

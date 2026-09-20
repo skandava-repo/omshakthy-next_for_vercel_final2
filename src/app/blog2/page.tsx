@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import BlogJourneyContent from '@/components/ui/BlogJourneyContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/blog' },
   title: 'Blog',
   description:
     'A drive down the corridors OmShakthy builds in — real guides, real projects, real people, told as a journey rather than a feed.',

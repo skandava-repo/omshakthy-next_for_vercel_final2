@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import BlogListingContent from '@/components/ui/BlogListingContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/blog' },
   title: 'Blog',
   description:
     'Real estate insights, buying guides, legal documents and lifestyle tips from OmShakthy Homes — top plot developers in Chennai.',

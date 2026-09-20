@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import AboutContent from '@/components/ui/AboutContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/about' },
   title: 'About Us',
   description:
     'OmShakthy Homes — 35 years of trust in Tamil Nadu real estate. Founded in 1991, over 7,500 happy customers, ₹2,000+ Cr in transactions, and a 100% litigation-free track record.',

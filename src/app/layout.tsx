@@ -49,7 +49,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,200..700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@200;300;400;500;600;700&family=Alex+Brush&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,200..700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@200;300;400;500;600;700&family=Alex+Brush&display=swap"
           rel="stylesheet"
         />
       </head>

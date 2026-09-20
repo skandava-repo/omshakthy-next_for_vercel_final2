@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import WhatWeDoMotionContent from '@/components/ui/WhatWeDoMotionContent'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/what-we-do' },
   title: 'What We Do',
   description:
     'Land aggregation, residential development, hospitality management, commercial projects and supply chain — five disciplines, one vision.',

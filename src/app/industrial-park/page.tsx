@@ -3,6 +3,7 @@ import ProjectLandingContent from '@/components/ui/ProjectLandingContent'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { getProjectData } from '@/lib/projects'
+import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
 // Real content extracted from industrial-park-lp.html — see
 // src/data/projects/industrial-park.json. Its own page names no
@@ -20,6 +21,7 @@ import { getProjectData } from '@/lib/projects'
 // anywhere (unlike Elite Orchard's page, which explicitly says
 // "Price: Sold Out") — an earlier pass had mismarked it as sold.
 export const metadata: Metadata = {
+  alternates: { canonical: '/industrial-park' },
   title: 'OmShakthy Industrial Park — Industrial Plots in Chennai | OmShakthy Homes',
   description:
     'OmShakthy Industrial Park is Chennai’s private industrial plot development — 53 plots across 8.10 acres, close to the Outer Ring Road and Chennai Airport.',
@@ -31,8 +33,24 @@ export const metadata: Metadata = {
 
 export default function IndustrialParkPage() {
   const data = getProjectData('industrial-park')!
+  // Breadcrumb on every project page; FAQ schema only for the ones with
+  // real FAQ content in their data file (getFAQSchema was written
+  // earlier but never actually wired into any page until now).
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Projects', path: '/projects' },
+    { name: data.name, path: '/industrial-park' },
+  ])
+  const faqSchema =
+    data.faq.length > 0
+      ? getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
+      : null
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      )}
       <Header />
       <ProjectLandingContent data={data} />
       <Footer />
