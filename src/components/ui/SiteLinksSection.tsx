@@ -45,9 +45,9 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
           </h3>
           <ul className="flex flex-col gap-2.5 text-sm">
             {[
-              { t: 'Kanopus Magha', h: '/kanopus-magha' },
-              { t: 'Omshakthy Regalia', h: '/regalia' },
-              { t: 'Elite Grand', h: '/elite-grand' },
+              { t: 'Kanopus Magha', h: '/canopus-magha-lp' },
+              { t: 'Omshakthy Regalia', h: '/regalia-lp' },
+              { t: 'Elite Grand', h: '/elite-grand-lp' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
             ))}
@@ -57,10 +57,10 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
           </h3>
           <ul className="flex flex-col gap-2.5 text-sm">
             {[
-              { t: 'Omshakthy Mathura', h: '/mathura' },
-              { t: 'Kanopus Mithila', h: '/kanopus-mithila' },
-              { t: 'Elite Orchard', h: '/elite-orchard' },
-              { t: 'Industrial Park', h: '/industrial-park' },
+              { t: 'Omshakthy Mathura', h: '/mathura-lp' },
+              { t: 'Kanopus Mithila', h: '/canopus-mithila-lp' },
+              { t: 'Elite Orchard', h: '/elite-orchard-lp' },
+              { t: 'Industrial Park', h: '/industrial-park-lp' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
             ))}

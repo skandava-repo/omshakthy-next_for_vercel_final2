@@ -14,7 +14,7 @@ import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 // — this page's own live spec table shows a real price (22.5 Lakhs),
 // not "Sold Out"; a prior pass here had mismarked it.
 export const metadata: Metadata = {
-  alternates: { canonical: '/mathura' },
+  alternates: { canonical: '/mathura-lp' },
   title: 'OmShakthy Mathura — Residential Plots in Chromepet | OmShakthy Homes',
   description:
     'OmShakthy Mathura is a residential plot development in Chromepet, Chennai — 110 CMDA & RERA approved plots across 3.55 acres, starting from ₹22.5 Lakhs.',
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
 }
 
 export default function MathuraPage() {
-  const data = getProjectData('mathura')!
+  const data = getProjectData('mathura-lp')!
   // Breadcrumb on every project page; FAQ schema only for the ones with
   // real FAQ content in their data file (getFAQSchema was written
   // earlier but never actually wired into any page until now).
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: data.name, path: '/mathura' },
+    { name: data.name, path: '/mathura-lp' },
   ])
   const faqSchema =
     data.faq.length > 0

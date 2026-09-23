@@ -1,0 +1,53 @@
+{
+  "slug": "industrial-park-lp",
+  "name": "Industrial Park",
+  "type": "Industrial Plots",
+  "heroImage": "/projects-lp/industrial-park-hero.webp",
+  "specs": [
+    {
+      "label": "Number of Units",
+      "value": "53 Plots"
+    },
+    {
+      "label": "Price",
+      "value": "Price on Request"
+    },
+    {
+      "label": "Size",
+      "value": "2327 Sq.ft to 5980 Sq.ft"
+    },
+    {
+      "label": "Type",
+      "value": "Industrial Plots"
+    },
+    {
+      "label": "Total Area",
+      "value": "8.10 Acres"
+    },
+    {
+      "label": "Posession date",
+      "value": "Ready for Construction"
+    }
+  ],
+  "amenitiesIntro": "Unveiling Chennai's first and only private industry park, empowering businesses to flourish! Our dynamic plots foster the ideal base for diverse industries. Find your perfect fit, from thriving SMEs to IT giants, high-capacity warehouses, manufacturers, distributors, cloud kitchens, or BPOs. We offer the launchpad for your success.",
+  "amenities": [
+    "Potential For High Rentals",
+    "Price Appreciation",
+    "Seamless Connectivity",
+    "Hassle-free Financing"
+  ],
+  "connectivityIntro": "Choosing a location plays a very crucial role, at OmShakthy we understand the importance of accessibility and convenience. Our prime location offers unparalleled connectivity to key destinations, putting you at the centre of it all",
+  "connectivity": [
+    "Outer Ring Road (ORR) : 1 Min",
+    "Airport : 10 Mins",
+    "Tambaram Railway Station : 15 Mins",
+    "Guindy : 15 Mins",
+    "Chennai & Ennore Port : 40 Mins",
+    "upcoming major District Road (MD1163) : Near"
+  ],
+  "tagline": "Get a glimpse of your future success - view our sleek plots nestled amidst vibrant greenery. Immaculately paved roads and flourishing landscapes set the stage for a thriving business environment with a touch of tranquillity.",
+  "narrativeIntro": [],
+  "narrativeSections": [],
+  "faq": [],
+  "mapIframe": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15552.599584983725!2d80.0980473!3d12.9622585!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f000220d9d9%3A0x88421f958278b081!2sOmshakthy%20Industrial%20park!5e0!3m2!1sen!2sin!4v1720521220708!5m2!1sen!2sin"
+}

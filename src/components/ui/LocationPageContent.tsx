@@ -56,9 +56,9 @@ const Kicker = ({ children, color = C.blue, center = false }: { children: React.
 // live location pages themselves feature, linked to their actual
 // rebuilt pages rather than duplicating spec data here.
 const FEATURED: Record<string, { name: string; image: string; price: string; type: string; link: string }> = {
-  'elite-grand': { name: 'Elite Grand', image: '/projects/elite-grand.webp', price: '₹10L onwards', type: 'DTCP Approved · Near Guduvanchery', link: '/elite-grand' },
-  'kanopus-magha': { name: 'Kanopus Magha', image: '/projects/canopus-magha.webp', price: '₹5,500/Sq.Ft.', type: 'CMDA Approved · Near Avadi', link: '/kanopus-magha' },
-  regalia: { name: 'OmShakthy Regalia', image: '/projects/regalia.webp', price: 'From ₹16.8L', type: 'CMDA & RERA Approved · Near Tambaram', link: '/regalia' },
+  'elite-grand': { name: 'Elite Grand', image: '/projects/elite-grand.webp', price: '₹10L onwards', type: 'DTCP Approved · Near Guduvanchery', link: '/elite-grand-lp' },
+  'kanopus-magha': { name: 'Kanopus Magha', image: '/projects/canopus-magha.webp', price: '₹5,500/Sq.Ft.', type: 'CMDA Approved · Near Avadi', link: '/canopus-magha-lp' },
+  regalia: { name: 'OmShakthy Regalia', image: '/projects/regalia.webp', price: 'From ₹16.8L', type: 'CMDA & RERA Approved · Near Tambaram', link: '/regalia-lp' },
 }
 
 function isHub(data: LocationPageData | LocationHubData): data is LocationHubData {

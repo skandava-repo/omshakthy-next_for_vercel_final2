@@ -5,32 +5,31 @@ import Footer from '@/components/layout/Footer'
 import { getProjectData } from '@/lib/projects'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
-// Real content extracted from canopus-mithila-lp.html — see
-// src/data/projects/kanopus-mithila.json. Its own real "Locations
-// Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
-// Vehicles Factory) places this project in the Avadi corridor —
-// ProjectsContent.tsx previously said "Vandalur, Chennai", fixed in
-// the same pass this page was built.
+// Real content extracted from elite-grand-lp.html — see
+// src/data/projects/elite-grand.json. Its own copy explicitly says
+// "Strategically Located Near Guduvanchery" — ProjectsContent.tsx
+// previously said "Thirumullaivoyal, Chennai", fixed in the same pass
+// this page was built.
 export const metadata: Metadata = {
-  alternates: { canonical: '/kanopus-mithila' },
-  title: 'Kanopus Mithila — Residential Plots in Avadi | OmShakthy Homes',
+  alternates: { canonical: '/elite-grand-lp' },
+  title: 'Elite Grand — Residential Plots Near Guduvanchery | OmShakthy Homes',
   description:
-    'Kanopus Mithila offers 68 residential plots in the Avadi corridor of Chennai — DTCP approved, close to Avadi Railway Station and Ayyapakkam.',
+    'Elite Grand offers 177 residential plots near Guduvanchery, Chennai — DTCP approved, close to SRM University and major educational institutions.',
   openGraph: {
-    title: 'Kanopus Mithila — Residential Plots in Avadi',
-    description: 'DTCP approved residential plots in the Avadi corridor, Chennai.',
+    title: 'Elite Grand — Residential Plots Near Guduvanchery',
+    description: 'DTCP approved residential plots near Guduvanchery, Chennai.',
   },
 }
 
-export default function KanopusMithilaPage() {
-  const data = getProjectData('kanopus-mithila')!
+export default function EliteGrandPage() {
+  const data = getProjectData('elite-grand-lp')!
   // Breadcrumb on every project page; FAQ schema only for the ones with
   // real FAQ content in their data file (getFAQSchema was written
   // earlier but never actually wired into any page until now).
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: data.name, path: '/kanopus-mithila' },
+    { name: data.name, path: '/elite-grand-lp' },
   ])
   const faqSchema =
     data.faq.length > 0

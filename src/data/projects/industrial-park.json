@@ -1,53 +1,78 @@
 {
   "slug": "industrial-park",
-  "name": "Industrial Park",
+  "name": "OmShakthy Industrial Park, Thirumudivakkam",
   "type": "Industrial Plots",
-  "heroImage": "/projects-lp/industrial-park-hero.webp",
+  "heroImage": "/projects-lp/industrial-park-thirumudivakkam-hero.webp",
   "specs": [
+    { "label": "Internal Roads", "value": "40 Ft. Roads" },
+    { "label": "Conversion", "value": "100% Industrial-Converted" },
+    { "label": "Plot Readiness", "value": "Compounded & Ready to Build" },
+    { "label": "Plot Sizes", "value": "2 Grounds to 1 Acre" }
+  ],
+  "amenitiesIntro": "Well-Planned Infrastructure for Hassle-Free Operations.",
+  "amenities": [
+    "DTCP-Approved Industrial Plots",
+    "Wide Internal Roads (60–80 Ft.)",
+    "24/7 Security and CCTV Surveillance",
+    "Uninterrupted Power Supply",
+    "Sustainable Water Supply and Drainage",
+    "Green and Eco-Friendly Zones"
+  ],
+  "connectivityIntro": "Well-connected to Chennai's key business zones — the ideal location for your industrial venture.",
+  "connectivity": [
+    "Outer Ring Road (ORR) : 5 Mins",
+    "GST Road & Chennai Bypass : 10 Mins",
+    "Chennai International Airport : 30 Mins",
+    "Chennai & Ennore Port : 45 Mins",
+    "Tambaram Railway Station",
+    "Close to Major Industrial & SEZ Zones"
+  ],
+  "tagline": "Thrive at Chennai's first and only private industry park in Chromepet.",
+  "narrativeIntro": [
+    "Looking to invest in industrial land in Chennai? Omshakthy Industrial Park in Thirumudivakkam is your gateway to exponential growth. Strategically located and fully DTCP & RERA-approved, our plots are ideal for businesses looking to scale operations with ease and legal clarity."
+  ],
+  "narrativeSections": [
     {
-      "label": "Number of Units",
-      "value": "53 Plots"
+      "heading": "Your Gateway to Industrial Excellence in Chennai",
+      "paragraphs": [
+        "Thirumudivakkam, a rapidly developing industrial hub in Chennai, is the perfect destination for businesses looking to expand their operations. With strategic connectivity, government-approved plots, and robust infrastructure, Omshakthy Industrial Park offers best-in-class industrial land to support warehousing, manufacturing, and logistics businesses."
+      ]
     },
     {
-      "label": "Price",
-      "value": "Price on Request"
+      "heading": "Why Invest in Industrial Land at Thirumudivakkam?",
+      "paragraphs": [
+        "Thirumudivakkam has emerged as a highly sought-after industrial location in Chennai due to its proximity to major highways, ports, and the Chennai International Airport. The availability of well-developed Thirumudivakkam industrial estate land has attracted businesses across sectors, making it a preferred hub for long-term investment and operational growth.",
+        "Omshakthy Industrial Park is at the heart of this transformation, offering customizable plot sizes ranging from two grounds to one acre, making it suitable for businesses of all scales."
+      ]
     },
     {
-      "label": "Size",
-      "value": "2327 Sq.ft to 5980 Sq.ft"
-    },
-    {
-      "label": "Type",
-      "value": "Industrial Plots"
-    },
-    {
-      "label": "Total Area",
-      "value": "8.10 Acres"
-    },
-    {
-      "label": "Posession date",
-      "value": "Ready for Construction"
+      "heading": "Industries That Can Benefit From This Location",
+      "paragraphs": [
+        "Warehousing & Logistics Centers · Automobile & Ancillary Industries · E-Commerce & Retail Distribution · Textile & Garment Factories · Pharmaceutical & Chemical Manufacturing · Engineering & Heavy Machinery Units."
+      ]
     }
   ],
-  "amenitiesIntro": "Unveiling Chennai's first and only private industry park, empowering businesses to flourish! Our dynamic plots foster the ideal base for diverse industries. Find your perfect fit, from thriving SMEs to IT giants, high-capacity warehouses, manufacturers, distributors, cloud kitchens, or BPOs. We offer the launchpad for your success.",
-  "amenities": [
-    "Potential For High Rentals",
-    "Price Appreciation",
-    "Seamless Connectivity",
-    "Hassle-free Financing"
+  "faq": [
+    {
+      "q": "How can I buy a plot in Chennai?",
+      "a": "Buying a plot in Chennai is simplified with numerous options available. Consider approaching reputable developers like OmShakthy Homes, known for offering a selection of plots in prime locations. We prioritize acquiring lands with clear titles to ensure a hassle-free legal process for our buyers."
+    },
+    {
+      "q": "What are the top localities to buy a residential or industrial plot in Chennai?",
+      "a": "For industrial plots, localities such as Ambattur, Thirumudivakkam, and Mamandur are prime choices due to their strategic locations and amenities. Securing plots with DTCP or CMDA approval ensures compliance with local regulations, offering peace of mind and a smooth buying process."
+    },
+    {
+      "q": "What is the price range for plots/land for sale in Chennai?",
+      "a": "The price range for plots and land for sale in Chennai varies widely, influenced by location, size, and amenities. DTCP approved plots, known for their clear titles and regulatory compliance, can start from affordable prices and go up to premium rates."
+    },
+    {
+      "q": "What factors should be considered while buying a plot in Chennai?",
+      "a": "Consider location, connectivity, legal clearances, and future development prospects. Choosing a developer with expertise is as important as selecting the location — also check plot amenities such as security systems, maintenance, and water availability."
+    },
+    {
+      "q": "Are all OmShakthy Homes projects CMDA or DTCP approved?",
+      "a": "Yes, OmShakthy Homes ensures that both residential and industrial projects adhere to local regulations, including CMDA or DTCP approvals, so buyers are investing in properties that have been thoroughly vetted and approved legally."
+    }
   ],
-  "connectivityIntro": "Choosing a location plays a very crucial role, at OmShakthy we understand the importance of accessibility and convenience. Our prime location offers unparalleled connectivity to key destinations, putting you at the centre of it all",
-  "connectivity": [
-    "Outer Ring Road (ORR) : 1 Min",
-    "Airport : 10 Mins",
-    "Tambaram Railway Station : 15 Mins",
-    "Guindy : 15 Mins",
-    "Chennai & Ennore Port : 40 Mins",
-    "upcoming major District Road (MD1163) : Near"
-  ],
-  "tagline": "Get a glimpse of your future success - view our sleek plots nestled amidst vibrant greenery. Immaculately paved roads and flourishing landscapes set the stage for a thriving business environment with a touch of tranquillity.",
-  "narrativeIntro": [],
-  "narrativeSections": [],
-  "faq": [],
-  "mapIframe": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15552.599584983725!2d80.0980473!3d12.9622585!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f000220d9d9%3A0x88421f958278b081!2sOmshakthy%20Industrial%20park!5e0!3m2!1sen!2sin!4v1720521220708!5m2!1sen!2sin"
+  "mapIframe": null
 }

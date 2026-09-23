@@ -5,32 +5,32 @@ import Footer from '@/components/layout/Footer'
 import { getProjectData } from '@/lib/projects'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
-// Real content extracted from elite-orchard-lp.html — see
-// src/data/projects/elite-orchard.json. Its own real "Locations
-// Nearby" list (Guduvanchery Railway Station, Kilambakkam Bus
-// Terminal, Mahindra World City, Potheri Railway Station, ORR) places
-// this project in Guduvanchery — ProjectsContent.tsx previously said
-// "Paruthipattu, Avadi", fixed in the same pass this page was built.
+// Real content extracted from canopus-mithila-lp.html — see
+// src/data/projects/kanopus-mithila.json. Its own real "Locations
+// Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
+// Vehicles Factory) places this project in the Avadi corridor —
+// ProjectsContent.tsx previously said "Vandalur, Chennai", fixed in
+// the same pass this page was built.
 export const metadata: Metadata = {
-  alternates: { canonical: '/elite-orchard' },
-  title: 'Elite Orchard — Residential Plots in Guduvanchery | OmShakthy Homes',
+  alternates: { canonical: '/canopus-mithila-lp' },
+  title: 'Kanopus Mithila — Residential Plots in Avadi | OmShakthy Homes',
   description:
-    'Elite Orchard is a sold-out 25-acre gated community of 510 residential plots in Guduvanchery, Chennai — close to Guduvanchery Railway Station and Mahindra World City.',
+    'Kanopus Mithila offers 68 residential plots in the Avadi corridor of Chennai — DTCP approved, close to Avadi Railway Station and Ayyapakkam.',
   openGraph: {
-    title: 'Elite Orchard — Residential Plots in Guduvanchery',
-    description: 'A 25-acre gated community of residential plots in Guduvanchery, Chennai.',
+    title: 'Kanopus Mithila — Residential Plots in Avadi',
+    description: 'DTCP approved residential plots in the Avadi corridor, Chennai.',
   },
 }
 
-export default function EliteOrchardPage() {
-  const data = getProjectData('elite-orchard')!
+export default function KanopusMithilaPage() {
+  const data = getProjectData('canopus-mithila-lp')!
   // Breadcrumb on every project page; FAQ schema only for the ones with
   // real FAQ content in their data file (getFAQSchema was written
   // earlier but never actually wired into any page until now).
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: data.name, path: '/elite-orchard' },
+    { name: data.name, path: '/canopus-mithila-lp' },
   ])
   const faqSchema =
     data.faq.length > 0

@@ -13,7 +13,7 @@ import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 // backs up, so that's what's used here (and fixed at the source in
 // ProjectsContent.tsx/PropertyGrid.tsx in the same pass).
 export const metadata: Metadata = {
-  alternates: { canonical: '/kanopus-magha' },
+  alternates: { canonical: '/canopus-magha-lp' },
   title: 'Kanopus Magha — Residential Plots in Avadi | OmShakthy Homes',
   description:
     'Kanopus Magha is a 172-acre mega plotted township in Avadi, Chennai — 440 residential plots, litigation-free clear titles, close to Avadi Railway Station and Metro.',
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 }
 
 export default function KanopusMaghaPage() {
-  const data = getProjectData('kanopus-magha')!
+  const data = getProjectData('canopus-magha-lp')!
   // Breadcrumb on every project page; FAQ schema only for the ones with
   // real FAQ content in their data file (getFAQSchema was written
   // earlier but never actually wired into any page until now).
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: data.name, path: '/kanopus-magha' },
+    { name: data.name, path: '/canopus-magha-lp' },
   ])
   const faqSchema =
     data.faq.length > 0

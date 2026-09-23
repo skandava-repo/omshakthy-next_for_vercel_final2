@@ -142,17 +142,17 @@ const projects: Project[] = [
   // like leftover boilerplate copy-pasted from a different project (the
   // same class of error regalia-lp.html itself had once, for Regalia).
   // /kanopus-magha is now a real page (src/data/projects/kanopus-magha.json).
-  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹25L onwards', priceLakh: 25, link: '/kanopus-magha' },
+  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹25L onwards', priceLakh: 25, link: '/canopus-magha-lp' },
   // Location corrected: 'Avadi' was wrong — regalia-lp.html on the
   // original site repeatedly and explicitly places this project in
   // Tambaram ("Omshakthy Regalia Tambaram location," 70 acres/961
   // plots matching that paragraph's own numbers exactly). Avadi looks
   // like leftover boilerplate copy-pasted from a different project.
-  { image: '/projects/regalia.webp', name: 'OmShakthy Regalia', location: 'Tambaram, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹32L onwards', priceLakh: 32, link: '/regalia', imagePosition: '50% 31%' },
+  { image: '/projects/regalia.webp', name: 'OmShakthy Regalia', location: 'Tambaram, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹32L onwards', priceLakh: 32, link: '/regalia-lp', imagePosition: '50% 31%' },
   // Location corrected: elite-grand-lp.html's own copy explicitly says
   // "Strategically Located Near Guduvanchery" — 'Thirumullaivoyal' was
   // wrong. /elite-grand is now a real page.
-  { image: '/projects/elite-grand.webp', name: 'Elite Grand', location: 'Guduvanchery, Chennai', status: 'Ongoing', type: 'Premium Plots', price: '₹28L onwards', priceLakh: 28, link: '/elite-grand', imagePosition: '50% 35%' },
+  { image: '/projects/elite-grand.webp', name: 'Elite Grand', location: 'Guduvanchery, Chennai', status: 'Ongoing', type: 'Premium Plots', price: '₹28L onwards', priceLakh: 28, link: '/elite-grand-lp', imagePosition: '50% 35%' },
   // Location corrected: mathura-lp.html's own real FAQ says plainly
   // "OmShakthy Mathura is a residential plot development project
   // located in Chromepet" — 'Tambaram' was wrong. /mathura is now a
@@ -160,14 +160,14 @@ const projects: Project[] = [
   // price "Sold Out", but mathura-lp's own live spec table shows a
   // real price ("22.5 Lakhs") — it's a "Completed Project" on the
   // site's own footer nav (construction/layout finished), not sold out.
-  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹22.5L onwards', priceLakh: 22.5, link: '/mathura' },
+  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹22.5L onwards', priceLakh: 22.5, link: '/mathura-lp' },
   // Location corrected: canopus-mithila-lp.html's own "Locations
   // Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
   // Vehicles Factory) places this in the Avadi corridor — 'Vandalur'
   // was wrong. /kanopus-mithila is now a real page. Status corrected
   // too: canopus-mithila-lp's own live spec table shows a real price
   // ("₹3,500/- per Sq.Ft."), not "Sold Out" — same fix as Mathura.
-  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹3,500 / Sq.Ft', priceLakh: null, link: '/kanopus-mithila' },
+  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹3,500 / Sq.Ft', priceLakh: null, link: '/canopus-mithila-lp' },
   // Location left as-is, flagged rather than guessed: industrial-park-lp.html
   // names no specific locality at all (title/meta both just say
   // "Chennai"), and its own real drive times (Airport 10 min, Tambaram
@@ -182,13 +182,13 @@ const projects: Project[] = [
   // still being sold with an unset price, not a sold-out one — the
   // site's own footer nav lists it under Ongoing too. /industrial-park
   // is now a real page.
-  { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Ongoing', type: 'Industrial', price: 'Price on Request', priceLakh: null, link: '/industrial-park' },
+  { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Ongoing', type: 'Industrial', price: 'Price on Request', priceLakh: null, link: '/industrial-park-lp' },
   // Location corrected: elite-orchard-lp.html's own "Locations Nearby"
   // list (Guduvanchery Railway Station, Kilambakkam Bus Terminal,
   // Mahindra World City, Potheri Railway Station, ORR) places this in
   // Guduvanchery — 'Paruthipattu, Avadi' was wrong. /elite-orchard is
   // now a real page.
-  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/elite-orchard' },
+  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/elite-orchard-lp' },
   // The 7 entries below are real, older completed projects that were
   // missing entirely — confirmed against the live site's own
   // /completed-projects carousel (checked directly, not the mirror,

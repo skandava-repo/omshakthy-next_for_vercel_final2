@@ -25,7 +25,7 @@ const properties: Property[] = [
     status: 'Ongoing',
     type: 'Residential Plots',
     price: '₹25L onwards',
-    link: '/kanopus-magha',
+    link: '/canopus-magha-lp',
   },
   {
     image: '/regalia.webp',
@@ -34,7 +34,7 @@ const properties: Property[] = [
     status: 'Ongoing',
     type: 'Gated Community',
     price: '₹32L onwards',
-    link: '/regalia',
+    link: '/regalia-lp',
   },
   {
     image: '/elite-grand.webp',
@@ -43,7 +43,7 @@ const properties: Property[] = [
     status: 'Ongoing',
     type: 'Premium Plots',
     price: '₹28L onwards',
-    link: '/elite-grand',
+    link: '/elite-grand-lp',
   },
   {
     image: '/mathura.webp',
@@ -55,7 +55,7 @@ const properties: Property[] = [
     status: 'Ongoing',
     type: 'Residential Plots',
     price: '₹22.5L onwards',
-    link: '/mathura',
+    link: '/mathura-lp',
   },
   {
     image: '/property-6.webp',
@@ -70,7 +70,7 @@ const properties: Property[] = [
     status: 'Ongoing',
     type: 'Industrial',
     price: 'Price on Request',
-    link: '/industrial-park',
+    link: '/industrial-park-lp',
   },
   {
     // Same real "Santha Towers" gate photo HeroSlider.tsx/GalleryContent.tsx

@@ -36,7 +36,7 @@ const REGALIA_FAQ = [
 ]
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/regalia' },
+  alternates: { canonical: '/regalia-lp' },
   // 'Avadi' was wrong (see RegaliaContent.tsx's own comment) — the
   // original site's regalia-lp.html repeatedly places this project in
   // Tambaram. The fabricated RERA ID (TN/1/Layout/2490/2025, not found
@@ -55,7 +55,7 @@ export default function RegaliaPage() {
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: 'OmShakthy Regalia', path: '/regalia' },
+    { name: 'OmShakthy Regalia', path: '/regalia-lp' },
   ])
   const faqSchema = getFAQSchema(REGALIA_FAQ)
   return (
