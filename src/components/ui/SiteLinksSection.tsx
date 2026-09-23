@@ -119,23 +119,27 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
           <h3 className="text-sm font-bold uppercase mb-4" style={{ ...display, color: C.ink, letterSpacing: '0.06em' }}>
             Property Locations
           </h3>
-          {/* Re-derived from the real per-project location fixes made
-              alongside the 6 new project pages (ProjectsContent.tsx has
-              the sourcing detail for each). Avadi and Guduvanchery each
-              have two real matching projects, so they stay pointed at
-              /projects rather than picking one arbitrarily; Tambaram
-              and Chromepet each have exactly one, so those go straight
-              to that project's own page. Thirumullaivoyal/Paruthipattu/
-              Vandalur dropped — no project is actually in any of them
-              any more now that the location fixes landed. */}
+          {/* These now point at the real 12 pages rebuilt at
+              /buy-cmda-dtcp-plots-for-sale-chennai/* — indexed, ranking
+              URLs per Balaji's Aug 2026 SEO report that previously had
+              no on-site link at all (every entry here used to point at
+              /projects or a generic project page instead of its own
+              real page). Same real anchor text the old live site's own
+              footer used (confirmed against the local site mirror). */}
           <ul className="flex flex-col gap-2.5 text-sm">
             {[
-              { t: 'Plots for Sale in Chennai', h: '/projects' },
-              { t: 'Residential Plots for Sale in Chennai', h: '/projects' },
-              { t: 'Plots for Sale in Avadi', h: '/projects' },
-              { t: 'Plots for Sale in Guduvanchery', h: '/projects' },
-              { t: 'Plots for Sale in Tambaram', h: '/regalia' },
-              { t: 'Plots for Sale in Chromepet', h: '/mathura' },
+              { t: 'Plots for Sale in Chennai', h: '/buy-cmda-dtcp-plots-for-sale-chennai' },
+              { t: 'Residential Plots for Sale in Chennai', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-land-plots' },
+              { t: 'Plots for Sale in Avadi', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-avadi' },
+              { t: 'Plots for Sale in Guduvanchery', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery' },
+              { t: 'Plots for Sale in Thirumullaivoyal', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-thirumullaivoyal' },
+              { t: 'Plots for Sale in Paruthipattu', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-paruthipattu' },
+              { t: 'Plots for Sale in Vandalur', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-vandalur' },
+              { t: 'Plots for Sale in Tambaram', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram' },
+              { t: 'Plots for Sale in Maraimalai Nagar', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-maraimalai-nagar' },
+              { t: 'Plots for Sale in Ambattur', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-ambattur' },
+              { t: 'Plots for Sale in GST Road', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-gst-road' },
+              { t: 'Plots for Sale in Poonamallee', h: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-poonamallee' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
             ))}

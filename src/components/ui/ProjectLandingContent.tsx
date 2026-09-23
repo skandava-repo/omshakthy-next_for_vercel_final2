@@ -45,48 +45,6 @@ const C = {
 }
 const darkGradient = 'linear-gradient(180deg, #004385 0%, #0D6BB2 100%)'
 const WHATSAPP_NUMBER = '919150088097'
-// Real ingress into the /buy-cmda-dtcp-plots-for-sale-chennai/* location
-// pages (rebuilt from the live site's own indexed URLs — see Balaji's
-// Aug 2026 SEO report) — otherwise those 12 pages have no on-site link
-// pointing to them at all. Mapped per project by real proximity, from
-// each project's own connectivity data, not guessed: Kanopus Magha and
-// Kanopus Mithila both sit in the Avadi corridor (Avadi Railway Station
-// is in both their real connectivity lists); Elite Grand and Elite
-// Orchard are both Guduvanchery (Guduvanchery Railway Station in Elite
-// Orchard's own data); Industrial Park's real connectivity lists
-// Tambaram Railway Station and the airport; Mathura's nearest indexed
-// location pages are the Tambaram/GST Road corridor.
-const LOCATION_LINKS: Record<string, { name: string; href: string }[]> = {
-  'kanopus-magha': [
-    { name: 'Avadi', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-avadi' },
-    { name: 'Thirumullaivoyal', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-thirumullaivoyal' },
-    { name: 'Poonamallee', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-poonamallee' },
-  ],
-  'kanopus-mithila': [
-    { name: 'Avadi', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-avadi' },
-    { name: 'Ambattur', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-ambattur' },
-    { name: 'Thirumullaivoyal', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-thirumullaivoyal' },
-  ],
-  'elite-grand': [
-    { name: 'Guduvanchery', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery' },
-    { name: 'Vandalur', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-vandalur' },
-    { name: 'Maraimalai Nagar', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-maraimalai-nagar' },
-  ],
-  'elite-orchard': [
-    { name: 'Guduvanchery', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery' },
-    { name: 'Vandalur', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-vandalur' },
-    { name: 'Maraimalai Nagar', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-maraimalai-nagar' },
-  ],
-  mathura: [
-    { name: 'Tambaram', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram' },
-    { name: 'GST Road', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-gst-road' },
-    { name: 'Guduvanchery', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery' },
-  ],
-  'industrial-park': [
-    { name: 'Tambaram', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram' },
-    { name: 'GST Road', href: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-gst-road' },
-  ],
-}
 // Real tree cutout, used as a soft corner/ divider accent rather than a
 // literal photo of anything project-specific — same restraint as the
 // site's icon set: decoration, not a claim about what's actually on
@@ -494,7 +452,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
   const heroVideoY = useTransform(heroProgress, [0, 1], ['0%', '14%'])
 
   const sectionIds = [
-    'specs', 'connectivity', 'locations',
+    'specs', 'connectivity',
     ...(hasNarrative ? ['narrative'] : []),
     'keyfigures', 'since1991', 'amenities', 'mission',
     ...(hasFaq ? ['faq'] : []),
@@ -679,53 +637,6 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
                 )
               })}
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* ---------------- Explore by location ----------------
-          Real ingress into the /buy-cmda-dtcp-plots-for-sale-chennai/*
-          location pages — those 12 pages are indexed and ranking (per
-          Balaji's SEO report) but have no on-site link pointing to
-          them anywhere. LOCATION_LINKS maps each project to the
-          location pages that are actually near it, from real
-          connectivity data. */}
-      {LOCATION_LINKS[data.slug] && (
-        <section className="relative overflow-hidden px-6 md:px-16 py-20" style={bgStyle(bgs.locations)}>
-          <div className="relative max-w-5xl mx-auto">
-            <Reveal className="mb-8">
-              <Kicker color={bgs.locations === 'dark' ? C.mist : C.blue}>Explore More</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: bgs.locations === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
-                Plots Near {data.name}
-              </h2>
-              <p className="mt-4 max-w-2xl" style={{ color: bgs.locations === 'dark' ? 'rgba(248,248,245,0.85)' : C.slate }}>
-                CMDA & DTCP approved residential plots in the same corridor as {data.name}.
-              </p>
-            </Reveal>
-            <Reveal delay={0.08} className="flex flex-wrap gap-3">
-              {LOCATION_LINKS[data.slug].map((loc) => (
-                <a
-                  key={loc.href}
-                  href={loc.href}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
-                  style={{
-                    ...body,
-                    border: `1px solid ${bgs.locations === 'dark' ? 'rgba(255,255,255,0.35)' : C.border}`,
-                    color: bgs.locations === 'dark' ? '#fff' : C.ink,
-                  }}
-                >
-                  <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0 }} />
-                  Plots for Sale in {loc.name}
-                </a>
-              ))}
-              <a
-                href="/buy-cmda-dtcp-plots-for-sale-chennai"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
-                style={{ ...body, backgroundColor: C.gold, color: C.ink }}
-              >
-                See All Locations →
-              </a>
-            </Reveal>
           </div>
         </section>
       )}
