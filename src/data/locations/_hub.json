@@ -1,0 +1,40 @@
+{
+  "slug": "",
+  "locationName": "Chennai",
+  "heading": "CMDA & DTCP Approved Plots for Sale in Chennai",
+  "metaTitle": "Residential & Industrial Plots for Sale in Chennai | OmShakthy Homes",
+  "metaDescription": "CMDA and DTCP approved residential and industrial plots across Chennai — Avadi, Guduvanchery, Tambaram, Vandalur, GST Road and more. Clear titles, flexible EMI.",
+  "intro": [
+    "OmShakthy Homes brings you CMDA and DTCP approved plots in Chennai for those who are looking for safe, legally clear plots to invest in. The project is focused on transparency and value, with residential and industrial plots available in strategic locations all over the city. Whether you are looking to construct your dream home or make a smart investment for your future, OmShakthy Homes ensures that each plot comes with proper documentation, clear titles and the assurance of credible approvals.",
+    "Buyers can choose from a range of plot sizes and benefit from flexible EMI options, making it easier to own CMDA approved land for sale in Chennai without stretching their budget."
+  ],
+  "amenitiesIntro": "OmShakthy Homes goes beyond just offering land — it ensures a foundation for a well-planned and comfortable living environment. The layouts are developed with attention to essential infrastructure, including wide metaled roads, underground drainage systems, and clear plot demarcations. These DTCP approved layouts in Chennai are provided with basic amenities like street lighting, avenue plantation and proper boundary walls.",
+  "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "purchaseSteps": [
+    { "title": "Site Visit & Selection", "text": "Schedule a free site visit to explore available plots and shortlist based on your needs." },
+    { "title": "Document Verification", "text": "Review all legal documents, including CMDA/DTCP approval letters, EC, and sale deeds." },
+    { "title": "Booking & Agreement", "text": "Pay a token amount to book the plot and proceed with the sale agreement." },
+    { "title": "Loan & EMI Options", "text": "If needed, explore home loan or in-house EMI options to structure your payment." },
+    { "title": "Registration", "text": "Complete the registration process at the sub-registrar office with assistance from the OmShakthy team." },
+    { "title": "Possession", "text": "Receive possession of your plot with all necessary handover documents." }
+  ],
+  "mistakesToAvoid": [
+    "Avoid unapproved layouts — always verify if the plot is CMDA or DTCP approved. Unapproved layouts can lead to legal issues and construction stoppages.",
+    "Don't skip document verification — missing ECs, unclear titles, or incomplete approval letters can cause major problems later.",
+    "Don't ignore location potential — a cheap plot in a low-growth area may not yield returns. Choose locations with infrastructure and connectivity.",
+    "Avoid overpaying for unverified 'premium' claims — stick to developers who offer clear documentation and transparent pricing.",
+    "Don't rush the registration process — ensure all names, measurements, and approval details match across documents before signing."
+  ],
+  "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "faq": [
+    { "q": "What is CMDA approval, and why does it matter when buying land in Chennai?", "a": "CMDA approval means the land or layout follows the Chennai Metropolitan Development Authority's planning rules for the city region. It matters because CMDA approved plots give buyers legal clarity, better construction eligibility, and reduced risk of future disputes. Without approval, you may face issues with registration, building permission, and resale." },
+    { "q": "How can I check if a plot is CMDA or DTCP approved online?", "a": "Ask the seller for the layout approval copy and approval number, then verify it on the official planning authority website using the layout number, survey number, or village details. For CMDA plots, cross-check the approval copy, plot details, and zoning information. For DTCP layouts, verify the sanction number and layout map with the corresponding authority records." },
+    { "q": "What documents prove that land is CMDA or DTCP approved?", "a": "The main proof is the official layout approval copy issued by the authority. You should also ask for the sale deed, patta or chitta, encumbrance certificate, layout plan, survey details, and, if applicable, the building plan sanction. The approval number and seal should match the plot details exactly." },
+    { "q": "What happens if I buy a plot that is not CMDA or DTCP approved?", "a": "You may not get building permission, and the property may be considered unsafe for regular construction or resale. Loan approval can become difficult, and you may face lower buyer interest in the future. In extreme cases, authorities may issue notices or restrict construction." },
+    { "q": "Can I get a home loan for a plot that isn't CMDA or DTCP approved?", "a": "In most cases, banks are hesitant to approve loans for property that is not CMDA/DTCP approved, since lenders prefer approved layouts that reduce legal risk and improve the value of the security. Approved plots are always the better choice for smooth financing." },
+    { "q": "Can an unapproved plot be converted to a CMDA/DTCP approved one later?", "a": "Sometimes an unapproved plot may be regularized, but it is not automatic. The land must satisfy zoning rules, layout standards, road width norms, and ownership conditions. Buyers should not rely on future conversion promises unless the seller provides written proof and the legal status is verified by the authority or a qualified property lawyer." },
+    { "q": "What is the minimum plot size required for CMDA or DTCP approval?", "a": "The minimum size depends on the land type, location, and layout rules followed by the authority. Approval is based not only on plot size but also on road width, access, zoning, and subdivision conditions — so buyers should check full layout compliance rather than focusing only on area." },
+    { "q": "Does CMDA/DTCP approval cover only residential plots, or industrial too?", "a": "It can apply to both residential and industrial layouts, depending on the land use classification and authority rules. Buyers should confirm that the approval matches the exact land use they need — residential approval does not automatically make land suitable for industrial use." },
+    { "q": "Is RERA registration the same as CMDA/DTCP approval?", "a": "No. CMDA or DTCP approval confirms the layout or land development follows planning rules, while RERA deals with project registration, transparency, and buyer protection. A property can be RERA-registered and still need proper layout approval, and approval alone does not replace RERA where applicable." }
+  ]
+}
