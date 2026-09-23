@@ -37,7 +37,7 @@ const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName }: FooterProps) =
                 {[
                   { name: 'About Us', path: '/about' },
                   { name: 'Projects', path: '/projects' },
-                  { name: 'Gallery', path: '/gallery' },
+                  { name: 'Gallery', path: '/image-gallery' },
                   { name: 'Blog', path: '/blog' },
                   { name: 'Careers', path: '/careers' },
                 ].map((link) => (

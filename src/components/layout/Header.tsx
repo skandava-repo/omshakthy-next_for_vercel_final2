@@ -7,7 +7,7 @@ import './Header.css'
 const navLinksLeft = [
   { name: 'Projects', path: '/projects' },
   { name: 'About', path: '/about' },
-  { name: 'Gallery', path: '/gallery' },
+  { name: 'Gallery', path: '/image-gallery' },
 ]
 
 const navLinksRight = [

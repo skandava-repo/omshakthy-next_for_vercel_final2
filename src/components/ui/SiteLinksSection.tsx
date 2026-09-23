@@ -87,8 +87,8 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
             {[
               { t: 'Home', h: '/' },
               { t: 'About Us', h: '/about' },
-              { t: 'Image Gallery', h: '/gallery' },
-              { t: 'Testimonials', h: '/#testimonials' },
+              { t: 'Image Gallery', h: '/image-gallery' },
+              { t: 'Testimonials', h: '/testimonials' },
               { t: 'Contact Us', h: '/contact' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
