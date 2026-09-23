@@ -10,8 +10,19 @@ const navLinksLeft = [
   { name: 'Gallery', path: '/image-gallery' },
 ]
 
-const navLinksRight = [
-  { name: 'Blog', path: '/blog' },
+const navLinksRight: { name: string; path: string; children?: { name: string; path: string }[] }[] = [
+  {
+    name: 'Resources',
+    path: '/blog',
+    children: [
+      { name: 'Blog', path: '/blog' },
+      { name: 'EMI Calculator', path: '/emi-calculator' },
+      { name: 'Home Loan', path: '/homeloan' },
+      { name: 'Buying Guide', path: '/buying-guide' },
+      { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai' },
+      { name: 'Events', path: '/events' },
+    ],
+  },
   { name: 'Contact', path: '/contact' },
 ]
 
@@ -22,6 +33,7 @@ const Header = () => {
   // '' (default gradient/dark), 'light' (paper sections), or 'solid-blue'
   // (flat brand blue, no gradient — currently just Leadership).
   const [theme, setTheme] = useState('')
+  const [resourcesOpen, setResourcesOpen] = useState(false)
   const location = { pathname: usePathname() }
   const isHome = location.pathname === '/'
 
@@ -131,17 +143,51 @@ const Header = () => {
               ))}
             </ul>
             <ul className="site-nav__links">
-              {navLinksRight.map((link, i) => (
-                <li key={link.name} className="site-nav__item">
-                  <Link
-                    href={link.path}
-                    className="site-nav__link"
-                    style={{ animationDelay: `${(i + 3) * 0.1}s` }}
+              {navLinksRight.map((link, i) =>
+                link.children ? (
+                  <li
+                    key={link.name}
+                    className="site-nav__item site-nav__item--dropdown"
+                    onMouseEnter={() => setResourcesOpen(true)}
+                    onMouseLeave={() => setResourcesOpen(false)}
                   >
-                    <span>{link.name}</span>
-                  </Link>
-                </li>
-              ))}
+                    <button
+                      type="button"
+                      className="site-nav__link site-nav__link--dropdown"
+                      style={{ animationDelay: `${(i + 3) * 0.1}s` }}
+                      onClick={() => setResourcesOpen((v) => !v)}
+                      aria-expanded={resourcesOpen}
+                    >
+                      <span>{link.name}</span>
+                    </button>
+                    {resourcesOpen && (
+                      <ul className="site-nav__dropdown">
+                        {link.children.map((child) => (
+                          <li key={child.name}>
+                            <Link
+                              href={child.path}
+                              className="site-nav__dropdown-link"
+                              onClick={() => setResourcesOpen(false)}
+                            >
+                              {child.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ) : (
+                  <li key={link.name} className="site-nav__item">
+                    <Link
+                      href={link.path}
+                      className="site-nav__link"
+                      style={{ animationDelay: `${(i + 3) * 0.1}s` }}
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
 

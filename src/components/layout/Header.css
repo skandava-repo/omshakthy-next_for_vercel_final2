@@ -230,6 +230,65 @@
   margin: 0;
 }
 
+/* "Resources" dropdown — same look as a plain .site-nav__link (it's a
+   <button>, not an <a>, since it toggles a menu instead of navigating),
+   plus a small caret and the absolutely-positioned panel below it. */
+.site-nav__item--dropdown {
+  position: relative;
+}
+
+.site-nav__link--dropdown {
+  font: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.site-nav__link--dropdown span::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  margin-bottom: 1px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.site-nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  padding: 8px;
+  min-width: 190px;
+  border-radius: 14px;
+  background: rgba(11, 31, 58, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  list-style: none;
+  z-index: 20;
+}
+
+.site-nav__dropdown-link {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-nav__dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
 .site-nav__link {
   display: block;
   color: inherit;
