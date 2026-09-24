@@ -25,8 +25,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }))
 
+  // One post's real indexed URL has a literal '&' its safe route slug
+  // had to drop (see src/app/blog/[slug]/page.tsx's own comment) — list
+  // the real, canonical '&' URL here, not the internal safe-slug
+  // duplicate it resolves through via next.config.ts's rewrite.
+  const BLOG_SITEMAP_SLUG_OVERRIDE: Record<string, string> = {
+    'e-stamp-application-verification-and-registry-explained': 'e-stamp-application-verification-&-registry-explained',
+  }
   const blogPosts: MetadataRoute.Sitemap = getAllBlogSlugs().map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`,
+    url: `${baseUrl}/blog/${BLOG_SITEMAP_SLUG_OVERRIDE[slug] ?? slug}`,
     lastModified: now,
     changeFrequency: 'yearly',
     priority: 0.5,
