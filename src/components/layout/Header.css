@@ -361,3 +361,184 @@
   }
 }
 
+/* ============================================
+   MOBILE NAV — hamburger + panel
+   Only reachable below 1024px, the same breakpoint .site-nav__links
+   disappears at (see the media query above). Above that width neither
+   the button nor the panel render/show at all — the desktop center
+   nav takes over exactly as before.
+   ============================================ */
+
+.site-nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  margin-left: 0.9rem;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.site-nav__burger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.site-nav__burger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.site-nav__burger--open span:nth-child(2) {
+  opacity: 0;
+}
+.site-nav__burger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 1024px) {
+  .site-nav__burger {
+    display: flex;
+  }
+}
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  visibility: hidden;
+  pointer-events: none;
+}
+.mobile-nav--open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mobile-nav__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 12, 30, 0.45);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-nav--open .mobile-nav__backdrop {
+  opacity: 1;
+}
+
+/* Same dark frosted-glass treatment as .site-nav__dropdown, just a
+   full-width panel dropping in below the header instead of a small
+   menu below one link — same visual language, not a new one. */
+.mobile-nav__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 110px 24px 32px;
+  background: rgba(11, 31, 58, 0.97);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  transform: translateY(-16px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.mobile-nav--open .mobile-nav__panel {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.mobile-nav__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-nav__links > li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobile-nav__links > li:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobile-nav__links a {
+  display: block;
+  padding: 16px 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #F8F8F5;
+  text-decoration: none;
+}
+.mobile-nav__group {
+  padding: 14px 4px 6px;
+}
+.mobile-nav__group-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 4px;
+}
+.mobile-nav__group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.mobile-nav__group a {
+  padding: 12px 4px 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.mobile-nav__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+.mobile-nav__phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.mobile-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.4rem;
+  background: var(--os-blue, #0D6BB2);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -12px rgba(13, 107, 178, 0.7);
+}
+
+@media (min-width: 1025px) {
+  .mobile-nav {
+    display: none;
+  }
+}
+

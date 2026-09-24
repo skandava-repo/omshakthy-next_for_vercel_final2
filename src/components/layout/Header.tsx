@@ -34,8 +34,28 @@ const Header = () => {
   // (flat brand blue, no gradient — currently just Leadership).
   const [theme, setTheme] = useState('')
   const [resourcesOpen, setResourcesOpen] = useState(false)
+  // Below 1024px .site-nav__links, .site-nav__phone and .site-nav__cta
+  // all disappear via CSS with nothing left to replace them — this panel
+  // is that replacement. Same content as the desktop nav (both link
+  // lists flattened, Resources' children included, phone + CTA), styled
+  // to match .site-nav__dropdown's own dark frosted-glass look rather
+  // than inventing a new visual language.
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = { pathname: usePathname() }
   const isHome = location.pathname === '/'
+
+  useEffect(() => {
+    document.body.style.overflowY = mobileMenuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflowY = ''
+    }
+  }, [mobileMenuOpen])
+
+  // Close on route change (Link clicks inside the panel already call
+  // this directly, but this also covers back/forward navigation).
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
 
   // On content pages the header is fixed and transparent; make it solid once
   // the user scrolls past the hero so page content doesn't collide with the nav.
@@ -106,6 +126,15 @@ const Header = () => {
     window.addEventListener('scroll', checkThemeByScroll, { passive: true })
     return () => window.removeEventListener('scroll', checkThemeByScroll)
   }, [])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [mobileMenuOpen])
 
   return (
     <>
@@ -205,9 +234,85 @@ const Header = () => {
             <Link href="/contact" className="site-nav__cta">
               Book Site Visit
             </Link>
+
+            {/* Hamburger — CSS hides this above 1024px (same breakpoint
+                .site-nav__links disappears at) and shows .site-nav__links
+                instead, so exactly one of the two is ever visible. */}
+            <button
+              type="button"
+              className={`site-nav__burger ${mobileMenuOpen ? 'site-nav__burger--open' : ''}`}
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-panel"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile nav panel — same content as the desktop center nav +
+          phone + CTA, styled after .site-nav__dropdown's own dark
+          frosted-glass look rather than a new visual language. Only
+          reachable below 1024px (the hamburger that opens it doesn't
+          render above that width either). */}
+      <div
+        id="mobile-nav-panel"
+        className={`mobile-nav ${mobileMenuOpen ? 'mobile-nav--open' : ''}`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="mobile-nav__backdrop" onClick={() => setMobileMenuOpen(false)} />
+        <div className="mobile-nav__panel">
+          <ul className="mobile-nav__links">
+            {navLinksLeft.map((link) => (
+              <li key={link.name}>
+                <Link href={link.path} onClick={() => setMobileMenuOpen(false)}>
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+            {navLinksRight.map((link) =>
+              link.children ? (
+                <li key={link.name} className="mobile-nav__group">
+                  <span className="mobile-nav__group-label">{link.name}</span>
+                  <ul>
+                    {link.children.map((child) => (
+                      <li key={child.name}>
+                        <Link href={child.path} onClick={() => setMobileMenuOpen(false)}>
+                          {child.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={link.name}>
+                  <Link href={link.path} onClick={() => setMobileMenuOpen(false)}>
+                    {link.name}
+                  </Link>
+                </li>
+              )
+            )}
+          </ul>
+          <div className="mobile-nav__footer">
+            <a href="tel:04440303040" className="mobile-nav__phone">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden>
+                <path
+                  fill="currentColor"
+                  d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z"
+                />
+              </svg>
+              <span>044 4030 3040</span>
+            </a>
+            <Link href="/contact" className="mobile-nav__cta" onClick={() => setMobileMenuOpen(false)}>
+              Book Site Visit
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

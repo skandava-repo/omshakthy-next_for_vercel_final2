@@ -110,12 +110,27 @@
    "Scroll to Explore") already pass `behavior: 'smooth'` explicitly to
    their own scrollTo/scrollIntoView calls, so they're unaffected. */
 
+/* Mobile/tablet RWD pass: a safety net, not a layout fix. Several
+   sections animate elements in from off-screen (e.g. AboutContent.tsx's
+   WhyChooseRow, framer-motion `initial={{ x: ±90 }}` before it scrolls
+   into view) — Chrome includes that off-screen transformed position in
+   document.scrollWidth even though the element is invisible
+   (opacity: 0) there, which was making the page horizontally
+   scrollable on narrow viewports despite nothing actually being cut
+   off or visible past the edge. html+body overflow-x: hidden clips
+   exactly that transient/invisible overflow at the document root —
+   it changes nothing about how any visible element renders. */
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--white);
   color: var(--charcoal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
