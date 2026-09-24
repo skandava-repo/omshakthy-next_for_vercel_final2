@@ -13,7 +13,9 @@
 //
 // Now that each of those pages is real, "Ongoing Projects"/"Completed
 // Projects" link straight to its own page instead of the shared
-// /projects listing.
+// /projects listing. Video Gallery, Events, Careers, and the real
+// Residential Plots/Industrial Plots/Land Aggregation destinations
+// are all real pages now too — no longer dropped/stale links.
 import blogPosts from '@/data/blog/summary.json'
 
 const C = {
@@ -73,9 +75,9 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
           </h3>
           <ul className="flex flex-col gap-2.5 text-sm">
             {[
-              { t: 'Residential Plots', h: '/projects' },
-              { t: 'Industrial Plots', h: '/projects' },
-              { t: 'Land Aggregation', h: '/about' },
+              { t: 'Residential Plots', h: '/buy-cmda-dtcp-plots-for-sale-chennai' },
+              { t: 'Industrial Plots', h: '/industrial-park-lp' },
+              { t: 'Land Aggregation', h: '/land-aggregation-projects-chennai' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
             ))}
@@ -88,7 +90,10 @@ export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { back
               { t: 'Home', h: '/' },
               { t: 'About Us', h: '/about' },
               { t: 'Image Gallery', h: '/image-gallery' },
+              { t: 'Video Gallery', h: '/video-gallery' },
               { t: 'Testimonials', h: '/testimonials' },
+              { t: 'Events', h: '/events' },
+              { t: 'Careers', h: '/careers' },
               { t: 'Contact Us', h: '/contact' },
             ].map((l) => (
               <li key={l.t}><a href={l.h} style={{ color: C.slate }} className="hover:opacity-70">{l.t}</a></li>
