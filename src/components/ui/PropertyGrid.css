@@ -9,7 +9,26 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  
+
+}
+
+@media (max-width: 992px) {
+  /* The fixed-height .property-item cards below (6 x 220px = 1320px)
+     need real room to stack in — .property-section itself never had a
+     matching override here, so it stayed locked to height:100vh
+     (590px on the 410px-wide device this was confirmed on) while its
+     content visually overflowed 730px past that box. overflow:visible
+     (the default) doesn't clip that overflow, but it also doesn't
+     grow the section's own DOCUMENT-FLOW height to match — so
+     CinematicTimeline (rendered right after this section once
+     PropertyGrid moves to PageController's free-flow tail — see
+     HomeClient.tsx's freeFlowFrom) started flowing from
+     .property-section's own undersized 590px mark, landing squarely
+     on top of the last several property cards instead of below all
+     six of them. */
+  .property-section {
+    height: auto;
+  }
 }
 
 /* 1. Flexbox row layout — items expand on hover */
@@ -43,10 +62,41 @@
   flex-grow: 99;
 }
 
+/* The whole hover-to-expand affordance is a desktop-mouse concept — a
+   touch tap has no equivalent to "hover", so on a phone/tablet nothing
+   ever puts a card into .active before the tap's own click fires and
+   navigates away, which means the property's actual name/price (both
+   gated behind .active — see .property-item__name and
+   .property-item__price below) was never visible at all, and, worse,
+   confirmed live at 410px width: with .property-list stacked into a
+   column (see above) but .property-section still forcing a hard
+   height:100vh with no matching override, .property-item.active's own
+   flex-grow:99 still applied — it grew to fill essentially the whole
+   column based on its own content's natural size (1472px, an entire
+   property photo), while the other 5 items were squeezed down to their
+   flex-shrink floor (15px each — a hairline, unreadable and
+   unusable), and the excess (over 950px of real content) was silently
+   clipped by .page-controller__section's own height:100vh +
+   overflow:hidden, the exact same clipping bug class fixed elsewhere
+   on this page for LeadersSection/TestimonialsSection/
+   WhatWeDoCloneContent. Below 992px this drops the whole expand
+   mechanic: every card gets the same fixed, comfortable height and
+   always shows its own name/price (see the .property-item__name/
+   .property-item__price overrides further down) — a normal, readable
+   stacked list instead of one photo dominating the screen with five
+   invisible slivers under it. PropertyGrid also moved to
+   PageController's free-flow tail at this breakpoint (see
+   HomeClient.tsx's freeFlowFrom) so a 6-card list this tall isn't
+   forced into one 100vh slot either. */
 @media (max-width: 992px) {
   .property-item {
     min-width: auto;
     max-width: 100%;
+    flex: none;
+    height: 220px;
+  }
+  .property-item.active {
+    flex-grow: 0;
   }
 }
 
@@ -201,7 +251,14 @@
 }
 
 @media (max-width: 992px) {
-  .property-item.active .property-item__name {
+  /* Not gated behind .active anymore — see the comment on
+     .property-item's own @media block above for why: a touch tap has
+     no hover-equivalent to reveal this first. */
+  .property-item__name {
+    margin: 0.35rem 0 0;
+    height: auto;
+    overflow: visible;
+    opacity: 1;
     font-size: 21px;
   }
 }
@@ -287,6 +344,36 @@
   color: var(--os-brass-lift, #D9B570);
   background: rgba(0, 0, 0, 0.3);
   width: fit-content;
+}
+
+@media (max-width: 992px) {
+  /* Not gated behind .active — same reasoning as .property-item__name
+     above. Every card always shows its own price/status at this
+     breakpoint, same styling .active gave it on desktop. */
+  .property-item__price {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+  }
+  .property-item__badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--os-brass-lift, #D9B570);
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--os-brass-lift, #D9B570);
+    background: rgba(0, 0, 0, 0.3);
+    width: fit-content;
+  }
 }
 
 /* 5. No hover overlay with buttons — display none */

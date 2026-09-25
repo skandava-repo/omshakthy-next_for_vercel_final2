@@ -587,4 +587,42 @@
     padding: 20px 5vw 24px;
     gap: 24px;
   }
+
+  /* .ct-bar__bigyear's 180px min-width (fine at desktop widths, where
+     .ct-bar has real room to spare) was never given a narrower
+     override here — confirmed live at 404px width, it alone ate over
+     half the bar's ~316px of usable content width, squeezing
+     .ct-bar__segments down to ~72px total for 6 segments. Each
+     .ct-seg__year label is position:absolute; left:0 against its own
+     ~12px-wide segment, so at that width the 6 year labels (1991,
+     1993, 1997, 1998, 2000, 2024) rendered stacked directly on top of
+     each other — and on top of .ct-bar__bigyear's own big year text
+     too, since that label sits 24px above its segment, closer to
+     bigyear's own vertical range than intended. Not something the
+     freeFlowFrom change above caused — this math doesn't depend on
+     whether the section is pinned or free-flowing, so it would have
+     overlapped the same way at this width either way; simply never
+     scrolled into and inspected this closely at a narrow width before
+     now. Shrinking bigyear's reserved width and the segment labels'
+     font-size (plus a touch less gap) gives the 6 labels enough room
+     apiece to stay genuinely separate instead of overlapping. */
+  .ct-bar__bigyear {
+    min-width: 88px;
+  }
+  .ct-bar__bigyear-text {
+    font-size: 42px;
+  }
+  .ct-bar__bigyear-label {
+    font-size: 13px;
+  }
+  .ct-bar__segments {
+    gap: 4px;
+  }
+  .ct-seg__year {
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+  .ct-bar__counter-current {
+    font-size: 18px;
+  }
 }
