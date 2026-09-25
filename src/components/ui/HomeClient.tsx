@@ -43,8 +43,24 @@ export default function HomeClient() {
             substitute (that was tried and didn't behave the same way;
             see git history). TrustedPartnersSection itself is preserved
             on its own at /what-we-do8 per explicit request, not
-            discarded. */}
-        <PageController>
+            discarded.
+
+            freeFlowFrom={3}: below PageController's own mobile/tablet
+            breakpoint, LeadersSection/TestimonialsSection/
+            WhatWeDoCloneContent (indices 3-5) stop being pinned/wheel-
+            jacked and render as plain stacked content instead — each of
+            their own CSS deliberately grows taller than 100vh once
+            stacked at tablet widths (confirmed live at iPad Air's
+            820px: WhatWeDoCloneContent alone had ~1970px of real
+            content silently clipped to 870px and permanently
+            unreachable, since .page-controller__section's forced
+            height:100vh + overflow:hidden had no matching override).
+            HeroSlider/PropertyGrid/CinematicTimeline (0-2) stay pinned
+            at every width — none of them have this problem, and
+            CinematicTimeline's own wheel-driven milestone stepping
+            already has an independent tap-to-jump fallback (its
+            .ct-seg buttons), so it isn't stranded by staying pinned. */}
+        <PageController freeFlowFrom={3}>
           <HeroSlider />
           <PropertyGrid />
           <CinematicTimeline />

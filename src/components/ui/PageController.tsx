@@ -4,17 +4,56 @@ import './PageController.css'
 
 interface PageControllerProps {
   children: React.ReactNode[]
+  // Below MOBILE_BREAKPOINT, sections from this index onward stop being
+  // pinned/wheel-jacked and render as plain stacked content instead —
+  // see the comment above MOBILE_BREAKPOINT for why. Omit to keep every
+  // section pinned at all viewport widths (today's behavior).
+  freeFlowFrom?: number
 }
 
-const PageController = ({ children }: PageControllerProps) => {
+// A pinned "one wheel-tick = one full-screen slide" section only works if
+// every slide actually fits in 100vh. LeadersSection/TestimonialsSection/
+// WhatWeDoCloneContent's own CSS deliberately grows taller than 100vh
+// below their tablet breakpoints (980px/900px/980px) — stacking a row
+// that was side-by-side on desktop needs more vertical room once it wraps.
+// .page-controller__section's height:100vh + overflow:hidden never had a
+// matching override, so at those widths the bottom of each section was
+// silently clipped and permanently unreachable (confirmed live at iPad
+// Air's 820px width: .wc alone was ~1970px of real content cut down to
+// 870px, with no scroll mechanism able to reach the rest — native scroll
+// is fully hijacked while pinned, and .page-controller__section has no
+// overflow-y of its own to fall back on).
+// Widest of those breakpoints is 980px; CinematicTimeline (the other
+// wheel-dependent section, index 2) already has its own tap-to-jump
+// fallback (.ct-seg buttons) independent of wheel input, so it stays
+// pinned safely at every width. 1024px matches Header.css's own
+// "mobile/tablet" breakpoint elsewhere on this site.
+const MOBILE_BREAKPOINT = 1024
+
+const PageController = ({ children, freeFlowFrom }: PageControllerProps) => {
   const [currentSection, setCurrentSection] = useState(0)
   // Once true, this component stops owning the wheel — native scrolling
   // takes over so whatever is rendered after <PageController> in normal
   // document flow becomes reachable. Re-engaged if the user scrolls back up
   // to the very top of that free-flow content (see handleWheel below).
   const [released, setReleased] = useState(false)
+  const [isNarrow, setIsNarrow] = useState(false)
   const isAnimating = useRef(false)
   const totalSections = children.length
+  // On desktop (or when freeFlowFrom isn't passed) this equals
+  // totalSections — every section stays pinned, byte-for-byte the same
+  // as before this prop existed. Only narrows below that on a narrow
+  // viewport with freeFlowFrom set.
+  const pinnedCount = isNarrow && freeFlowFrom != null ? freeFlowFrom : totalSections
+  const pinnedChildren = children.slice(0, pinnedCount)
+  const freeFlowChildren = children.slice(pinnedCount)
+
+  useEffect(() => {
+    const check = () => setIsNarrow(window.innerWidth <= MOBILE_BREAKPOINT)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const goTo = useCallback((index: number) => {
     if (index < 0 || index >= totalSections || isAnimating.current) return
@@ -103,16 +142,20 @@ const PageController = ({ children }: PageControllerProps) => {
     // through to the normal section-change logic below, same as any
     // other slide.
 
-    // At the last snapped section and still scrolling down: hand off to
-    // native scroll for whatever comes after PageController, rather than
-    // just sitting stuck (goTo is a no-op past the last index).
-    if (currentSection === totalSections - 1 && dir === 1) {
+    // At the last PINNED section and still scrolling down: hand off to
+    // native scroll for whatever comes next — on desktop that's whatever
+    // comes after PageController in the document (pinnedCount ===
+    // totalSections there, so this is unchanged from before); on a narrow
+    // viewport with freeFlowFrom set, it's this section's own free-flow
+    // tail (see pinnedChildren/freeFlowChildren above) instead of sitting
+    // stuck (goTo is a no-op past the last pinned index).
+    if (currentSection === pinnedCount - 1 && dir === 1) {
       setReleased(true)
       return
     }
 
     goTo(currentSection + dir)
-  }, [currentSection, goTo, released, totalSections])
+  }, [currentSection, goTo, released, pinnedCount])
 
   useEffect(() => {
     window.addEventListener('wheel', handleWheel, { passive: false })
@@ -126,18 +169,30 @@ const PageController = ({ children }: PageControllerProps) => {
   }, [currentSection])
 
   return (
-    <div className={`page-controller${released ? ' page-controller--released' : ''}`}>
-      <div
-        className="page-controller__track"
-        style={{ transform: `translateY(-${currentSection * 100}vh)` }}
-      >
-        {children.map((child, i) => (
-          <div className="page-controller__section" key={i}>
-            {child}
-          </div>
-        ))}
+    <>
+      <div className={`page-controller${released ? ' page-controller--released' : ''}`}>
+        <div
+          className="page-controller__track"
+          style={{ transform: `translateY(-${currentSection * 100}vh)` }}
+        >
+          {pinnedChildren.map((child, i) => (
+            <div className="page-controller__section" key={i}>
+              {child}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      {/* Only non-empty on a narrow viewport with freeFlowFrom set — on
+          desktop, pinnedCount === totalSections so this is always []. Plain
+          stacked normal-flow content, not wrapped in .page-controller__section
+          (that class's height:100vh + overflow:hidden is exactly what was
+          clipping these sections — see MOBILE_BREAKPOINT's comment above).
+          Each section's own responsive CSS is what actually determines its
+          height here; nothing in this file constrains it. */}
+      {freeFlowChildren.map((child, i) => (
+        <div key={pinnedCount + i}>{child}</div>
+      ))}
+    </>
   )
 }
 
