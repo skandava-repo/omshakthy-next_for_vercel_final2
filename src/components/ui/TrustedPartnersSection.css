@@ -22,8 +22,28 @@
   --tp-ink: #0B1F3A;
 
   position: relative;
-  height: 100%;
-  min-height: 0;
+  /* height:100% only (no min-height:100vh fallback) assumed a
+     PageController-provided ancestor that's always exactly 100vh tall
+     — true while this was still a pinned slide there, but
+     TrustedPartnersSection.tsx now only ever renders standalone at
+     /what-we-do8 (HomeClient.tsx replaced it with
+     WhatWeDoCloneContent). Outside PageController, height:100% against
+     a plain document-flow parent doesn't resolve to anything close to
+     a real viewport height — confirmed live at 590px width: the
+     section rendered only ~380px tall, nowhere near enough for its own
+     accordion content, and .tp__index's centered top edge sat flush
+     against the very top of the page with none of the site's usual
+     header clearance (every other real page reserves
+     calc(102px + ...) of top padding for the fixed header; this one
+     had none at all), so the header's own logo visibly sat on top of
+     "01 Land Aggregation" even scrolled all the way to the top. Both
+     fixed together: a real min-height so the section is never
+     shorter than one screen regardless of ancestor, and real
+     padding-top so centered content starts below the header instead
+     of behind it. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: calc(102px + 1.25rem);
   overflow: hidden;
   display: flex;
   align-items: center;
