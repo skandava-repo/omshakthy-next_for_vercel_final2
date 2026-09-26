@@ -43,17 +43,46 @@
   padding-bottom: clamp(2.5rem, 5.5vh, 4.5rem);
 }
 
+/* .wc__body is now just the available-space box: exactly whatever
+   height .wc's flex:1 leaves after its own padding, nothing more. The
+   actual two-column row (left copy / divider / right rows) moved to the
+   new .wc__stage below so its real, natural (unstretched) height can be
+   measured and — if it doesn't fit .wc__body — shrunk to fit by
+   useScaleToFit (see WhatWeDoCloneContent.tsx). Before that split,
+   .wc__body's own align-items:stretch forced both columns to exactly
+   whatever height was left over, silently clipping .wc__right's 5 rows
+   (its overflow:hidden) whenever their natural content needed more
+   room than that — the .wc__card's "Years in Operation" label was
+   confirmed cut off at a laptop's 768px-tall viewport this way. */
 .wc__body {
   flex: 1;
   min-height: 0;
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+}
+
+/* The actual two-column content — everything .wc__body used to lay out
+   directly. align-items:stretch here is what makes .wc__left/.wc__right
+   share one height (unchanged from before the split); transform-origin/
+   position matter here, not on .wc__body, since this is the element
+   useScaleToFit actually scales — see its own comment on why a
+   dynamically-applied transform needs position:relative pinned down
+   unconditionally rather than left to switch depending on whether a
+   scale is currently applied. */
+.wc__stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 /* Vertical dot–line–text–line–dot divider between the two columns —
    same motif as LeadersSection's .ld3__tagline, just rotated. Sits as
-   a third flex child between .wc__left and .wc__right; .wc__body's
+   a third flex child between .wc__left and .wc__right; .wc__stage's
    align-items:stretch already gives it the full column height for
    free, matching both columns. */
 .wc__divider {
@@ -136,7 +165,22 @@
   align-items: center;
   gap: 0.9rem;
   font-family: 'JetBrains Mono', Consolas, monospace;
-  font-size: 1.4rem;
+  /* Was a flat 1.4rem — the one piece of .wc__left with zero
+     responsiveness of its own at all, width or height. On a short
+     laptop screen that helped force .wc__left taller than .wc__body
+     actually had room for, which is what useScaleToFit's transform:
+     scale() is for (see WhatWeDoCloneContent.tsx's own comment) — but
+     that scale is uniform, so shrinking height that didn't need to
+     shrink this much also shrinks WIDTH by the same factor, wasting
+     horizontal space that was never actually tight (confirmed live: a
+     wide empty margin either side of the row at a short-but-not-narrow
+     viewport). Giving this — and .wc__card-num below, the much bigger
+     contributor — real vh-based responsiveness means .wc__left's own
+     natural height is more often already short enough that scale barely
+     needs to touch it, if at all, so width stays fuller more of the
+     time. The floor here (0.85rem) still reads fine at the size an
+     eyebrow label is already meant to be de-emphasized at. */
+  font-size: clamp(0.85rem, 1.8vh, 1.4rem);
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -154,7 +198,17 @@
   z-index: 1;
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  font-size: clamp(1.7rem, 3.2vw, 3.3rem);
+  /* min(3.2vw, 5.5vh) — same reasoning as .wc__card-num just above:
+     three stacked lines at the old purely-vw size added up to real
+     height that didn't yield on a short-but-not-narrow screen, which is
+     exactly the kind of case that forced useScaleToFit's uniform scale
+     to shrink WIDTH too even though width had headroom. Floor dropped
+     1.7rem→1.3rem — checked live, the old 1.7rem floor was in fact what
+     this was resolving to at a laptop's shorter heights (the 5.5vh term
+     landing below it), so the floor — not the vh term — was the actual
+     ceiling on how far this could still shrink. Three lines here, so
+     every px this floor gives up is ×3. */
+  font-size: clamp(1.3rem, min(3.2vw, 5.5vh), 3.3rem);
   line-height: 1.12;
   margin: 0 0 clamp(1.5rem, 4vh, 2.6rem);
 }
@@ -170,7 +224,19 @@
 .wc__para {
   position: relative;
   z-index: 1;
-  font-size: 0.92rem;
+  /* Was a flat 0.92rem — completely unresponsive, width or height. This
+     turned out to be the actual dominant term forcing .wc__left's whole
+     natural height up on a short laptop screen (measured live: 91px tall
+     on its own, from 4 wrapped lines at this fixed size × line-height —
+     bigger than .wc__title even). max-width is in ch units (relative to
+     THIS element's own font-size), so shrinking the font doesn't add
+     more wrapped lines — each line just gets proportionally shorter,
+     and the total block shrinks with it. .wc__left's own natural height
+     is what .wc__right's five rows get stretched to match and then
+     split five ways (see .wc__row-icon's own comment on why shrinking
+     the rows' own content directly didn't move the needle) — so this
+     was the real lever, not anything inside a row. */
+  font-size: clamp(0.72rem, min(0.95vw, 1.7vh), 0.92rem);
   line-height: 1.55;
   color: var(--wc-muted);
   max-width: 46ch;
@@ -202,8 +268,23 @@
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
   /* Was capped at 4.2rem — small for what's meant to be the one hero
-     figure on this page. This is the actual headline number now. */
-  font-size: clamp(6rem, 9vw, 11.0rem);
+     figure on this page. This is the actual headline number now.
+     min(9vw, 13vh) — not just 9vw — for the same reason LeadersSection's
+     card width uses max(17vw, 20vh): a purely vw-driven size doesn't
+     know when the viewport is short rather than narrow, so this stayed
+     ~96-176px tall (its own floor/ceiling) no matter how little vertical
+     room .wc__body actually had. That was the single biggest reason
+     .wc__left's natural height forced useScaleToFit's transform: scale()
+     to kick in at all on a laptop's shorter screens — and since that
+     scale is uniform, it shrank the row's WIDTH by the same factor even
+     when width had headroom to spare (confirmed live: a wide empty
+     margin either side of the row that had nothing to do with the actual
+     vertical squeeze). Letting height drive this down too means the
+     scale-to-fit backstop is needed less often, and less aggressively
+     when it is, so width stays fuller. Floor dropped 6rem→3rem to give
+     that vh term real room to act instead of hitting a floor almost as
+     tall as the old one. */
+  font-size: clamp(3rem, min(9vw, 13vh), 11.0rem);
   line-height: 1.2;
   color: var(--wc-blue);
   /* The box-model gap above this (14px, checked) is fine — the visible
@@ -266,7 +347,14 @@
   display: flex;
   align-items: stretch;
   gap: clamp(1rem, 2vw, 1.7rem);
-  padding: clamp(0.4rem, 1.4vh, 0.9rem) 0;
+  /* Floor dropped 0.4rem→0.2rem — five of these stack, so every px this
+     floor gives up is ×5 off the row list's total natural height. See
+     .wc__row-icon and .wc__row-photo's own comments: the goal across all
+     three is the same — trim how much this section's minimum content
+     size demands, so useScaleToFit needs a shallower scale (if any) to
+     make it fit a short laptop screen, instead of shrinking further than
+     it has to and reading as "too small" even once it technically fits. */
+  padding: clamp(0.2rem, 1.4vh, 0.9rem) 0;
   border-top: 1px solid var(--wc-line);
   /* Rows are equal fixed-height flex shares (five of them, one screen)
      — if a title ever wraps to a second line at a narrower width, that
@@ -289,8 +377,21 @@
 }
 
 .wc__row-icon {
-  width: clamp(52px, 5vw, 64px);
-  height: clamp(52px, 5vw, 64px);
+  /* Was 5vw alone — pure width-driven, so on a short-but-not-narrow
+     laptop window it sat pinned at its own 64px ceiling regardless of
+     how little vertical room .wc__body actually had (5vw only drops
+     below that ceiling once the viewport is genuinely narrow, well
+     under 1280px — a short WIDE window never triggered it at all).
+     Checked live: dropping just the floor (52px→40px, still below) did
+     nothing here for exactly that reason — the floor was never what
+     this was resolving to. min(5vw, 9vh) makes height matter too, the
+     same fix .wc__card-num/.wc__title/.wc__eyebrow already got above:
+     one of five stacked rows, so every px this saves comes off the
+     total five times over. Floor is still 40px so a real, legible
+     circular badge is the actual floor either way — it was never
+     meant to be this page's focal element. */
+  width: clamp(40px, min(5vw, 9vh), 64px);
+  height: clamp(40px, min(5vw, 9vh), 64px);
   border-radius: 50%;
   background: var(--wc-navy-deep);
   border: 2px solid var(--wc-blue);
@@ -319,9 +420,39 @@
      every bit of the size change instead. */
   flex: 1 1 auto;
   min-width: 140px;
-  /* No explicit height — align-items:stretch on .wc__row (a flex
-     container) fills this to the row's full height on its own, no
-     percentage-height math needed. */
+  /* Was no explicit height at all — align-items:stretch on .wc__row
+     filled this to the row's real height on its own, which is genuinely
+     all it needs when .wc__right's ancestor chain has a DEFINITE height
+     to stretch/grow against (the normal render: .wc all the way down to
+     .wc__right is real px, so .wc__row's flex:1 1 0% correctly
+     compresses to whatever share of that height five rows leaves it,
+     no matter how short the viewport). useScaleToFit's fit() needs to
+     read .wc__stage's NATURAL size at least once (transform reset to
+     scale(1) to measure it — see that hook's own comment), and in that
+     specific instant .wc__stage itself is unconstrained/auto-height,
+     which breaks the "definite height to grow against" assumption this
+     whole chain relies on: with nothing definite to stretch to, the
+     browser falls back to sizing this element by its own <img>'s native
+     aspect ratio at whatever width it lands on instead — confirmed
+     live, ~184px tall on a ~243px-wide photo, versus this row's actual
+     intended height of well under 100px. Across 5 stacked rows that
+     alone was most of what pushed .wc__stage's measured natural height
+     so far past 100vh that useScaleToFit had to shrink the whole row
+     (photos, icons, and the .wc__left column beside them) far more
+     aggressively than the content actually needed — including WIDTH,
+     which had nothing to do with the problem (a uniform transform:
+     scale() can't shrink height without shrinking width by the same
+     factor). A max-height puts a hard ceiling on the runaway case
+     without constraining the normal one: still visibly generous next to
+     the tallest a real render ever needs a photo to be, low enough that
+     the natural-aspect-ratio fallback can't blow it past this.
+     Floor dropped 64px→40px, matching .wc__row-icon's own floor right
+     next to it — the original 64px floor was actually taller than that
+     icon, making the icon (not the photo) the real bottleneck on a
+     short screen anyway, so lowering just the icon wouldn't have helped
+     until this matched it. Same "×5 rows" reasoning as the icon and row
+     padding above. */
+  max-height: clamp(40px, 12vh, 140px);
   clip-path: polygon(7% 0%, 100% 0%, 100% 100%, 0% 100%);
   filter: drop-shadow(0 10px 16px rgba(20, 33, 58, 0.28));
 }
@@ -348,10 +479,19 @@
   flex-direction: column;
   min-width: 0;
 }
+/* Both font-sizes below were purely vw-driven (no vh term) — harmless
+   on their own, but this is one of FIVE rows stacked vertically, so
+   each row's own un-shrinking minimum text height compounds into a much
+   bigger total on a short viewport. min(<vw>, <vh>) inside each clamp
+   lets a short-but-not-narrow laptop screen shrink these too, the same
+   fix already applied to .wc__left's eyebrow/title/card-num above (see
+   .wc__card-num's own comment for the full reasoning) — less height
+   these need to fit means useScaleToFit's uniform scale needs to shrink
+   the row less, which means it keeps more of the available WIDTH too. */
 .wc__row-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  font-size: clamp(0.95rem, min(1.7vw, 2.6vh), 1.45rem);
   color: var(--wc-navy);
   margin-bottom: 0.4rem;
 }
@@ -359,7 +499,7 @@
   margin: 0 0 0.6rem;
 }
 .wc__row-desc {
-  font-size: clamp(0.82rem, 0.94vw, 0.9rem);
+  font-size: clamp(0.72rem, min(0.94vw, 1.8vh), 0.9rem);
   line-height: 1.5;
   color: var(--wc-muted);
   max-width: 100%;

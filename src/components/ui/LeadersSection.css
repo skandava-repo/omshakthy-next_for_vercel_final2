@@ -45,22 +45,85 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
+  /* A centering stage now — .ld3__stage below is what actually lays out
+     the content. See that rule's own comment for why the split exists.
+     padding-top here is the one exception to "nothing sizing-related
+     lives on .ld3 any more": Header.css's .site-nav is position:fixed,
+     102px tall, z-index:1000, spanning the full viewport width — it
+     sits in front of every section regardless of what any section does,
+     and this is the only thing standing between it and whatever content
+     .ld3__stage centers below it. That clearance has to be a flat,
+     UNSCALED px value declared here on .ld3 itself, not inside
+     .ld3__stage (which is exactly what useScaleToFit shrinks) — the
+     header itself never gets smaller, so clearance sized to scale along
+     with the content would fall short of 102px at any scale below 1 and
+     let the header's own opaque gradient paint over the top of the
+     content behind it. Confirmed live at a laptop's short-height sizes:
+     with this clearance living inside the (then-scaling) stage instead,
+     the "Customer Stories" pill's own left edge — same bug, same fix,
+     over in TestimonialsSection.css — ended up rendered partly behind
+     the header. */
+  padding-top: 102px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6f9;
+  color: var(--os-ink, #0B1F3A);
+  font-family: 'Inter', sans-serif;
+}
+/* Everything that used to be direct children of .ld3, now wrapped in
+   this one box so LeadersSection.tsx can shrink the WHOLE thing with a
+   single transform: scale() when it doesn't fit the section's 100vh —
+   see the component's own comment for why. The vw/vh-based clamp()
+   formulas throughout this file (--ld3-card-w, the gap/padding below,
+   font sizes further down) already shrink things as the viewport gets
+   narrower — that's normal fluid sizing and stays exactly as it was.
+   What they can't do on their own is guarantee a fit: at an unusually
+   SHORT viewport (a laptop's 768px-tall screen, say), vw-driven numbers
+   don't know the section ran out of vertical room, so content that's
+   still "correctly" sized by its own formula can end up taller than the
+   100vh box actually has to give — cards, the video intro band, and the
+   tagline compress against each other instead of shrinking further.
+   transform: scale() is the backstop: it shrinks this whole box
+   (everything in it, text included) by one uniform factor instead of
+   letting any piece reflow, wrap, or overlap — scale=1 whenever the
+   content already fits (the normal case, unaffected), and only kicks in
+   below that. */
+.ld3__stage {
+  /* .ld3__watermark below is position:absolute and needs a stable
+     containing block. Without this, it would resolve against .ld3
+     instead whenever no transform is applied (scale === 1, the common
+     case) but against THIS element once the fit effect does apply a
+     transform (any transform value makes its element a containing
+     block) — two different reference boxes depending on scale, which
+     would shift the watermark the instant scaling kicks in. Declaring
+     it here unconditionally means .ld3__watermark's bottom/left always
+     resolve the same way regardless of whether scale is currently 1. */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* Ceilings raised (2rem→4rem gap, 7rem→11rem top padding, inner 2rem→
-     3.5rem bottom padding) from the original's — those matched a modest
-     screen height where 12vh/2.6vh/3vh hit their old caps well under
-     1000px of viewport height, i.e. almost any real monitor, and then
-     stopped growing entirely while the 100vh section kept growing around
-     them. That mismatch (not this section's actual content) was the
-     source of the large dead gray bands on a big screen. */
+  /* Ceilings raised (2rem→4rem gap, inner 2rem→3.5rem bottom padding)
+     from the original's — those matched a modest screen height where
+     2.6vh/3vh hit their old caps well under 1000px of viewport height,
+     i.e. almost any real monitor, and then stopped growing entirely
+     while the 100vh section kept growing around them. That mismatch
+     (not this section's actual content) was the source of the large
+     dead gray bands on a big screen.
+     Top padding is now just the extra breathing room BELOW .ld3's own
+     fixed 102px header clearance (see that rule's comment) — this can
+     shrink all the way toward its own floor at small scales same as
+     everything else in here, since the header clearance itself no
+     longer depends on it. */
   gap: clamp(1.2rem, 2.6vh, 4rem);
-  padding: clamp(6rem, 12vh, 11rem) clamp(1.5rem, 6vw, 4rem) calc(clamp(1.2rem, 3vh, 3.5rem) + 30px);
-  background: #f4f6f9;
-  color: var(--os-ink, #0B1F3A);
-  font-family: 'Inter', sans-serif;
+  padding: clamp(0.75rem, 3vh, 2rem) clamp(1.5rem, 6vw, 4rem) calc(clamp(1.2rem, 3vh, 3.5rem) + 30px);
+  width: 100%;
+  /* transform-origin/will-change matter here, not on .ld3 — this is the
+     element LeadersSection.tsx actually scales. Center origin: shrinking
+     pulls in evenly from every edge instead of anchoring to one corner. */
+  transform-origin: center center;
+  will-change: transform;
 }
 .ld3 svg {
   fill: none;
@@ -134,12 +197,24 @@
      mask-composite so every edge — top, bottom, and right, not only the
      text side on the left — dissolves into the page instead of ending in
      a visible seam. */
+  /* Peak alpha in the horizontal fade was 0.8 — enough for the source
+     footage's own baked-in kinetic-typography captions (it's stock
+     corporate video content, not something this codebase controls) to
+     read as legible, competing text instead of ambient backdrop texture.
+     At some crops two of those captions land in frame at once and
+     visually overlap into unreadable noise. This section already has
+     zero interest in what the footage's own text says (the real "OUR
+     LEADERSHIP" heading is the actual foreground content) — dropping the
+     peak to 0.4 keeps the same footage-as-backdrop idea and the same
+     fade shape, just quiet enough that its own text never competes with
+     or garbles into anything legible, regardless of which moment is
+     playing. */
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.8) 75%, transparent 100%),
+    linear-gradient(to right, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.4) 75%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
   -webkit-mask-composite: source-in, source-in;
   mask-image:
-    linear-gradient(to right, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.8) 75%, transparent 100%),
+    linear-gradient(to right, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.4) 75%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
   mask-composite: intersect;
   pointer-events: none;
@@ -424,14 +499,6 @@
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
-}
-
-/* ---------------- short-viewport compression ---------------- */
-@media (max-height: 700px) {
-  .ld3 {
-    padding-top: clamp(5.5rem, 12vh, 7rem);
-    gap: 0.8rem;
-  }
 }
 
 /* ---------------- responsive ---------------- */

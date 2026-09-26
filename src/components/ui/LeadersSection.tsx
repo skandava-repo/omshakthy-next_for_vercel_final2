@@ -1,4 +1,6 @@
 'use client'
+import { useRef } from 'react'
+import { useScaleToFit } from '@/lib/useScaleToFit'
 import './LeadersSection.css'
 
 /* Editorial video-intro band (video backdrop, "OUR LEADERSHIP" eyebrow,
@@ -95,51 +97,71 @@ function Card({ leader, index }: { leader: Leader; index: number }) {
 }
 
 const LeadersSection = () => {
+  // .ld3 is a fixed height:100vh, overflow:hidden slide — it never
+  // scrolls and its own content never reflows into a different shape (no
+  // breakpoint here wraps the roster into two rows or stacks the video
+  // band, unlike the >980px media query further down in the CSS). The
+  // vw/vh clamp() formulas throughout this file already shrink cards,
+  // gaps, and type as the viewport narrows — that's normal fluid sizing
+  // and is untouched. What they can't account for on their own is an
+  // unusually SHORT viewport (a laptop's 768px-tall screen): the content
+  // can still be "correctly" sized by width-driven formulas and yet be
+  // taller than the 100vh box actually available, which is what let the
+  // roster and the video intro band compress into each other. See
+  // useScaleToFit's own comment for how the fix works — same hook now
+  // shared by CinematicTimeline, TestimonialsSection, and
+  // WhatWeDoCloneContent, the site's other fixed one-screen slides.
+  const rootRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  useScaleToFit(rootRef, stageRef)
+
   return (
-    <section className="ld3" id="leadership" data-snap="true" aria-label="Our leadership">
-      <div className="ld3__intro">
-        {/* Same background clip TrustedPartnersSection uses behind its
-            pillars — reused here rather than the static skyline photo, so
-            the backdrop is footage instead of a still. */}
-        <video
-          className="ld3__intro-video"
-          src="/trusted-partners-bg.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        />
-        <div className="ld3__intro-main">
-          <p className="ld3__eyebrow">
-            <span className="ld3__eyebrow-line" />
-            OUR LEADERSHIP
-            <span className="ld3__eyebrow-line" />
-          </p>
-          <h1 className="ld3__h1">
-            Three decades.
-            <br />
-            One unwavering <span className="ld3__accent">vision.</span>
-          </h1>
-          <span className="ld3__h1-rule" aria-hidden="true" />
+    <section className="ld3" id="leadership" data-snap="true" aria-label="Our leadership" ref={rootRef}>
+      <div className="ld3__stage" ref={stageRef}>
+        <div className="ld3__intro">
+          {/* Same background clip TrustedPartnersSection uses behind its
+              pillars — reused here rather than the static skyline photo, so
+              the backdrop is footage instead of a still. */}
+          <video
+            className="ld3__intro-video"
+            src="/trusted-partners-bg.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="ld3__intro-main">
+            <p className="ld3__eyebrow">
+              <span className="ld3__eyebrow-line" />
+              OUR LEADERSHIP
+              <span className="ld3__eyebrow-line" />
+            </p>
+            <h1 className="ld3__h1">
+              Three decades.
+              <br />
+              One unwavering <span className="ld3__accent">vision.</span>
+            </h1>
+            <span className="ld3__h1-rule" aria-hidden="true" />
+          </div>
         </div>
-      </div>
 
-      <div className="ld3__roster">
-        {leaders.map((leader, i) => (
-          <Card key={leader.name} leader={leader} index={i} />
-        ))}
-      </div>
+        <div className="ld3__roster">
+          {leaders.map((leader, i) => (
+            <Card key={leader.name} leader={leader} index={i} />
+          ))}
+        </div>
 
-      <div className="ld3__tagline">
-        <span className="ld3__tagline-dot" aria-hidden="true" />
-        <span className="ld3__tagline-line" aria-hidden="true" />
-        <p className="ld3__tagline-text">Built on values. Driven by purpose. Committed to tomorrow.</p>
-        <span className="ld3__tagline-line" aria-hidden="true" />
-        <span className="ld3__tagline-dot" aria-hidden="true" />
-      </div>
+        <div className="ld3__tagline">
+          <span className="ld3__tagline-dot" aria-hidden="true" />
+          <span className="ld3__tagline-line" aria-hidden="true" />
+          <p className="ld3__tagline-text">Built on values. Driven by purpose. Committed to tomorrow.</p>
+          <span className="ld3__tagline-line" aria-hidden="true" />
+          <span className="ld3__tagline-dot" aria-hidden="true" />
+        </div>
 
-      <span className="ld3__watermark" aria-hidden="true">EST. 1991</span>
+        <span className="ld3__watermark" aria-hidden="true">EST. 1991</span>
+      </div>
     </section>
   )
 }

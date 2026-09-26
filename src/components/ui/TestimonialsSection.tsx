@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useInView, useReducedMotion, motion, AnimatePresence } from 'framer-motion'
+import { useScaleToFit } from '@/lib/useScaleToFit'
 import './TestimonialsSection.css'
 
 interface Review {
@@ -315,6 +316,18 @@ function FeaturedCard({ review, reduce, activeKey }: { review: Review; reduce: b
 const ROTATE_MS = 5000
 
 const TestimonialsSection = () => {
+  // .tw is a fixed height:100vh, overflow:hidden slide, same "one screen,
+  // no scroll" convention as LeadersSection/CinematicTimeline/
+  // WhatWeDoCloneContent. useScaleToFit shrinks .tw__stage (header + tile
+  // grid/featured card + marquee) as one rigid unit whenever its natural
+  // height doesn't fit what .tw actually has — see that hook's own
+  // comment, and .tw's CSS comment for what this replaces (content
+  // silently clipping via the ancestor .page-controller__section's own
+  // overflow:hidden, with nothing here shrinking to compensate).
+  const rootRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  useScaleToFit(rootRef, stageRef)
+
   const [centerIndex, setCenterIndex] = useState(0)
   const reduce = useReducedMotion()
   // 3 tiles left / 3 right — videoReviews is always padded to exactly 6
@@ -336,64 +349,66 @@ const TestimonialsSection = () => {
   }, [reduce])
 
   return (
-    <section className="tw" id="testimonials" aria-label="Customer testimonials">
+    <section className="tw" id="testimonials" aria-label="Customer testimonials" ref={rootRef}>
       <div className="tw__aurora" aria-hidden>
         <span className="tw__blob tw__blob--1" />
         <span className="tw__blob tw__blob--2" />
       </div>
-      <header className="tw__header">
-        <div>
-          <span className="tw__eyebrow">Customer Stories</span>
-          <h2 className="tw__title">
-            Trusted by <em><Odometer value="7,500" suffix="+" /></em> Happy Customers.
-          </h2>
-        </div>
-        <div className="tw__rating">
-          <div className="tw__rating-score">
-            <Odometer value="4.9" />
-          </div>
+      <div className="tw__stage" ref={stageRef}>
+        <header className="tw__header">
           <div>
-            <Stars n={5} />
-            <div className="tw__rating-sub">
-              <Odometer value="300" suffix="+" /> Google Reviews
+            <span className="tw__eyebrow">Customer Stories</span>
+            <h2 className="tw__title">
+              Trusted by <em><Odometer value="7,500" suffix="+" /></em> Happy Customers.
+            </h2>
+          </div>
+          <div className="tw__rating">
+            <div className="tw__rating-score">
+              <Odometer value="4.9" />
+            </div>
+            <div>
+              <Stars n={5} />
+              <div className="tw__rating-sub">
+                <Odometer value="300" suffix="+" /> Google Reviews
+              </div>
             </div>
           </div>
+        </header>
+
+        {/* Video-testimonial tiles either side of one large featured card —
+            two entirely independent things, not a synced pair. Tiles are
+            static video previews (real buttons, own focus/hover, no
+            onClick yet — see Tile's own comment for why); the featured card
+            auto-advances through all 7 written testimonials on its own
+            timer, unrelated to whichever tile a visitor happens to be
+            looking at. */}
+        <div className="tw__grid">
+          <div className="tw__tiles">
+            {left.map((r, i) => (
+              <Tile key={`${r.name}-${i}`} review={r} />
+            ))}
+          </div>
+
+          <FeaturedCard review={reviews[centerIndex]} reduce={!!reduce} activeKey={centerIndex} />
+
+          <div className="tw__tiles">
+            {right.map((r, i) => (
+              <Tile key={`${r.name}-${i + left.length}`} review={r} />
+            ))}
+          </div>
         </div>
-      </header>
 
-      {/* Video-testimonial tiles either side of one large featured card —
-          two entirely independent things, not a synced pair. Tiles are
-          static video previews (real buttons, own focus/hover, no
-          onClick yet — see Tile's own comment for why); the featured card
-          auto-advances through all 7 written testimonials on its own
-          timer, unrelated to whichever tile a visitor happens to be
-          looking at. */}
-      <div className="tw__grid">
-        <div className="tw__tiles">
-          {left.map((r, i) => (
-            <Tile key={`${r.name}-${i}`} review={r} />
-          ))}
-        </div>
-
-        <FeaturedCard review={reviews[centerIndex]} reduce={!!reduce} activeKey={centerIndex} />
-
-        <div className="tw__tiles">
-          {right.map((r, i) => (
-            <Tile key={`${r.name}-${i + left.length}`} review={r} />
-          ))}
-        </div>
-      </div>
-
-      {/* auto-scrolling "wall of love" ribbon */}
-      <div className="tw__marquee" aria-hidden>
-        <div className={`tw__marquee-track${reduce ? ' is-static' : ''}`}>
-          {[...highlights, ...highlights, ...highlights].map((h, i) => (
-            <span className="tw__chip" key={i}>
-              <span className="tw__chip-stars">★★★★★</span>
-              <span className="tw__chip-text">{h.t}</span>
-              <span className="tw__chip-name">— {h.n}</span>
-            </span>
-          ))}
+        {/* auto-scrolling "wall of love" ribbon */}
+        <div className="tw__marquee" aria-hidden>
+          <div className={`tw__marquee-track${reduce ? ' is-static' : ''}`}>
+            {[...highlights, ...highlights, ...highlights].map((h, i) => (
+              <span className="tw__chip" key={i}>
+                <span className="tw__chip-stars">★★★★★</span>
+                <span className="tw__chip-text">{h.t}</span>
+                <span className="tw__chip-name">— {h.n}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

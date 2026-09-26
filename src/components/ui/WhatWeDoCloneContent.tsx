@@ -1,4 +1,6 @@
 'use client'
+import { useRef } from 'react'
+import { useScaleToFit } from '@/lib/useScaleToFit'
 import './WhatWeDoCloneContent.css'
 
 /* "What We Do" — v10, a direct, deliberate clone of a supplied reference
@@ -102,6 +104,27 @@ const rows: Row[] = [
 ]
 
 const WhatWeDoCloneContent = () => {
+  // .wc is a fixed height:100vh/100dvh, overflow:hidden slide (see its
+  // own CSS comment: "One screen, not a scroll"). .wc__body's flex:1
+  // already constrains it to exactly whatever height .wc's padding
+  // leaves — the real content (.wc__stage: the left copy column, the
+  // divider, and .wc__right's 5 discipline rows) used to be stretched
+  // to fit that leftover space directly, silently clipping whichever
+  // column's natural content needed more room than that (confirmed at
+  // a laptop's 768px-tall viewport: the stat card's "Years in
+  // Operation" label). useScaleToFit measures .wc__stage's real,
+  // natural size against what .wc__body actually has and shrinks the
+  // whole two-column row as one rigid unit when it doesn't fit — see
+  // that hook's own comment for the full reasoning — same hook already
+  // fixed the identical symptom in LeadersSection. CinematicTimeline and
+  // TestimonialsSection were checked at the same viewport and don't
+  // currently need it (their content already fits), so it wasn't added
+  // there — this isn't applied blanket across every section, only where
+  // an actual overflow was confirmed live.
+  const rootRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  useScaleToFit(rootRef, stageRef)
+
   return (
     // Was <main> — this component is used both as a standalone page's
     // whole body (what-we-do7/8) and, now, as one section embedded inside
@@ -116,7 +139,8 @@ const WhatWeDoCloneContent = () => {
     // dark gradient bar. No data-header-theme now falls through to that
     // same default everywhere this component is used.
     <section className="wc" aria-label="What we do">
-      <div className="wc__body">
+      <div className="wc__body" ref={rootRef}>
+      <div className="wc__stage" ref={stageRef}>
         <section className="wc__left">
           <p className="wc__eyebrow">
             What    We    Do
@@ -176,6 +200,7 @@ const WhatWeDoCloneContent = () => {
             )
           })}
         </section>
+      </div>
       </div>
     </section>
   )

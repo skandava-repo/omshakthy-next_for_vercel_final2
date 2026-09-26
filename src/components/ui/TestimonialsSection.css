@@ -24,17 +24,72 @@
    itself wasn't one single hex value throughout, just multiple shades of
    one family, not a full re-think per instance. */
 
+/* Was min-height:100vh — but this section is only ever rendered inside
+   PageController's pinned stack, where the ancestor .page-controller__
+   section already forces height:100vh + overflow:hidden regardless of
+   what this component declares. min-height let this section's own
+   natural content quietly exceed that ceiling — the excess got clipped
+   by that ANCESTOR's overflow:hidden, invisibly, rather than by
+   anything owned here, and (unlike LeadersSection/WhatWeDoCloneContent,
+   both already fixed this same way) nothing here noticed or shrank to
+   compensate — a short laptop screen dropped the bottom of the marquee
+   ribbon and/or the tile grid with no visible sign anything was wrong.
+   height:100vh here makes the section own its real ceiling explicitly,
+   matching the other one-screen slides. See .tw__stage below and
+   TestimonialsSection.tsx's own comment for how the fix works — same
+   useScaleToFit hook already used there. */
 .tw {
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  height: 100vh;
+  /* Header.css's .site-nav is position:fixed, 102px tall, z-index:1000,
+     spanning the full viewport width — it sits in front of every
+     section regardless of what any section does, and this is the only
+     thing standing between it and whatever .tw__stage centers below it.
+     Has to be a flat, UNSCALED px value declared HERE on .tw itself, not
+     inside .tw__stage (what useScaleToFit actually shrinks) — the header
+     never gets smaller, so clearance that scales along with the content
+     falls short of 102px at any scale below 1 and lets the header's own
+     opaque gradient paint over the content behind it. Confirmed live: at
+     a laptop's short-height sizes, with this clearance living inside the
+     (then-scaling) stage instead, the "Customer Stories" pill's own left
+     edge ended up rendered partly behind the header — same bug, same
+     fix, over in LeadersSection.css's .ld3. */
+  padding-top: 102px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: clamp(3.5rem, 9vh, 7rem) clamp(1.25rem, 6vw, 6rem);
   background: #f4f6f9;
   color: #0B1F3A;
   font-family: 'Inter', sans-serif;
+}
+/* Everything that used to be a direct child of .tw (header, tile grid +
+   featured card, marquee) except .tw__aurora — that one stays a direct
+   child of .tw since it's a position:absolute, inset:0 decorative
+   backdrop meant to cover the section regardless of content scale, not
+   part of the content being fit. position:relative here (not left to
+   toggle with whether a transform is currently applied) for the same
+   reason LeadersSection's .ld3__stage needs it: several descendants
+   (.tw-tile, .tw-featured-stage, etc.) already have their own closer
+   position:relative ancestors so they don't depend on this element as a
+   containing block, but declaring it unconditionally here costs nothing
+   and rules the question out entirely rather than relying on that still
+   being true after a future edit. */
+.tw__stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Top padding is now just the extra breathing room BELOW .tw's own
+     fixed 102px header clearance (see that rule's comment) — free to
+     shrink toward its own floor at small scales same as everything
+     else in here, since the header clearance itself no longer depends
+     on it. Bottom keeps its original, larger clamp — nothing below
+     this section needs clearing, so it never had to carry a fixed
+     component the way top did. */
+  padding: clamp(0.75rem, 3vh, 2rem) clamp(1.25rem, 6vw, 6rem) clamp(3.5rem, 9vh, 7rem);
+  transform-origin: center center;
+  will-change: transform;
 }
 
 /* soft aurora — multiply, not screen: screen blending lightens toward the
