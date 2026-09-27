@@ -33,7 +33,9 @@
   color: rgba(11, 31, 58, 0.65);
 }
 .site-nav--light .site-nav__link:hover,
-.site-nav--light .site-nav__link:hover span {
+.site-nav--light .site-nav__link:hover span,
+.site-nav--light .site-nav__link--active,
+.site-nav--light .site-nav__link--active span {
   color: var(--os-ink, #0B1F3A);
 }
 
@@ -61,7 +63,9 @@
   color: rgba(11, 31, 58, 0.65);
 }
 .site-nav--transparent .site-nav__link:hover,
-.site-nav--transparent .site-nav__link:hover span {
+.site-nav--transparent .site-nav__link:hover span,
+.site-nav--transparent .site-nav__link--active,
+.site-nav--transparent .site-nav__link--active span {
   color: var(--os-ink, #0B1F3A);
 }
 
@@ -230,11 +234,54 @@
   margin: 0;
 }
 
-/* "Resources" dropdown — same look as a plain .site-nav__link (it's a
-   <button>, not an <a>, since it toggles a menu instead of navigating),
-   plus a small caret and the absolutely-positioned panel below it. */
+/* "Resources" dropdown — a <button>, not an <a>, since it toggles a menu
+   instead of navigating, but deliberately no different-looking from a
+   plain .site-nav__link otherwise: no caret, no icon next to the word —
+   it's meant to read exactly like Projects/About/Gallery/Contact, same
+   underline-on-hover and everything, and only reveal that it's actually
+   a menu once the panel itself opens below it.
+   This used to also carry a small rotating chevron (.site-nav__link--
+   dropdown span::after) — removed per instruction. Worth noting for
+   next time this button's CSS gets touched: that chevron rule and
+   .site-nav__link's own plain-underline-on-hover rule (further down)
+   both matched this SAME button's span::after (it carries both
+   .site-nav__link and .site-nav__link--dropdown), which caused a real,
+   reproducible bug — CSS resolves a specificity tie per PROPERTY, not
+   per rule, so the underline rule's width:100% (meant to grow a plain
+   underline from 0) won over the chevron's own width:6px on hover, while
+   the chevron rule's border/transform still applied — a block as wide
+   as the button's text, 1px tall, with an L-shaped border rotated 45°,
+   which is a long diagonal line straight through the word. Now that the
+   chevron rule is gone outright rather than patched to coexist, this
+   button just falls through to the exact same plain-underline hover
+   every other nav link already has, and there's nothing left for it to
+   collide with. */
 .site-nav__item--dropdown {
   position: relative;
+}
+/* The dropdown mouseenter/mouseleave logic (Header.tsx) is on THIS li,
+   but .site-nav__dropdown itself is a position:absolute descendant
+   sitting margin-top:12px below the button — that 12px is real, empty
+   space (not part of the li's own layout box, which is only as tall as
+   the button; not part of the panel either, which only starts after
+   the gap). Moving the mouse from the button straight down into the
+   panel passes through whatever's actually rendered there instead
+   (the page behind the header), which is NOT a descendant of this li —
+   a genuine mouseleave fires the instant the pointer crosses that
+   empty strip, closing the panel before it's ever reached. This
+   invisible bridge — same width/centering as the panel itself, exactly
+   as tall as that gap — fills the dead zone with real (if invisible)
+   li content, so hovering through it still counts as "inside" the li
+   the whole way from button to panel. */
+.site-nav__item--dropdown::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 820px;
+  max-width: calc(100vw - 32px);
+  height: 12px;
 }
 
 .site-nav__link--dropdown {
@@ -243,17 +290,51 @@
   cursor: pointer;
 }
 
-.site-nav__link--dropdown span::after {
-  content: '';
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-left: 6px;
-  margin-bottom: 1px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform 0.2s ease;
+/* v2 — the flat paper card (first pass) read as a generic corporate
+   mega-menu: flat navy circles, no framing, no sense of occasion. This
+   pass pushes the SAME light-paper/brass/Fraunces language the rest of
+   the site already uses (--os-paper/--os-ink/--os-brass — never a dark-
+   navy-and-gold panel bolted on top of it; that's a different, heavier
+   language than anything else here) toward something with more actual
+   presence: a thin gold hairline frame (not just a faint border), a
+   medallion treatment on the icons instead of flat filled circles, and
+   a picture-framed photo instead of one that just fills its box. Flex
+   row of two parts: .site-nav__dropdown-main (eyebrow + the 2×3 link
+   grid) and .site-nav__dropdown-feature (a real project photo). */
+/* Was appearing instantly, fully-formed, the instant React mounts it —
+   correct but inert, no sense that anything actually opened. Now the
+   panel itself eases down into place, then .site-nav__dropdown-item
+   (each row) and .site-nav__dropdown-feature cascade in one after
+   another (staggered via each element's own inline animation-delay —
+   ci*0.05s per row in the .tsx, the feature photo last at 0.4s) rather
+   than all arriving at once — the same idea LeadersSection's own card
+   entrances and the desktop nav links' own animationDelay stagger
+   already use elsewhere on this site, just applied to a menu instead of
+   a page section. transform here combines translateX(-50%) (the
+   panel's actual horizontal centering under its button) with the
+   entrance's own translateY in every keyframe step, since an element
+   only has one `transform` — a keyframe that set translateY alone would
+   silently drop the centering out from under it for the animation's
+   own duration. */
+@keyframes dropdownPanelIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes dropdownItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .site-nav__dropdown {
@@ -261,32 +342,306 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: 4px;
-  padding: 8px;
-  min-width: 190px;
-  border-radius: 14px;
-  background: rgba(11, 31, 58, 0.96);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-  list-style: none;
+  margin-top: 12px;
+  display: flex;
+  align-items: stretch;
+  animation: dropdownPanelIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* The v2 pass's bigger medallion icons + roomier link padding/gap ate
+     into .site-nav__dropdown-main's real text width — confirmed live:
+     "Land Aggregation" (the longest title) started truncating itself,
+     not just its description. 760px→820px gives main back more than
+     that difference cost it. */
+  width: 820px;
+  max-width: calc(100vw - 32px);
+  border-radius: 22px;
+  /* Faint radial lift from the top-left corner instead of one flat
+     tone — the difference reads as "considered surface" rather than
+     "solid-fill div," the same reason a lot of the site's real cards
+     (.tw-featured, .ld3__card) aren't flat single colors either. */
+  background: radial-gradient(140% 160% at 0% 0%, #fff 0%, var(--os-paper, #FBF8F2) 55%);
+  /* Two rings, not one border: an inner hairline right at the edge plus
+     an outer one a hair further out (via box-shadow, since an element
+     only gets one real `border`) is what actually reads as a considered
+     gold FRAME rather than "a border was left slightly gold." */
+  border: 1px solid rgba(200, 161, 90, 0.55);
+  box-shadow:
+    0 0 0 4px rgba(200, 161, 90, 0.12),
+    0 24px 60px -12px rgba(11, 31, 58, 0.4),
+    0 4px 20px rgba(11, 31, 58, 0.12);
+  overflow: hidden;
   z-index: 20;
 }
 
+.site-nav__dropdown-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 28px 30px 24px;
+}
+
+.site-nav__dropdown-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 2px 18px;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--os-brass-deep, #A8813F);
+}
+.site-nav__dropdown-eyebrow-line {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--os-brass, #C8A15A));
+}
+/* Small diamond after the word — a heraldic full-stop rather than the
+   line trailing off into nothing on both ends, the kind of detail an
+   invitation card or a seal uses. */
+.site-nav__dropdown-eyebrow::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  margin-left: 0.2rem;
+  background: var(--os-brass, #C8A15A);
+  transform: rotate(45deg);
+}
+
+.site-nav__dropdown-grid {
+  display: grid;
+  /* minmax(0, 1fr), not a bare 1fr — a grid track's default min size is
+     auto (its content's own intrinsic width), not 0, so a nowrap
+     .site-nav__dropdown-desc could still force its own column wider
+     than its fair 1fr share. Confirmed live once the feature photo
+     panel was added narrowing this grid's real available width: the
+     right column's descriptions bled straight past the grid into the
+     photo next to it instead of truncating — nothing stopped them,
+     since the column itself had silently grown past 1fr. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px 16px;
+  list-style: none;
+}
+.site-nav__dropdown-grid li {
+  min-width: 0;
+  /* Starts invisible and settles in — animation-delay is set inline per
+     item in the .tsx (ci*0.05s), so this one shared rule staggers all
+     six just by each carrying a different delay. */
+  opacity: 0;
+  animation: dropdownItemIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .site-nav__dropdown-link {
-  display: block;
-  padding: 9px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-family: 'Inter', sans-serif;
-  color: rgba(255, 255, 255, 0.75);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px 10px 16px;
+  border-radius: 12px;
+  min-width: 0;
   text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* A thin gold bar that grows in from the left edge on hover, rather
+   than just a flat tint — the same "something arrives, doesn't just
+   tint" idea as .site-nav__link's own underline sweep, so a hover here
+   feels like it belongs to the same site instead of a bought-in
+   component. */
+.site-nav__dropdown-link::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--os-brass, #C8A15A);
+  transform: scaleY(0);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-nav__dropdown-link:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(200, 161, 90, 0.1);
+  transform: translateX(3px);
+}
+.site-nav__dropdown-link:hover::before {
+  transform: scaleY(1);
+}
+
+/* v3 — an icon-in-a-medallion per row (v2) still read as a UI icon set,
+   just a fancier one. Dropped icons entirely: a plain numeral instead,
+   the way a fine-press book or a gallery catalogue numbers its entries
+   rather than illustrating each one. Thin Fraunces weight (not bold) so
+   it reads as typography, not another badge; the hairline under it is
+   the only "frame" it gets, and even that only appears on hover — the
+   number sits quiet until then. */
+.site-nav__dropdown-number {
+  flex: none;
+  width: 32px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--os-brass-deep, #A8813F);
+  opacity: 0.55;
+  position: relative;
+  padding-bottom: 6px;
+  transition: opacity 0.25s ease, color 0.25s ease;
+}
+.site-nav__dropdown-number::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 1px;
+  background: var(--os-brass, #C8A15A);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-nav__dropdown-link:hover .site-nav__dropdown-number {
+  opacity: 1;
+  color: var(--os-ink, #0B1F3A);
+}
+.site-nav__dropdown-link:hover .site-nav__dropdown-number::after {
+  transform: scaleX(1);
+}
+
+/* The page you're actually on — same treatment hover already gives a
+   row (left bar drawn in, numeral brightened, underline shown), just
+   left in that state permanently rather than only on mouseover, plus a
+   faint permanent background tint so it still reads as "current" even
+   before the mouse ever reaches this row. */
+.site-nav__dropdown-link--active {
+  background: rgba(200, 161, 90, 0.08);
+}
+.site-nav__dropdown-link--active::before {
+  transform: scaleY(1);
+}
+.site-nav__dropdown-link--active .site-nav__dropdown-number {
+  opacity: 1;
+  color: var(--os-ink, #0B1F3A);
+}
+.site-nav__dropdown-link--active .site-nav__dropdown-number::after {
+  transform: scaleX(1);
+}
+
+.site-nav__dropdown-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.site-nav__dropdown-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--os-ink, #0B1F3A);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-nav__dropdown-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: rgba(11, 31, 58, 0.55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Real project photography, not another icon — the one thing the link
+   grid alone couldn't give this menu next to how photo-led the rest of
+   the site is (Hero, LeadersSection, WhatWeDoCloneContent). A thin gold
+   inset ring (box-shadow, inset — doesn't disturb the image's own edge-
+   to-edge fill) frames it like matting around a photograph instead of
+   the photo just being a flat-cropped background fill; the divider on
+   its own left edge is the same dot–line motif LeadersSection's
+   .ld3__tagline and WhatWeDoCloneContent's .wc__divider already use
+   between two columns on this site, just vertical and without the dots
+   (there's no third element here to punctuate between). */
+.site-nav__dropdown-feature {
+  position: relative;
+  flex: none;
+  width: 250px;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(200, 161, 90, 0.4);
+  /* Last to arrive (animation-delay: 0.4s, set inline in the .tsx) —
+     after the six rows have cascaded in, matching the same
+     dropdownItemIn used for those. */
+  opacity: 0;
+  animation: dropdownItemIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.site-nav__dropdown-feature::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(200, 161, 90, 0.5), transparent);
+  z-index: 1;
+}
+.site-nav__dropdown-feature img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-nav__dropdown-feature:hover img {
+  transform: scale(1.06);
+}
+.site-nav__dropdown-feature-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(11, 19, 38, 0.94) 0%, rgba(11, 19, 38, 0.4) 55%, rgba(11, 19, 38, 0.12) 100%);
+}
+.site-nav__dropdown-feature-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.site-nav__dropdown-feature-eyebrow {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--os-brass-lift, #D9B570);
+}
+.site-nav__dropdown-feature-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 21px;
+  font-weight: 600;
   color: #fff;
+  line-height: 1.2;
+}
+.site-nav__dropdown-feature-cta {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(200, 161, 90, 0.35);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+.site-nav__dropdown-feature:hover .site-nav__dropdown-feature-cta {
+  transform: translateX(4px);
 }
 
 .site-nav__link {
@@ -333,8 +688,45 @@
   transition: 0.3s all ease;
 }
 
-.site-nav__link:hover span::after {
+.site-nav__link:hover span::after,
+/* The current page's own underline stays drawn in permanently instead
+   of only appearing on hover — the same growing-underline the hover
+   state already uses, just left at its full width:100% end state, so
+   "you are here" reads as a natural extension of a treatment this nav
+   already has rather than a new decoration bolted on for the purpose. */
+.site-nav__link--active span::after {
   width: 100%;
+}
+
+/* Color + a thin underline alone (the first pass) read as too subtle —
+   easy to miss against everything else already competing for attention
+   in this bar. .site-nav__link's own base rule already gives every link
+   a pill shape (border-radius:999px, generous padding) that just sits
+   with a transparent background normally; filling that SAME pill for
+   the active one — instead of adding a new shape/indicator — is what
+   actually makes "you are here" hard to miss at a glance, not just
+   findable on close inspection. Brass, not white or navy: it's the same
+   accent this site already uses everywhere else for "this one is
+   selected/current" (the dropdown panel's own active row right below
+   this, LeadersSection's and WhatWeDoCloneContent's card treatments),
+   so it stays legible switching between the dark default header and the
+   light/transparent section themes without needing a different fill
+   color per theme.
+   .site-nav__link.site-nav__link--active (two classes), not a bare
+   .site-nav__link--active — needed to beat .site-nav__link:hover's own
+   background:none at equal specificity (0,2,0 either way) by appearing
+   later in the file instead, so hovering the current page's own nav
+   item doesn't make its highlight disappear out from under the
+   pointer. */
+/* .site-nav__link.site-nav__link--active (two classes), not a bare
+   .site-nav__link--active — needed to beat .site-nav__link:hover's own
+   background:none at equal specificity (0,2,0 either way) by appearing
+   later in the file instead, so hovering the current page's own nav
+   item doesn't make its highlight disappear out from under the
+   pointer. Brass, not blue — tried blue (--os-blue) here, reverted per
+   instruction; brass is what's actually in use. */
+.site-nav__link.site-nav__link--active {
+  background: rgba(200, 161, 90, 0.22);
 }
 
 /* Nav link colors — always white */
@@ -342,7 +734,8 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.site-nav .site-nav__link:hover {
+.site-nav .site-nav__link:hover,
+.site-nav .site-nav__link--active {
   color: rgba(255, 255, 255, 1);
 }
 
@@ -350,7 +743,8 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.site-nav--scrolled .site-nav__link:hover {
+.site-nav--scrolled .site-nav__link:hover,
+.site-nav--scrolled .site-nav__link--active {
   color: rgba(255, 255, 255, 1);
 }
 
@@ -501,6 +895,17 @@
   font-size: 14px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.82);
+}
+
+/* Current page — same brass accent used everywhere else on this site
+   for "this one's selected/emphasized" (LeadersSection's card rules,
+   WhatWeDoCloneContent's stat card), not a new color invented for one
+   menu. Compound selectors (not a bare .mobile-nav__link--active) to
+   beat .mobile-nav__links a / .mobile-nav__group a's own specificity
+   without reaching for !important. */
+.mobile-nav__links a.mobile-nav__link--active,
+.mobile-nav__group a.mobile-nav__link--active {
+  color: var(--os-brass-lift, #D9B570);
 }
 
 .mobile-nav__footer {

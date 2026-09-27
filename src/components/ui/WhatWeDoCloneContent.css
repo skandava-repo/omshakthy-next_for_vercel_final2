@@ -393,7 +393,7 @@
   width: clamp(40px, min(5vw, 9vh), 64px);
   height: clamp(40px, min(5vw, 9vh), 64px);
   border-radius: 50%;
-  background: var(--wc-navy-deep);
+  background: #d1dbe7;
   border: 2px solid var(--wc-blue);
   display: flex;
   align-items: center;
@@ -405,7 +405,7 @@
   width: 52%;
   height: 52%;
   fill: none;
-  stroke: var(--wc-blue-light);
+  stroke: #0c6bb2;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;

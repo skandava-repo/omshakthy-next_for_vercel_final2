@@ -48,6 +48,33 @@ const C = {
 const display: React.CSSProperties = { fontFamily: "'Fraunces', Georgia, serif", letterSpacing: '-0.01em' }
 const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans-serif" }
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace" }
+
+// v2 — a bare thin-stroke chevron floating on the same panel background
+// read as too quiet/generic still (basically the native arrow's shape,
+// just recolored). A solid filled disc instead of an outline gives it
+// actual presence as a real control, not a leftover default: brand blue
+// fill (C.blue — this page's own palette is blue-only by design, see
+// the comment on C above; no gold/brass here to reach for instead) with
+// a crisp white chevron cut into it.
+// A quarter-turn on focus was tried here too (matching Header.tsx's own
+// dropdown caret flipping open/closed) but dropped: confirmed live that
+// `transform` doesn't visibly apply to elements in this environment at
+// all right now, independent of whether it's set via a Tailwind utility
+// or a raw inline style — the DOM correctly holds rotate(180deg) either
+// way, but getComputedStyle keeps reporting the identity matrix, and
+// nothing rotates on screen. That's a pre-existing rendering issue
+// bigger than this one icon, not something to chase mid-icon-swap —
+// left as a static badge rather than shipping an onFocus/onBlur wiring
+// that would have had zero visible effect.
+const DropdownChevron = () => (
+  <span className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none">
+    <span className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: C.blue }}>
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </span>
+  </span>
+)
 const ease = [0.16, 1, 0.3, 1] as const
 
 // Cheap 2-layer shadow, not .hero-slider__title's full 8-layer stack —
@@ -234,40 +261,60 @@ const ProjectsContent = () => {
               />
             </div>
 
-            <select
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="px-5 py-3.5 rounded-full text-sm outline-none"
-              style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-            >
-              {locationOptions.map((l) => (
-                <option key={l} value={l}>{l}</option>
-              ))}
-            </select>
+            {/* Was a bare <select> with no appearance styling at all —
+                every browser falls back to its own generic native arrow
+                for that (a plain gray triangle on macOS Chrome), which
+                is the one piece of this bar that never got the same
+                pill/serif treatment as everything around it. appearance-
+                none turns that native arrow off; DropdownChevron below
+                draws a real one in the site's own line-icon language
+                instead (same stroke width/style as the search icon
+                right next to it), the same "custom-styled to match, not
+                left as whatever the OS defaults to" idea Header.tsx's
+                own dropdown already went through. */}
+            <div className="relative">
+              <select
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
+                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
+              >
+                {locationOptions.map((l) => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+              <DropdownChevron />
+            </div>
 
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="px-5 py-3.5 rounded-full text-sm outline-none"
-              style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-            >
-              {typeOptions.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
+                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
+              >
+                {typeOptions.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+              <DropdownChevron />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as (typeof statusOptions)[number])}
-              className="px-5 py-3.5 rounded-full text-sm outline-none"
-              style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-            >
-              {statusOptions.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as (typeof statusOptions)[number])}
+                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
+                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
+              >
+                {statusOptions.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+              <DropdownChevron />
+            </div>
             <button
               type="button"
               onClick={resetFilters}
