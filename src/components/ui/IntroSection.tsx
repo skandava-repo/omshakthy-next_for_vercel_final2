@@ -101,9 +101,22 @@ const IntroSection = () => {
       if (!finishedRef.current) onCanPlayThrough()
     }, 4000)
 
+    // Hard failsafe, independent of every video event above. Everything
+    // else here — loadedmetadata, progress, canplaythrough, even the
+    // loadingFallback above — still ultimately routes through the video
+    // element actually producing an event. On real phones the media
+    // pipeline can stall with zero events firing at all (page not yet
+    // foregrounded, Low Power Mode, background-tab throttling, a flaky
+    // connection) — readyState stuck at HAVE_NOTHING forever, no error,
+    // no progress. Without an unconditional ceiling that visitor is stuck
+    // looking at a blank/plain-color screen permanently. Give the video
+    // a generous window to behave, then reveal the site regardless.
+    const hardFailsafe = setTimeout(finish, 8000)
+
     return () => {
       if (safety) clearTimeout(safety)
       clearTimeout(loadingFallback)
+      clearTimeout(hardFailsafe)
       video.removeEventListener('ended', finish)
       video.removeEventListener('error', finish)
       video.removeEventListener('loadedmetadata', onMeta)

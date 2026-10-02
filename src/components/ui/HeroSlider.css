@@ -151,6 +151,26 @@
     bottom: 20px;
     right: 20px;
   }
+
+  /* .hero-slider__content has a fixed 60px/40px side padding and no
+     viewport-relative width cap (width:auto, max-width:700px — 700px
+     never actually constrains anything narrower than that). At a
+     24px/0.12em-tracked uppercase serif, a longer title like "OmShakthy
+     Regalia" or "OmShakthy Elite Phase 1" needs more width than a
+     narrow phone has left after that fixed padding, and with nothing
+     forcing the box itself narrower than its content, the title doesn't
+     wrap — it overflows straight past the screen edge instead.
+     Confirmed live: "OmShakthy Regalia" rendering with its first
+     character cut off the left edge and the rest running off the
+     right. Giving the box a real viewport-relative ceiling makes it
+     wrap like any other text block should. */
+  .hero-slider__content {
+    padding: 18px 20px 18px 24px;
+    max-width: calc(100vw - 44px);
+  }
+  .hero-slider__title {
+    overflow-wrap: break-word;
+  }
 }
 
 /* Dots */

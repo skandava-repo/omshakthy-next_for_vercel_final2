@@ -575,7 +575,32 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
+  /* .ct-section is a pinned, wheel-captured 100vh section on desktop —
+     real here, since PageController wheel-jacks it the same way at
+     every width that mechanism is active. But HomeClient's own
+     freeFlowFrom={1} releases this section (and everything after it)
+     into plain free-flow scroll below PageController's own
+     MOBILE_BREAKPOINT (1024px), not pinned at all despite this file's
+     top-of-file comment still describing it that way — that comment
+     predates freeFlowFrom dropping to 1. Free-flowing, height:100vh on
+     .ct-section no longer reserves exactly the space its own content
+     needs — it reserves a full screen regardless, and .ct-track/
+     .ct-bar's actual content (a short year badge + title + description,
+     then the bottom nav bar) is nowhere near that tall. Confirmed live:
+     a ~370px dead gap between this section's content and LeadersSection
+     below it. height:auto lets the column (.ct-track's slide content,
+     then .ct-bar) size to what it actually needs, same fix already
+     applied to .wc for the identical reason. */
+  .ct-section {
+    height: auto;
+  }
+  .ct-track {
+    flex: none;
+  }
   .ct-slide {
+    position: relative;
+    height: auto;
+    min-height: 60vh;
     padding: 0 6vw;
   }
 
@@ -607,7 +632,7 @@
      font-size (plus a touch less gap) gives the 6 labels enough room
      apiece to stay genuinely separate instead of overlapping. */
   .ct-bar__bigyear {
-    min-width: 88px;
+    min-width: 70px;
   }
   .ct-bar__bigyear-text {
     font-size: 42px;
@@ -616,11 +641,19 @@
     font-size: 13px;
   }
   .ct-bar__segments {
-    gap: 4px;
+    gap: 1px;
   }
+  /* Each label is position:absolute; left:0 against its own flex:1
+     segment (~20-25px wide at this breakpoint) — even at 10px, the
+     previous font-size/letter-spacing values left each 4-digit label
+     only a couple px narrower than its segment, so adjacent labels
+     still overlapped by 1-5px (measured live: "1991" and "1993"
+     touching, "2000"/"2024" overlapping by 5px). Letter-spacing:0 and
+     a 1px-smaller floor trim just enough width off each label to clear
+     that, without shrinking so far the years stop reading as years. */
   .ct-seg__year {
-    font-size: 10px;
-    letter-spacing: 0.02em;
+    font-size: 9px;
+    letter-spacing: 0;
   }
   .ct-bar__counter-current {
     font-size: 18px;

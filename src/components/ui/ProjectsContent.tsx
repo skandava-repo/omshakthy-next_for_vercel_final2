@@ -152,6 +152,23 @@ const ProjectsContent = () => {
   const [type, setType] = useState('All Types')
   const [location, setLocation] = useState('All Locations')
 
+  // The project grid below switches from a fixed-aspect-ratio
+  // photo-with-overlaid-text card (desktop, 2-column) to a stacked
+  // photo-then-details card (mobile, 1 column) — see that grid's own
+  // comment for why. They're different enough (overlay vs. normal
+  // flow, different element tree) that branching the JSX on a real
+  // "are we at the single-column breakpoint" check is far safer than
+  // trying to force one DOM shape to cover both with CSS alone — this
+  // mirrors the width ProjectsContent already treats as the single-
+  // column cutover (grid md:grid-cols-2, Tailwind's md: = 768px).
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
     return projects.filter((p) => {
@@ -381,7 +398,7 @@ const ProjectsContent = () => {
                  not two things touching. Project details sit on top of
                  the scrim as plain dark text. gap-3 -> gap-5 to narrow
                  each card slightly, per request. */
-              const cardInner = (
+              const desktopCardInner = (
                 <div className="relative overflow-hidden" style={{ aspectRatio: '2.5 / 1' }}>
                   <img
                     src={p.image}
@@ -465,6 +482,97 @@ const ProjectsContent = () => {
                   </div>
                 </div>
               )
+
+              /* Mobile card — the desktop card above packs a status
+                 badge + 2-line uppercase title + location + price +
+                 type into a column absolutely positioned and vertically
+                 centered inside a fixed aspectRatio:2.5/1 box. That
+                 ratio only has enough height at desktop's 2-column
+                 width; at mobile's single column (full card width) the
+                 same ratio makes the card too short for that much
+                 text, and the centered, overflow:hidden column clips
+                 it top and bottom — confirmed live: "KANOPUS MAGHA"
+                 rendering as just "MAG HA", its first word and part of
+                 its second sheared off above the visible card. Fixing
+                 it by giving mobile its own layout — photo on top at a
+                 normal photo ratio, status badge as a small corner chip
+                 on the photo instead of sharing the text column, and
+                 the title/location/price/type below the photo in
+                 ordinary document flow, so their height is whatever
+                 they actually need instead of being forced into a
+                 fixed box. */
+              const mobileCardInner = (
+                <div>
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '16 / 10' }}>
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{
+                        ...(p.imagePosition ? { objectPosition: p.imagePosition } : {}),
+                      }}
+                      loading="lazy"
+                    />
+                    <span
+                      className="absolute inline-flex items-center gap-1 rounded-full uppercase w-fit"
+                      style={{
+                        ...body,
+                        top: 10,
+                        left: 10,
+                        padding: '0.25rem 0.6rem',
+                        background: '#fff',
+                        fontSize: 9,
+                        fontWeight: 800,
+                        letterSpacing: '0.12em',
+                        color: STATUS_STYLE[p.status].color,
+                      }}
+                    >
+                      <span
+                        className="rounded-full flex-shrink-0"
+                        style={{ width: 5, height: 5, background: 'currentColor' }}
+                      />
+                      {STATUS_STYLE[p.status].label}
+                    </span>
+                  </div>
+
+                  <div style={{ padding: '0.9rem 1.1rem 1.1rem' }}>
+                    <h3
+                      className="uppercase"
+                      style={{
+                        ...display,
+                        margin: 0,
+                        fontSize: 22,
+                        fontWeight: 600,
+                        lineHeight: 1.15,
+                        letterSpacing: '0.02em',
+                        color: C.ink,
+                      }}
+                    >
+                      {p.name}
+                    </h3>
+                    <p
+                      className="flex items-center gap-1"
+                      style={{ ...body, margin: '0.4rem 0 0', fontSize: 14, color: C.slate }}
+                    >
+                      <svg viewBox="0 0 24 24" width={13} height={13} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                        <path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z" />
+                        <circle cx="12" cy="9.5" r="2.4" />
+                      </svg>
+                      {p.location}
+                    </p>
+                    <div className="flex items-center justify-between" style={{ marginTop: '0.5rem' }}>
+                      <p style={{ ...body, margin: 0, fontSize: 14.5, fontWeight: 600, color: C.ink }}>
+                        {p.price}
+                      </p>
+                      <p style={{ ...body, margin: 0, fontSize: 12.5, color: C.slate }}>
+                        {p.type}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+
+              const cardInner = isMobile ? mobileCardInner : desktopCardInner
               return (
                 <Reveal key={p.name} delay={(i % 2) * 0.08}>
                   {p.link ? (

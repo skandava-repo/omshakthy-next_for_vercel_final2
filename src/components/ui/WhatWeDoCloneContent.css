@@ -562,3 +562,150 @@
     max-height: 220px;
   }
 }
+
+/* ---------------- Phone-only redesign ----------------
+   Everything above (desktop's one-screen layout AND the 980px tablet
+   fallback) is untouched by this block — it only engages below 640px.
+   The 980px fallback is a plain stacked list: full-width photo, icon
+   above it, text below, five times. That's a reasonable tablet
+   compromise but reads as a bare default on an actual phone. This
+   redesigns the same content — same copy, same five disciplines, same
+   palette/typography — as a proper card stack: a compact bordered stat
+   badge instead of three stacked text lines, and each discipline as a
+   rounded photo card with its icon as a badge overlapping the photo's
+   corner, instead of a plain icon-then-banner-then-text list. */
+@media (max-width: 640px) {
+  .wc {
+    padding-top: calc(80px + 1.25rem);
+    padding-bottom: 2.5rem;
+  }
+  /* .wc__stage (left column / divider / right column) never gets
+     flex-direction:column anywhere below 980px today — only .wc__body
+     does, and .wc__body just wraps .wc__stage as its one child, so
+     that alone does nothing. The two columns have been laying out
+     side-by-side the entire time below 980px (confirmed live: .wc__row
+     measured 108px wide, pushed off the right edge of a 384px
+     viewport). Fixing it only here, inside the phone-only block, per
+     the brief — the existing 640–980px tablet range keeps today's
+     behavior, bug included, untouched. */
+  .wc__stage {
+    flex-direction: column;
+  }
+  .wc__left {
+    padding-right: 0;
+  }
+  .wc__title {
+    font-size: clamp(1.6rem, 8vw, 2.1rem);
+  }
+  .wc__para {
+    font-size: 0.88rem;
+    max-width: none;
+  }
+
+  /* Stat badge: was three stacked left-aligned lines (est. line, huge
+     numeral, label line) — on a narrow phone that reads as an orphaned
+     block of text with no visual containment. A compact bordered card
+     with the numeral and the two text lines side by side gives it the
+     weight of an actual credential, in far less vertical room. */
+  .wc__card {
+    margin-left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.3rem;
+    border: 1px solid var(--wc-line);
+    border-radius: 14px;
+    background: rgba(13, 107, 178, 0.045);
+  }
+  .wc__card-num {
+    font-size: 2.6rem;
+    line-height: 1;
+    margin: 0;
+  }
+  .wc__card-plus {
+    top: 0.7em;
+  }
+  .wc__card-est,
+  .wc__card-label {
+    display: block;
+    text-align: left;
+  }
+  .wc__card-est {
+    margin: 0 0 0.3rem;
+    font-size: 0.68rem;
+  }
+  .wc__card-label {
+    margin: 0;
+    font-size: 0.68rem;
+  }
+
+  /* Divider no longer separates two side-by-side columns — it reads as
+     a stray vertical tick mark between stacked blocks. Hidden here,
+     not in the shared 980px rule, so tablet keeps it. */
+  .wc__divider {
+    display: none;
+  }
+
+  .wc__right {
+    gap: 1.5rem;
+    padding-top: 0.5rem;
+  }
+  .wc__row {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-top: none;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(20, 33, 58, 0.1);
+  }
+  .wc__row:first-child {
+    border-top: none;
+  }
+  .wc__row-photo {
+    width: 100%;
+    height: 52vw;
+    max-height: 230px;
+    /* Rounded rectangle instead of the desktop diagonal clip — the
+       clip's angled edge was designed to sit next to the icon/text
+       column beside it; stacked full-width on a phone that same cut
+       just reads as a jagged edge with nothing to play off. */
+    clip-path: none;
+    filter: none;
+  }
+  .wc__row-photo img {
+    display: block;
+  }
+
+  /* Icon moves from "above the photo, its own row" to a badge
+     overlapping the photo's bottom-left corner — a single visual
+     anchor tying the icon to its photo instead of two separate stacked
+     elements competing for the same left edge. */
+  .wc__row-icon {
+    position: absolute;
+    left: 1.1rem;
+    /* Mirrors .wc__row-photo's own height: min(52vw, 230px) — a plain
+       52vw term here would drift below the photo's actual bottom edge
+       once the max-height cap kicks in (above a ~442px-wide phone). */
+    top: calc(min(52vw, 230px) - 24px);
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border-width: 1.5px;
+    box-shadow: 0 6px 14px rgba(20, 33, 58, 0.22);
+    z-index: 1;
+  }
+
+  .wc__row-text {
+    padding: 1.6rem 1.25rem 1.35rem;
+  }
+  .wc__row-title {
+    font-size: 1.05rem;
+  }
+  .wc__row-desc {
+    font-size: 0.85rem;
+  }
+}

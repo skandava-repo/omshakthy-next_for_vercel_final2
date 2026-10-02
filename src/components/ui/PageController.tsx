@@ -39,6 +39,10 @@ const PageController = ({ children, freeFlowFrom }: PageControllerProps) => {
   const [released, setReleased] = useState(false)
   const [isNarrow, setIsNarrow] = useState(false)
   const isAnimating = useRef(false)
+  // Touch-swipe tracking — see handleTouchMove below for why this exists
+  // at all (wheel events never fire from touch input on a real phone).
+  const touchStartY = useRef<number | null>(null)
+  const touchConsumed = useRef(false)
   const totalSections = children.length
   // On desktop (or when freeFlowFrom isn't passed) this equals
   // totalSections — every section stays pinned, byte-for-byte the same
@@ -161,6 +165,73 @@ const PageController = ({ children, freeFlowFrom }: PageControllerProps) => {
     window.addEventListener('wheel', handleWheel, { passive: false })
     return () => window.removeEventListener('wheel', handleWheel)
   }, [handleWheel])
+
+  // Touch equivalent of handleWheel above. A real phone never dispatches
+  // `wheel` events from a finger swipe — only touchstart/move/end — so
+  // without this, .page-controller's fixed+overflow:hidden shell (nothing
+  // to natively scroll) combined with a wheel-only handler (nothing to
+  // ever advance a section) left the page completely inert on mobile:
+  // not stuck-but-scrollable, just stuck. Confirmed live on a phone-sized
+  // viewport — the pinned stack never left section 0 and there was no
+  // native scroll to fall back on either.
+  //
+  // Reuses handleWheel itself for the actual section-change logic (special-
+  // casing for the timeline, leaders reset, release-at-last-section, etc.)
+  // by handing it a synthetic deltaY derived from the swipe distance,
+  // rather than re-implementing all of that here a second time.
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    touchStartY.current = e.touches[0]?.clientY ?? null
+    touchConsumed.current = false
+  }, [])
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (document.querySelector('.intro-section')) return
+    if (touchStartY.current === null) return
+
+    const currentY = e.touches[0]?.clientY
+    if (currentY === undefined) return
+    const delta = touchStartY.current - currentY // positive = finger moved up (swipe up)
+
+    if (released) {
+      // Mirror handleWheel's own "pulled back to the very top, wants back
+      // into the pinned stack" re-engage check — swipe-down (delta < 0)
+      // while already scrolled to the top of the free-flow content.
+      if (window.scrollY <= 0 && delta < -10 && !isAnimating.current) {
+        e.preventDefault()
+        isAnimating.current = true
+        setReleased(false)
+        setTimeout(() => { isAnimating.current = false }, 750)
+        touchStartY.current = currentY
+      }
+      return
+    }
+
+    // Pinned: block native scroll/bounce for the same reason handleWheel
+    // calls preventDefault on a real wheel event.
+    e.preventDefault()
+
+    if (touchConsumed.current) return
+    const TOUCH_THRESHOLD = 40 // px — deliberate swipe, not an incidental jitter
+    if (Math.abs(delta) < TOUCH_THRESHOLD) return
+
+    touchConsumed.current = true
+    handleWheel({ preventDefault: () => {}, deltaY: delta } as unknown as WheelEvent)
+  }, [released, handleWheel])
+
+  const handleTouchEnd = useCallback(() => {
+    touchStartY.current = null
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: false })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd])
 
   // Expose current section & notify listeners (header padding, etc.)
   useEffect(() => {
