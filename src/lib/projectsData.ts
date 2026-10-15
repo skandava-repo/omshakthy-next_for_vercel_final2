@@ -40,12 +40,17 @@ export interface Project {
    shows them at a larger, more prominent size than the home slider
    does. */
 export const projects: Project[] = [
-  // Location corrected: canopus-magha-lp.html's own copy explicitly
-  // says "Enveloped in the epicenter of Avadi" — 'Guduvanchery' looks
-  // like leftover boilerplate copy-pasted from a different project (the
-  // same class of error regalia-lp.html itself had once, for Regalia).
-  // /kanopus-magha is now a real page (src/data/projects/kanopus-magha.json).
-  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹25L onwards', priceLakh: 25, link: '/canopus-magha-lp' },
+  // Ordering: Ongoing (available) projects first, Sold after — per
+  // direct request, so the listing/grid leads with what's actually
+  // still for sale rather than array order being arbitrary.
+  //
+  // Status per direct instruction: every project is Sold except these
+  // two. Sold projects also lose their `link` — "for sold out project
+  // we should not allow to independent page navigation" — so a sold
+  // card is portfolio-only now, same as the legacy entries below
+  // always were, instead of still pointing at a live landing page with
+  // its own price and site-visit form.
+  //
   // Location corrected: 'Avadi' was wrong — regalia-lp.html on the
   // original site repeatedly and explicitly places this project in
   // Tambaram ("Omshakthy Regalia Tambaram location," 70 acres/961
@@ -56,42 +61,55 @@ export const projects: Project[] = [
   // "Strategically Located Near Guduvanchery" — 'Thirumullaivoyal' was
   // wrong. /elite-grand is now a real page.
   { image: '/projects/elite-grand.webp', name: 'Elite Grand', location: 'Guduvanchery, Chennai', status: 'Ongoing', type: 'Premium Plots', price: '₹28L onwards', priceLakh: 28, link: '/elite-grand-lp', imagePosition: '50% 35%' },
-  // Location corrected: mathura-lp.html's own real FAQ says plainly
-  // "OmShakthy Mathura is a residential plot development project
-  // located in Chromepet" — 'Tambaram' was wrong. /mathura is now a
-  // real page. Status corrected too: this was marked 'Sold' with
-  // price "Sold Out", but mathura-lp's own live spec table shows a
-  // real price ("22.5 Lakhs") — it's a "Completed Project" on the
-  // site's own footer nav (construction/layout finished), not sold out.
-  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Ongoing', type: 'Residential Plots', price: '₹22.5L onwards', priceLakh: 22.5, link: '/mathura-lp' },
-  // Location corrected: canopus-mithila-lp.html's own "Locations
-  // Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
-  // Vehicles Factory) places this in the Avadi corridor — 'Vandalur'
-  // was wrong. /kanopus-mithila is now a real page. Status corrected
-  // too: canopus-mithila-lp's own live spec table shows a real price
-  // ("₹3,500/- per Sq.Ft."), not "Sold Out" — same fix as Mathura.
-  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Ongoing', type: 'Gated Community', price: '₹3,500 / Sq.Ft', priceLakh: null, link: '/canopus-mithila-lp' },
+  // New project, added from "Mathura broucher PDF FILE 5mm Bleed.pdf"
+  // (OCR'd — no text layer, print-ready file). Distinct from the
+  // existing "OmShakthy Mathura" above (Chromepet) — this one is
+  // Thirumazhisai, a separate, newly-launching project. Price is a
+  // placeholder (PRICE_TBD, matching the one in mathura-elite-lp.json)
+  // until the real figure is supplied — the brochure itself states no
+  // price.
+  { image: '/projects/mathura-elite.webp', name: 'OmShakthy Mathura Elite', location: 'Thirumazhisai, Chennai', status: 'Ongoing', type: 'Residential Plots', price: 'PRICE_TBD', priceLakh: null, link: '/mathura-elite-lp' },
   // Location left as-is, flagged rather than guessed: industrial-park-lp.html
   // names no specific locality at all (title/meta both just say
   // "Chennai"), and its own real drive times (Airport 10 min, Tambaram
   // Railway Station 15 min) don't actually match Sriperumbudur (a
   // 40+ min drive from the airport) — but with nothing more specific
   // stated on the source page, this wasn't replaced with a guess.
-  // Status corrected: this was marked 'Sold' with price "Sold Out",
-  // but industrial-park-lp's own live spec table has never had a real
-  // price at all — it's a literal, unfilled "Price: XXXX" on the real
-  // site, and the page still has a live, active "Book a Free Site
-  // Visit" form and no "Sold Out" banner anywhere. That's a project
-  // still being sold with an unset price, not a sold-out one — the
-  // site's own footer nav lists it under Ongoing too. /industrial-park
-  // is now a real page.
+  // Was briefly marked Sold per direct instruction, then reverted back
+  // to Ongoing per a later direct instruction — link and price restored
+  // to match industrial-park-lp's own still-live page (an unset
+  // "Price: XXXX" on the real site, no "Sold Out" banner, active
+  // "Book a Free Site Visit" form).
   { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Ongoing', type: 'Industrial', price: 'Price on Request', priceLakh: null, link: '/industrial-park-lp' },
+  // Location corrected: canopus-magha-lp.html's own copy explicitly
+  // says "Enveloped in the epicenter of Avadi" — 'Guduvanchery' looks
+  // like leftover boilerplate copy-pasted from a different project (the
+  // same class of error regalia-lp.html itself had once, for Regalia).
+  // Marked Sold per direct instruction — link dropped (see note above);
+  // /canopus-magha-lp itself is unchanged/still live, just no longer
+  // linked from this card.
+  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
+  // Location corrected: mathura-lp.html's own real FAQ says plainly
+  // "OmShakthy Mathura is a residential plot development project
+  // located in Chromepet" — 'Tambaram' was wrong. Marked Sold per
+  // direct instruction, link dropped — note mathura-lp itself still
+  // shows a live price/form unless that page is separately updated.
+  // Distinct from "OmShakthy Mathura Elite" (Thirumazhisai) below.
+  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
+  // Location corrected: canopus-mithila-lp.html's own "Locations
+  // Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
+  // Vehicles Factory) places this in the Avadi corridor — 'Vandalur'
+  // was wrong. Marked Sold per direct instruction, link dropped — note
+  // canopus-mithila-lp itself still shows a live price/form unless
+  // that page is separately updated.
+  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Sold', type: 'Gated Community', price: 'Sold Out', priceLakh: null },
   // Location corrected: elite-orchard-lp.html's own "Locations Nearby"
   // list (Guduvanchery Railway Station, Kilambakkam Bus Terminal,
   // Mahindra World City, Potheri Railway Station, ORR) places this in
-  // Guduvanchery — 'Paruthipattu, Avadi' was wrong. /elite-orchard is
-  // now a real page.
-  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/elite-orchard-lp' },
+  // Guduvanchery — 'Paruthipattu, Avadi' was wrong. Was already Sold,
+  // but still had a `link` to elite-orchard-lp — dropped now per the
+  // "no independent page navigation for sold projects" rule.
+  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
   // The 7 entries below are real, older completed projects that were
   // missing entirely — confirmed against the live site's own
   // /completed-projects carousel (checked directly, not the mirror,

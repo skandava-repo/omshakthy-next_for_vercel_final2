@@ -40,12 +40,14 @@ const IntroSection = () => {
     if (!video) return
 
     let safety: ReturnType<typeof setTimeout> | null = null
+    let hardFailsafe: ReturnType<typeof setTimeout> | null = null
     let startedPreload = false
 
     const finish = () => {
       if (finishedRef.current) return
       finishedRef.current = true
       if (safety) clearTimeout(safety)
+      if (hardFailsafe) clearTimeout(hardFailsafe)
       sessionStorage.setItem('introPlayed', '1')
       // Start the hero slideshow behind the overlay so it's live on reveal.
       window.dispatchEvent(new Event('introComplete'))
@@ -53,6 +55,15 @@ const IntroSection = () => {
     }
 
     const onMeta = () => {
+      // The video is confirmably alive now (we have a real duration) —
+      // hardFailsafe's only job was covering the case where NOTHING ever
+      // happens at all. From here on, `safety` (scoped to the video's
+      // actual length) is the correct backstop; hardFailsafe's own fixed
+      // delay has no relationship to how long this video runs and was
+      // firing in the middle of completely normal 10s playback,
+      // cutting it off early every time — confirmed live (10s video,
+      // 8s failsafe). Clearing it here is what actually fixes that.
+      if (hardFailsafe) clearTimeout(hardFailsafe)
       const ms = (Number.isFinite(video.duration) ? video.duration : 12) * 1000
       safety = setTimeout(finish, ms + 2000)
     }
@@ -70,6 +81,16 @@ const IntroSection = () => {
     // buffering (given current download rate) — the real "ready" signal,
     // unlike loadedmetadata which only knows duration/dimensions.
     const onCanPlayThrough = () => {
+      // Deliberately NOT clearing hardFailsafe here — unlike onMeta
+      // (only ever bound to the real loadedmetadata event), this
+      // function is also force-invoked directly by loadingFallback
+      // below when canplaythrough hasn't fired naturally by 4s. In the
+      // genuinely-stuck case (video stuck at readyState 0 forever,
+      // nothing ever really loads) that forced call still happens —
+      // clearing hardFailsafe from inside it would cancel the one
+      // remaining safety net using a fake "the video is ready" signal
+      // that was never actually true, reintroducing the original
+      // stuck-forever bug this was built to fix.
       setLoading(false)
       setProgress(100)
       video.play().catch(finish)
@@ -101,17 +122,19 @@ const IntroSection = () => {
       if (!finishedRef.current) onCanPlayThrough()
     }, 4000)
 
-    // Hard failsafe, independent of every video event above. Everything
-    // else here — loadedmetadata, progress, canplaythrough, even the
-    // loadingFallback above — still ultimately routes through the video
-    // element actually producing an event. On real phones the media
-    // pipeline can stall with zero events firing at all (page not yet
-    // foregrounded, Low Power Mode, background-tab throttling, a flaky
-    // connection) — readyState stuck at HAVE_NOTHING forever, no error,
-    // no progress. Without an unconditional ceiling that visitor is stuck
-    // looking at a blank/plain-color screen permanently. Give the video
-    // a generous window to behave, then reveal the site regardless.
-    const hardFailsafe = setTimeout(finish, 8000)
+    // Hard failsafe for the one case nothing else here covers: the video
+    // producing literally zero events — no loadedmetadata, no progress,
+    // no error (page not yet foregrounded, Low Power Mode, background-tab
+    // throttling, a flaky connection — readyState stuck at HAVE_NOTHING
+    // forever). onMeta clears this the moment loadedmetadata proves the
+    // video is actually alive, at which point `safety` above (correctly
+    // scoped to the video's real duration) is the right backstop instead
+    // — this fixed 8s timer has no relationship to how long the video
+    // actually runs, so leaving it armed through a normal, working
+    // playback cut a real ~10s video off 2s early every single time
+    // (confirmed live). This only still fires when the video never gets
+    // far enough for onMeta to run at all.
+    hardFailsafe = setTimeout(finish, 8000)
 
     return () => {
       if (safety) clearTimeout(safety)

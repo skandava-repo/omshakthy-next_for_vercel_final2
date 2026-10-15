@@ -3,6 +3,7 @@
   "name": "Elite Grand",
   "type": "Residential Plots",
   "heroImage": "/projects-lp/elite-grand-hero.webp",
+  "heroVideo": "/elite-grand-hero-video.mp4",
   "specs": [
     {
       "label": "Number of Units",

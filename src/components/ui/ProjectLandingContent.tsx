@@ -1,9 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, useInView, animate, useScroll, useTransform } from 'framer-motion'
 import FinancialPartnersSection from './FinancialPartnersSection'
 import SiteLinksSection from './SiteLinksSection'
 import type { ProjectData } from '@/lib/projects'
+import { projects } from '@/lib/projectsData'
+import blogPosts from '@/data/blog/summary.json'
 import './ProjectLandingContent.css'
 
 /* ProjectLandingContent — the same page RegaliaContent.tsx built by
@@ -55,6 +58,48 @@ const display: React.CSSProperties = { fontFamily: "'Fraunces', Georgia, serif",
 const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans-serif", lineHeight: 1.6, fontWeight: 400 }
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace", letterSpacing: '0.16em', textTransform: 'uppercase', fontSize: '1.0rem', fontWeight: 700 }
 const easeLux = [0.16, 1, 0.3, 1] as const
+
+// Real reviews from the old site's own testimonials.html (via the
+// local site mirror) — same source TestimonialsPageContent.tsx uses,
+// duplicated here rather than shared (see this file's own top comment
+// on why primitives are duplicated per-file in this codebase). Every
+// real project landing page on the old mirror (confirmed on
+// industrial-park.html) showed this same "Know More... Directly from
+// the Owners" block with these same two names — not page-specific
+// content, so it's fine as one fixed set across every project here.
+const testimonials = [
+  {
+    quote: 'Definitely! I feel happier and luckier after purchasing this flat. Life has changed for better. Owning a flat in Santha Towers is a symbol of security for my retired life.',
+    name: 'Jalaja Madanmohan',
+    detail: 'B103 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/jalaja-madanmohan.webp',
+  },
+  {
+    quote: 'I specifically would like to thank OmShakthy and its team for providing, at extra cost, Reticulated Gas facility which was not originally listed in the construction agreement.',
+    name: 'D. Dhanasekaran',
+    detail: 'D802 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/dhanasekaran.webp',
+  },
+  {
+    quote: "We are proud to be the owners of Santha Towers which has fulfilled all our criteria's. Our special thanks to the management who have conceptualised budget homes.",
+    name: 'C. Nireesh',
+    detail: 'B703 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/nireesh.webp',
+  },
+]
+
+// Same real 6-post carousel every project landing page on the old
+// mirror showed ("Our Blogs - Explore Property Development in
+// Chennai!") — a fixed, curated set of evergreen buying-guide posts
+// rather than anything project-specific, matching the source.
+const BLOG_CROSS_SELL_SLUGS = [
+  'what-is-rera-act-in-real-estate-and-why-is-rera-registration-important',
+  'how-to-check-if-your-plot-is-dtcp-approved-or-not',
+  '6-best-places-to-buy-residential-plots-in-chennai',
+]
+const crossSellPosts = BLOG_CROSS_SELL_SLUGS
+  .map((slug) => blogPosts.find((b) => b.slug === slug))
+  .filter((b): b is (typeof blogPosts)[number] => Boolean(b))
 
 // Same "focus pull" reveal AboutContent.tsx uses — was a plain fade+
 // rise here; now blur(6px)->0 and scale(0.96)->1 ride alongside the
@@ -454,9 +499,9 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
   const sectionIds = [
     'specs', 'connectivity',
     ...(hasNarrative ? ['narrative'] : []),
-    'keyfigures', 'since1991', 'amenities', 'mission',
+    'keyfigures', 'since1991', 'amenities', 'featuredProjects', 'mission',
     ...(hasFaq ? ['faq'] : []),
-    'map', 'visit',
+    'testimonials', 'blogPosts', 'map', 'visit',
   ]
   const bgs = Object.fromEntries(assignBackgrounds(sectionIds.map((id) => ({ id }))).map((s) => [s.id, s.bg]))
 
@@ -476,9 +521,16 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
           scrolls past it. */}
       <section ref={heroRef} className="relative min-h-[88vh] flex items-end overflow-hidden px-6 md:px-16 pb-20 pt-32" style={{ backgroundColor: C.ink }}>
         <motion.video
+          // Forces a fresh <video> element (not just a src-attribute
+          // update on a reused one) when navigating between a project
+          // with its own heroVideo and one using the shared default —
+          // changing `src` on an already-mounted element isn't
+          // guaranteed to actually reload in every browser without an
+          // explicit .load() call.
+          key={data.heroVideo || 'default'}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ scale: heroVideoScale, y: heroVideoY }}
-          src="/project-hero-video.mp4"
+          src={data.heroVideo || '/project-hero-video.mp4'}
           autoPlay
           muted
           playsInline
@@ -812,6 +864,57 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         </section>
       )}
 
+      {/* ---------------- Featured Projects ----------------
+          Every real project landing page on the old mirror (confirmed
+          on industrial-park.html) showed a "Featured Projects" strip
+          mid-page cross-selling the other live listings — entirely
+          absent from this rebuild until now. Pulls straight from the
+          same projects array /projects itself uses, so it can never
+          drift out of sync with what's actually for sale; only
+          Ongoing projects with a real link, and never this page's own
+          project. */}
+      {(() => {
+        const featured = projects.filter((p) => p.link && p.link !== `/${data.slug}`).slice(0, 3)
+        if (featured.length === 0) return null
+        return (
+          <section className="relative px-6 md:px-16 py-28" style={bgStyle(bgs.featuredProjects)}>
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <Reveal><Kicker center color={bgs.featuredProjects === 'dark' ? C.mist : C.blue}>Also Available</Kicker></Reveal>
+                <KineticHeading
+                  text="Other Projects Worth a Look"
+                  className="text-2xl md:text-4xl"
+                  style={{ ...display, color: bgs.featuredProjects === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featured.map((p, i) => (
+                  <Reveal key={p.name} delay={i * 0.08}>
+                    <Link
+                      href={p.link!}
+                      className="block rounded-2xl overflow-hidden bg-white h-full"
+                      style={{ border: `1px solid ${C.border}`, boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)' }}
+                    >
+                      <div className="relative" style={{ aspectRatio: '4 / 3' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.image} alt={p.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" style={p.imagePosition ? { objectPosition: p.imagePosition } : undefined} />
+                      </div>
+                      <div className="p-5">
+                        <p style={{ ...mono, color: C.blue, fontSize: '0.68rem' }}>{p.type}</p>
+                        <h3 className="mt-2 text-lg" style={{ ...display, color: C.ink, fontWeight: 500 }}>{p.name}</h3>
+                        <p className="mt-1 text-sm" style={{ color: C.slate }}>{p.location}</p>
+                        <p className="mt-3 text-sm font-semibold" style={{ color: C.ink }}>{p.price}</p>
+                        <span className="mt-4 inline-block text-sm" style={{ color: C.gold }}>Know More →</span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      })()}
+
       {/* ---------------- Mission / Vision ---------------- */}
       <section className="relative overflow-hidden px-6 md:px-16 py-28" style={bgStyle(bgs.mission)}>
         <TreeAccent side="left" tone={bgs.mission === 'dark' ? 'navy' : 'natural'} size={230} bottom={-30} opacity={bgs.mission === 'dark' ? 0.14 : 0.1} />
@@ -898,6 +1001,94 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
       {/* ---------------- Banks Offering Loans ---------------- */}
       <FinancialPartnersSection />
 
+      {/* ---------------- Testimonials ----------------
+          Real quotes, real buyers — "Know More about Our Projects
+          Directly from the Owners" on the old mirror's own project
+          pages (confirmed on industrial-park.html), missing entirely
+          here until now. Same fixed set every project page there
+          showed, not project-specific — see the `testimonials` const
+          above for the source. */}
+      <section className="relative px-6 md:px-16 py-28" style={bgStyle(bgs.testimonials)}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={bgs.testimonials === 'dark' ? C.mist : C.blue}>From Our Owners</Kicker></Reveal>
+            <KineticHeading
+              text="Know More, Directly From the Owners"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: bgs.testimonials === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, i) => (
+              <Reveal key={t.name} delay={i * 0.08}>
+                <div
+                  className="h-full rounded-2xl p-6"
+                  style={{
+                    backgroundColor: bgs.testimonials === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                    border: `1px solid ${bgs.testimonials === 'dark' ? 'rgba(255,255,255,0.14)' : C.border}`,
+                  }}
+                >
+                  <GoldQuoteMark />
+                  <p style={{ color: bgs.testimonials === 'dark' ? C.paperMuted : C.inkMuted }}>{t.quote}</p>
+                  <div className="flex items-center gap-3 mt-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={t.photo} alt={t.name} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
+                    <div>
+                      <p style={{ ...display, color: bgs.testimonials === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>{t.name}</p>
+                      <p className="text-xs" style={{ color: bgs.testimonials === 'dark' ? C.paperMuted : C.slate }}>{t.detail}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- Related Blog Posts ----------------
+          "Our Blogs - Explore Property Development in Chennai!" on the
+          old mirror's own project pages — same gap as Testimonials
+          above, same fix: a fixed, curated set (see
+          BLOG_CROSS_SELL_SLUGS above) rather than anything invented. */}
+      {crossSellPosts.length > 0 && (
+        <section className="relative px-6 md:px-16 py-28" style={bgStyle(bgs.blogPosts)}>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <Reveal><Kicker center color={bgs.blogPosts === 'dark' ? C.mist : C.blue}>From the Blog</Kicker></Reveal>
+              <KineticHeading
+                text="Explore Property Development in Chennai"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: bgs.blogPosts === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {crossSellPosts.map((post, i) => (
+                <Reveal key={post.slug} delay={i * 0.08}>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="block rounded-2xl overflow-hidden h-full"
+                    style={{
+                      backgroundColor: bgs.blogPosts === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: `1px solid ${bgs.blogPosts === 'dark' ? 'rgba(255,255,255,0.14)' : C.border}`,
+                    }}
+                  >
+                    <div className="relative" style={{ aspectRatio: '16 / 10' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={post.heroImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    </div>
+                    <div className="p-5">
+                      <p style={{ ...mono, color: bgs.blogPosts === 'dark' ? C.mist : C.blue, fontSize: '0.68rem' }}>{post.category}</p>
+                      <h3 className="mt-2 text-lg" style={{ ...display, color: bgs.blogPosts === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>{post.title}</h3>
+                      <span className="mt-4 inline-block text-sm" style={{ color: C.gold }}>Continue Reading →</span>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ---------------- Location Map ---------------- */}
       <section className="px-6 md:px-16 py-24" style={bgStyle(bgs.map)}>
         <div className="max-w-5xl mx-auto">
@@ -922,7 +1113,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
               </div>
             </CornerFrame>
           </Reveal>
-          <Reveal delay={0.16}>
+          <Reveal delay={0.16} className="flex flex-wrap items-center gap-3">
             <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`}
               target="_blank"
@@ -932,6 +1123,25 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
             >
               Get Directions
             </a>
+            {/* "From: Current Location / Tambaram / Chromepet / ..." on
+                the old mirror's own project pages (confirmed on
+                industrial-park.html) — a quick-pick set of common
+                Chennai reference points rather than a single fixed
+                destination link. Generic landmarks here (not
+                Industrial Park's own Kundrathur/Thirumudivakkam set)
+                since this component is shared across every project. */}
+            {['Chennai Airport', 'Chennai Central', 'Tambaram', 'Guindy'].map((origin) => (
+              <a
+                key={origin}
+                href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin + ', Chennai')}&destination=${encodeURIComponent(address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm"
+                style={{ ...body, color: bgs.map === 'dark' ? C.mist : C.blue, textDecoration: 'underline', textUnderlineOffset: 3 }}
+              >
+                From {origin}
+              </a>
+            ))}
           </Reveal>
         </div>
       </section>

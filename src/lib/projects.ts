@@ -25,6 +25,11 @@ export interface ProjectData {
   name: string
   type: string | null
   heroImage: string
+  // Optional per-project override for the hero backdrop video —
+  // every project without one still gets ProjectLandingContent's own
+  // shared default (/project-hero-video.mp4). Added so a project can
+  // get its own hero video without changing every other project's.
+  heroVideo?: string
   specs: ProjectSpec[]
   amenitiesIntro: string
   amenities: string[]
