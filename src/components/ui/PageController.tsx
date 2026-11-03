@@ -244,7 +244,19 @@ const PageController = ({ children, freeFlowFrom }: PageControllerProps) => {
       <div className={`page-controller${released ? ' page-controller--released' : ''}`}>
         <div
           className="page-controller__track"
-          style={{ transform: `translateY(-${currentSection * 100}vh)` }}
+          // dvh, not vh — must exactly match .page-controller__section's
+          // own height (PageController.css, also dvh) or the two drift
+          // apart on Safari. vh resolves against the toolbar-collapsed
+          // viewport; dvh against whatever's actually visible, which is
+          // shorter while the toolbar shows. With this still in vh, the
+          // track was shifting by MORE than each section's real (dvh)
+          // height on every slide change, opening a gap at the bottom of
+          // the current section exactly that tall — reported live as "I
+          // can see the next page tip in the bottom" on an iPad
+          // simulator screenshot, a direct regression from switching
+          // .page-controller__section to dvh without updating this to
+          // match.
+          style={{ transform: `translateY(-${currentSection * 100}dvh)` }}
         >
           {pinnedChildren.map((child, i) => (
             <div className="page-controller__section" key={i}>
