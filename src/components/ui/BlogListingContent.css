@@ -30,7 +30,20 @@
   max-width: 1280px;
   margin: 0 auto clamp(2.5rem, 6vh, 4rem);
   display: flex;
-  align-items: flex-start;
+  /* Was flex-start, then center — neither actually lines the three
+     items up the way "on the same line" reads visually with mismatched
+     font sizes. flex-start top-aligned the small date/MAIL US well
+     above Blog's body. center then matched their LINE-BOX centers,
+     which isn't the same thing: Blog's italic serif line-box carries
+     much more built-in space above its cap-height and below its
+     baseline (for ascenders/the 'g' descender) than the small
+     monospace date/MAIL US do, so even with equal box centers, Blog's
+     own baseline still sat visibly lower than theirs — confirmed by
+     zooming into the actual rendered text. baseline is the flex value
+     built for exactly this (differently-sized text meant to share one
+     visual line): it aligns every item by its own text baseline
+     instead of its box, regardless of how tall each item's font is. */
+  align-items: baseline;
   justify-content: space-between;
   gap: 1.5rem;
   padding-bottom: 1.4rem;
@@ -43,7 +56,6 @@
   color: var(--bp-ink-muted);
   display: flex;
   align-items: center;
-  padding-top: 0.4rem;
   flex: none;
 }
 .bp__masthead-dot {
@@ -72,7 +84,6 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--bp-blue);
-  padding-top: 0.4rem;
   flex: none;
 }
 .bp__masthead-mail:hover {
@@ -159,41 +170,59 @@
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
-  /* The right column (photo card + corridor link + quote block) is
-     naturally taller than the left column's text content — the grid row
-     always sizes to that taller column no matter what align-items does
-     on the shorter one, so the fix isn't in alignment. Left as default
-     stretch so .bp__hero-main's own box actually grows to the full row
-     height; the photo (below, height:100%) fills that height instead of
-     leaving it blank. */
+  /* Height matching between the two columns is handled in JS below
+     (BlogListingContent.tsx), not here: .bp__side (photo card + link +
+     quote) is the one whose natural height sets the row, and
+     .bp__hero-main is explicitly capped to match it — shrinking the
+     headline's own font-size first if its content doesn't fit at that
+     height. A long/4-line title used to do the opposite (stretch the
+     row, and with it the photo and the side column, to match the
+     text) — reverted per direct feedback: growing .bp__quote to fill
+     the leftover read as the quote card getting taller for no reason,
+     not as a fix.
+     align-items: start (not the grid default, stretch) is what
+     actually makes that JS measurement meaningful: with the default
+     stretch, .bp__side itself gets auto-stretched to match
+     .bp__hero-main's height before any JS runs, so measuring
+     .bp__side's rendered height just reads back .bp__hero-main's own
+     height — a circular no-op that silently kept the column tall
+     (confirmed live: .bp__side measured 484px stretched vs. 363px
+     once un-stretched). start lets .bp__side sit at its true,
+     un-stretched content height for the JS to read and apply. */
+  align-items: start;
 }
 
-/* The photo pins into the top-right corner and the text column is
-   deliberately narrower than the full width, so the two read as
-   overlapping/sitting-behind rather than a plain 50/50 split — closer
-   to how the reference's headline wraps around its courtroom photo. */
+/* The photo pins into the top-right corner, starting at 41% from the
+   left (image width:59%, right:0 below). The text column used to run
+   to 50% wide on purpose, deliberately overlapping onto the photo —
+   but whether any given headline's wrapped lines actually reached
+   that far depended entirely on word length: a short line never
+   touched the photo at all (its box-decoration-break background
+   invisibly matched the page), while a long first line (e.g. "How to
+   Pay Avadi") did, leaving one random disconnected white rectangle
+   sitting on the photo's corner with nothing matching it on the
+   other lines — reported as a content-overlap bug, not a deliberate
+   repeating motif. Capped below 41% instead, with a safety margin:
+   the text column can now never structurally reach the photo no
+   matter how a title wraps, so every post renders the same way. */
 .bp__hero-main {
   position: relative;
   display: block;
   min-height: 300px;
   text-decoration: none;
   color: inherit;
+  /* Explicit height set in JS (BlogListingContent.tsx) to match
+     .bp__side's natural height — min-height is just the floor before
+     that measurement runs on mount. */
 }
 .bp__hero-body {
   position: relative;
-  /* Above both the photo (z-index 0) and its fade overlay (z-index 1). */
   z-index: 2;
-  /* Narrow, like the reference's own text column — this is what lets
-     the photo run the full height beside it without crowding the text,
-     and what makes the headline's overlap onto the photo read as
-     intentional rather than a layout collision. */
-  max-width: 50%;
+  max-width: 36%;
 }
-/* Runs the full height of .bp__hero-main (which is now correctly sized
-   to match the sidebar, so this no longer produces the oversized/
-   distorted stretch an earlier attempt did) and starts further left
-   than the text column ends, so the two genuinely overlap — matching
-   the reference's tall courtroom photo sitting behind the headline. */
+/* Runs the full height of .bp__hero-main (JS-matched to .bp__side) —
+   text column is capped at 36% wide, this starts at 41%, so the two
+   never overlap regardless of title length (see .bp__hero-body). */
 .bp__hero-img {
   position: absolute;
   top: 0;
@@ -206,51 +235,12 @@
   border-radius: 3px;
   box-shadow: 0 16px 32px rgba(11, 31, 58, 0.18);
 }
-/* Sits above the photo, below the text (z-index 1, between the image's
-   0 and the body's 2 below) — fades the photo's left edge into the
-   page's own cream so the overlap zone reads as the photo softly
-   receding, not a hard seam. Matches the image's own box in width/
-   position so the fade only ever touches the photo, never the empty
-   cream to its right.
-   Tried the Projects card's dark rgba(0,0,0,...) scrim here instead —
-   reverted. .bp__hero-title-text's own solid cream box (box-decoration-
-   break: clone) already overlaps onto the photo by design; against the
-   cream fade that box blends in, but against black it read as a hard
-   rectangle cut into the image. Cream is what actually makes this
-   layout work. */
-.bp__hero-shade {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  width: 59%;
-  background: linear-gradient(
-    90deg,
-    #FBF8F2 0%,
-    rgba(251, 248, 242, 0.82) 10%,
-    rgba(251, 248, 242, 0.35) 24%,
-    rgba(251, 248, 242, 0) 42%
-  );
-  pointer-events: none;
-}
 .bp__hero-title {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 600;
   font-size: clamp(1.7rem, 3vw, 2.5rem);
   line-height: 1.35;
   margin: 0 0 0.8rem;
-}
-/* Solid backing behind the headline text itself, not the whole <h1>
-   box — box-decoration-break:clone gives each wrapped line its own
-   boxed background (matching the reference) instead of one rectangle
-   spanning the full block, which is what a background on the h1 itself
-   would produce. */
-.bp__hero-title-text {
-  background: #FBF8F2;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  padding: 0.08em 0.32em;
 }
 .bp__hero-excerpt {
   font-size: 0.94rem;
@@ -274,7 +264,11 @@
   /* Reference's sidebar stack is compact — a small photo card plus a
      tight quote box — which is what keeps it roughly level with the
      hero column instead of running past it. Tightened from a much
-     wider gap that was making this column taller than the hero. */
+     wider gap that was making this column taller than the hero.
+     This column's natural height is the one everything else now
+     matches to (see .bp__hero-main below) — nothing here stretches
+     or distributes extra space, so its spacing never changes
+     regardless of how tall the hero text column ends up. */
   gap: clamp(0.9rem, 1.8vh, 1.2rem);
 }
 /* Badge, headline AND byline all overlaid on the photo's own scrim —

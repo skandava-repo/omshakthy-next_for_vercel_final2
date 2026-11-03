@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
@@ -214,6 +214,63 @@ const BlogListingContent = () => {
     }
   }, [])
 
+  /* .bp__hero-main (photo + text column) needs to match .bp__side's
+     (photo card + corridor link + quote) natural height — not the
+     other way around. A long/4-line title used to make the text
+     column the tallest thing in the row, stretching the grid row (and
+     with it the photo and .bp__side) to match; growing .bp__quote to
+     absorb that extra height was tried and reverted per direct
+     feedback (read as the card getting taller for no reason, not a
+     fix). Same measure-and-apply-as-a-pixel-height approach as
+     bannerHeight above, just driving the opposite column, plus one
+     more step CSS alone can't do: if the headline doesn't fit inside
+     that now-shorter height even at its default size, shrink its own
+     font-size (not the whole layout) until it does, down to a floor
+     instead of shrinking indefinitely. Runs via useLayoutEffect, not
+     useEffect, so the shrink applies before paint rather than
+     flashing oversized text first. Only applied above the 860px
+     stacked-layout breakpoint, same as bannerHeight — below it both
+     inline overrides are cleared and the column just flows naturally. */
+  const heroMainRef = useRef<HTMLAnchorElement>(null)
+  const heroBodyRef = useRef<HTMLDivElement>(null)
+  const heroTitleRef = useRef<HTMLHeadingElement>(null)
+  const sideRef = useRef<HTMLDivElement>(null)
+  const HERO_TITLE_MIN_FONT_SIZE = 18 // px floor — never shrinks past this
+
+  useLayoutEffect(() => {
+    const mainEl = heroMainRef.current
+    const bodyEl = heroBodyRef.current
+    const titleEl = heroTitleRef.current
+    const sideEl = sideRef.current
+    if (!mainEl || !bodyEl || !titleEl || !sideEl) return
+
+    const fit = () => {
+      if (window.innerWidth <= 860) {
+        mainEl.style.height = ''
+        titleEl.style.fontSize = ''
+        return
+      }
+      mainEl.style.height = `${sideEl.getBoundingClientRect().height}px`
+      // Clear any previous shrink before re-measuring against the
+      // (possibly new, on resize) target height.
+      titleEl.style.fontSize = ''
+      let fontSize = parseFloat(getComputedStyle(titleEl).fontSize)
+      while (bodyEl.scrollHeight > mainEl.clientHeight && fontSize > HERO_TITLE_MIN_FONT_SIZE) {
+        fontSize -= 1
+        titleEl.style.fontSize = `${fontSize}px`
+      }
+    }
+
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(sideEl)
+    window.addEventListener('resize', fit)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', fit)
+    }
+  }, [hero.title, hero.description, hero.readTime])
+
   return (
     <main className="bp">
       <header className="bp__masthead">
@@ -229,28 +286,25 @@ const BlogListingContent = () => {
       </header>
 
       <motion.section className="bp__hero" {...reveal}>
-        {/* The reference's photo is a tall block running the full hero
-            height, with a narrow text column (headline/excerpt/byline
-            all confined to one strip) whose headline sits in a solid
-            white box that actually overlaps the photo's left edge —
-            not a plain "photo top, text below" split, which is what
-            this used to be. The title's inner span (not the h1 itself)
-            carries the background, with box-decoration-break so a
-            multi-line headline gets one boxed background per line
-            instead of one big rectangle behind the whole block. */}
-        <Link href={`/blog/${hero.slug}`} className="bp__hero-main" aria-label={hero.title}>
+        {/* The photo is a tall block running the full hero height,
+            beside a narrow text column (headline/excerpt/byline). This
+            used to let the headline overlap onto the photo's left edge
+            (a solid box behind the title text, via box-decoration-break
+            so a multi-line heading got one background per line) — but
+            whether any given title's wrapped lines actually reached
+            that far depended on word length, so a short line never
+            touched the photo while a long one did, leaving one random
+            disconnected box on the photo with nothing matching it on
+            the other lines (reported as a content-overlap bug). The
+            text column is now capped well clear of the photo instead —
+            no overlap is possible regardless of how a title wraps, so
+            every post renders the same way; no box/shade needed. */}
+        <Link href={`/blog/${hero.slug}`} className="bp__hero-main" aria-label={hero.title} ref={heroMainRef}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={hero.heroImage ?? undefined} alt={hero.title} className="bp__hero-img" />
-          {/* Fades the photo's own left edge into the page's cream, so
-              the headline's overlap reads as the photo receding behind
-              soft light rather than a hard-edged box sitting on a hard
-              photo edge. */}
-          <span className="bp__hero-shade" aria-hidden="true" />
-          <div className="bp__hero-body">
+          <div className="bp__hero-body" ref={heroBodyRef}>
             <span className="bp__cat">{hero.category}</span>
-            <h1 className="bp__hero-title">
-              <span className="bp__hero-title-text">{hero.title}</span>
-            </h1>
+            <h1 className="bp__hero-title" ref={heroTitleRef}>{hero.title}</h1>
             <p className="bp__hero-excerpt">
               <span className="bp__dropcap">{hero.description.charAt(0)}</span>
               {hero.description.slice(1)}
@@ -259,7 +313,7 @@ const BlogListingContent = () => {
           </div>
         </Link>
 
-        <div className="bp__side">
+        <div className="bp__side" ref={sideRef}>
           {/* Badge, headline AND byline all overlaid on the photo's own
               scrim — the reference's sidebar card does this throughout;
               the previous version only overlaid the badge and put the
