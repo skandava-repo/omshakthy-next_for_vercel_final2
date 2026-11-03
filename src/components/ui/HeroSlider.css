@@ -1,6 +1,13 @@
 .hero-slider {
   position: relative;
-  height: 100vh;
+  /* 100dvh, not 100vh — same PageController clipping class already
+     fixed for PageController.css/PropertyGrid.css/CinematicTimeline.css:
+     this section's own parent (.page-controller__section) is already
+     100dvh, so a child still forcing the taller, toolbar-collapsed
+     100vh overflows that shorter parent box on Safari, and
+     .page-controller__section's own overflow:hidden silently clips
+     the difference off the bottom. */
+  height: 100dvh;
   overflow: hidden;
   background: linear-gradient(135deg, #004385 0%, #0D6BB2 100%);
 }
