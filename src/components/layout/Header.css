@@ -33,9 +33,7 @@
   color: rgba(11, 31, 58, 0.65);
 }
 .site-nav--light .site-nav__link:hover,
-.site-nav--light .site-nav__link:hover span,
-.site-nav--light .site-nav__link--active,
-.site-nav--light .site-nav__link--active span {
+.site-nav--light .site-nav__link:hover span {
   color: var(--os-ink, #0B1F3A);
 }
 
@@ -63,9 +61,7 @@
   color: rgba(11, 31, 58, 0.65);
 }
 .site-nav--transparent .site-nav__link:hover,
-.site-nav--transparent .site-nav__link:hover span,
-.site-nav--transparent .site-nav__link--active,
-.site-nav--transparent .site-nav__link--active span {
+.site-nav--transparent .site-nav__link:hover span {
   color: var(--os-ink, #0B1F3A);
 }
 
@@ -688,45 +684,24 @@
   transition: 0.3s all ease;
 }
 
+/* Active state (class="site-nav__link site-nav__link--active") used
+   to get a filled brass pill background + this same underline left
+   permanently at width:100% + text boosted to full opacity — all
+   reported as an unwanted highlight and removed. The permanent
+   underline alone is back, per direct follow-up instruction, but
+   background/color stay removed (hover-only, rules below) — just a
+   quieter "you are here" than the full pill treatment had.
+   Scoped to a.site-nav__link--active, not the bare class: the
+   RESOURCES <button> also carries --active whenever any of its
+   dropdown's children matches the current page (e.g. on /blog), but
+   it isn't itself the active page — just a trigger — which is the
+   exact thing originally reported as the wrong element to highlight.
+   The `a` type selector means this rule structurally can't ever match
+   that button, so it stays underline-free regardless; only a real
+   current-page link gets the permanent underline. */
 .site-nav__link:hover span::after,
-/* The current page's own underline stays drawn in permanently instead
-   of only appearing on hover — the same growing-underline the hover
-   state already uses, just left at its full width:100% end state, so
-   "you are here" reads as a natural extension of a treatment this nav
-   already has rather than a new decoration bolted on for the purpose. */
-.site-nav__link--active span::after {
+a.site-nav__link--active span::after {
   width: 100%;
-}
-
-/* Color + a thin underline alone (the first pass) read as too subtle —
-   easy to miss against everything else already competing for attention
-   in this bar. .site-nav__link's own base rule already gives every link
-   a pill shape (border-radius:999px, generous padding) that just sits
-   with a transparent background normally; filling that SAME pill for
-   the active one — instead of adding a new shape/indicator — is what
-   actually makes "you are here" hard to miss at a glance, not just
-   findable on close inspection. Brass, not white or navy: it's the same
-   accent this site already uses everywhere else for "this one is
-   selected/current" (the dropdown panel's own active row right below
-   this, LeadersSection's and WhatWeDoCloneContent's card treatments),
-   so it stays legible switching between the dark default header and the
-   light/transparent section themes without needing a different fill
-   color per theme.
-   .site-nav__link.site-nav__link--active (two classes), not a bare
-   .site-nav__link--active — needed to beat .site-nav__link:hover's own
-   background:none at equal specificity (0,2,0 either way) by appearing
-   later in the file instead, so hovering the current page's own nav
-   item doesn't make its highlight disappear out from under the
-   pointer. */
-/* .site-nav__link.site-nav__link--active (two classes), not a bare
-   .site-nav__link--active — needed to beat .site-nav__link:hover's own
-   background:none at equal specificity (0,2,0 either way) by appearing
-   later in the file instead, so hovering the current page's own nav
-   item doesn't make its highlight disappear out from under the
-   pointer. Brass, not blue — tried blue (--os-blue) here, reverted per
-   instruction; brass is what's actually in use. */
-.site-nav__link.site-nav__link--active {
-  background: rgba(200, 161, 90, 0.22);
 }
 
 /* Nav link colors — always white */
@@ -734,8 +709,7 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.site-nav .site-nav__link:hover,
-.site-nav .site-nav__link--active {
+.site-nav .site-nav__link:hover {
   color: rgba(255, 255, 255, 1);
 }
 
@@ -743,8 +717,7 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.site-nav--scrolled .site-nav__link:hover,
-.site-nav--scrolled .site-nav__link--active {
+.site-nav--scrolled .site-nav__link:hover {
   color: rgba(255, 255, 255, 1);
 }
 
