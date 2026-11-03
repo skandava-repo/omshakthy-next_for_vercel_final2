@@ -3,7 +3,23 @@
   inset: 0;
   overflow: hidden;
   width: 100%;
-  height: 100vh;
+  /* 100dvh, not 100vh: confirmed on an actual iPad Safari simulator —
+     100vh in Safari resolves against the LARGEST possible viewport
+     (toolbar collapsed), not whatever's actually visible. On page
+     load, with Safari's address bar still showing (the normal, default
+     state — nothing has scrolled it away yet), the real visible area
+     is shorter than that 100vh figure by roughly the toolbar's own
+     height. Since this wrapper is position:fixed + overflow:hidden,
+     anything sized to fill that extra phantom space (here: whichever
+     child section is showing, PropertyGrid's "VIEW MORE" button sitting
+     at the very bottom of it) renders just past the real bottom edge of
+     the screen and gets silently clipped — not scrollable into view,
+     actually cut off, since this wrapper has no scroll of its own.
+     100dvh resolves against the CURRENTLY visible viewport instead,
+     adjusting live as the toolbar shows/hides, so this box is always
+     exactly as tall as what's really on screen. Supported Safari
+     15.4+, safe for this site's actual audience. */
+  height: 100dvh;
   /* Explicit stacking, not just document order: TrustedPartnersSection and
      SpotlightSection (rendered after this in the DOM, now that they've been
      pulled out into normal document flow) are themselves position:relative,
@@ -56,7 +72,11 @@
    width instead. */
 .page-controller__section {
   width: 100%;
-  height: 100vh;
+  /* 100dvh — same Safari toolbar/real-visible-area reasoning as
+     .page-controller above. vh is viewport-relative regardless of any
+     ancestor's own height, so fixing the outer wrapper alone doesn't
+     fix this: each section still needs its own dvh. */
+  height: 100dvh;
   overflow: hidden;
   position: relative;
 }
