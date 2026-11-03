@@ -489,12 +489,23 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
   // of questions-only on first paint.
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
+  // Page-wide scroll progress — RegaliaContent.tsx's own fixed top bar
+  // had no equivalent here at all until now; every other project page
+  // was missing this entirely.
+  const { scrollYProgress } = useScroll()
+
   // Hero video parallax — the same scroll-tied scale/drift
   // RegaliaContent.tsx's own cinematic hero uses.
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroVideoScale = useTransform(heroProgress, [0, 1], [1, 1.18])
   const heroVideoY = useTransform(heroProgress, [0, 1], ['0%', '14%'])
+  // Hero text drifting up + fading as the visitor scrolls past it —
+  // RegaliaContent.tsx's own hero does this to its title/CTA block;
+  // this hero only ever parallaxed the video behind the text, never
+  // the text itself, until now.
+  const heroTextY = useTransform(heroProgress, [0, 1], [0, -140])
+  const heroTextOpacity = useTransform(heroProgress, [0, 0.65], [1, 0])
 
   const sectionIds = [
     'specs', 'connectivity',
@@ -507,6 +518,22 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
 
   return (
     <div style={{ backgroundColor: C.paper }}>
+      {/* Scroll progress bar — parity fix, see the scrollYProgress
+          comment above for why this didn't exist here before. */}
+      <motion.div
+        style={{
+          scaleX: scrollYProgress,
+          transformOrigin: '0% 50%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 3,
+          backgroundColor: C.blue,
+          zIndex: 1002,
+        }}
+      />
+
       {/* ---------------- Hero ----------------
           Bigger, more theatrical than a plain "photo + heading": a
           gold rule + serif kicker line ahead of the name and a much
@@ -560,7 +587,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         {/* Vignette + a faint gold glow low in the frame — depth behind
             the title without a second hard-edged rectangle. */}
         <div className="absolute inset-0" style={{ background: 'radial-gradient(120% 70% at 50% 100%, rgba(201,162,39,0.16) 0%, rgba(201,162,39,0) 60%)' }} />
-        <div className="relative max-w-6xl mx-auto w-full">
+        <motion.div className="relative max-w-6xl mx-auto w-full" style={{ y: heroTextY, opacity: heroTextOpacity }}>
           <Reveal>
             {data.type && <Kicker color={C.mist}>{data.type}</Kicker>}
           </Reveal>
@@ -593,7 +620,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
               Book a Site Visit
             </a>
           </Reveal>
-        </div>
+        </motion.div>
       </section>
 
       {/* ---------------- Specifications ---------------- */}

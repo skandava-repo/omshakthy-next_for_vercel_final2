@@ -14,6 +14,7 @@ import FinancialPartnersSection from './FinancialPartnersSection'
 // The real, audited "Site Links" footer block — see that component's
 // own header comment for what it contains and why it's shared.
 import SiteLinksSection from './SiteLinksSection'
+import './RegaliaContent.css'
 
 /* ------------------------------------------------------------------
    Site-wide blue-only palette — this page was still on its own
@@ -38,6 +39,11 @@ const C = {
   inkMuted: 'rgba(11, 31, 58, 0.68)',
   hairLight: 'rgba(13, 107, 178, 0.35)',
   hairDark: 'rgba(251, 248, 242, 0.18)',
+  // One deliberate exception to "gold is gone" above: the Kicker rule
+  // below is the one place every other project page (ProjectLandingContent.tsx)
+  // still shows this same brass gold consistently, so this page now
+  // matches that one detail for parity rather than being the odd one out.
+  gold: '#C9A227',
 }
 
 // Same gradient Footer.css's var(--gradient-dark-section) uses — every
@@ -48,6 +54,10 @@ const darkGradient = 'linear-gradient(180deg, #004385 0%, #0D6BB2 100%)'
 // ContactContent.tsx's lead form already use.
 const WHATSAPP_NUMBER = '919150088097'
 const ADDRESS = 'OmShakthy Regalia, Tambaram, Chennai'
+// Same real tree cutout ProjectLandingContent.tsx's TreeAccent uses —
+// this page never had the decorative corner foliage the other 8
+// project landing pages all got once that component existed.
+const TREE = '/decor/tree-accent.webp'
 
 const display: React.CSSProperties = {
   fontFamily: "'Fraunces', Georgia, serif",
@@ -112,9 +122,177 @@ const Reveal = ({
   )
 }
 
-const Kicker = ({ children, color = C.blue }: { children: React.ReactNode; color?: string }) => (
-  <span className="block mb-4" style={{ ...mono, color }}>
+const Kicker = ({ children, color = C.blue, center = false }: { children: React.ReactNode; color?: string; center?: boolean }) => (
+  <span className={`mb-4 ${center ? 'flex flex-col items-center' : 'block'}`}>
+    <span style={{ ...mono, color }}>{children}</span>
+    {/* Small accent rule under every kicker, same motif
+        ProjectLandingContent.tsx's own Kicker has (in gold there) —
+        missing here before. In blue, not gold: this page deliberately
+        dropped the old brass accent for the site-wide blue-only
+        palette (see this file's own top comment), so the rule is
+        ported with that same substitution rather than reintroducing
+        gold. `center` (also new, same reason) is needed so this rule
+        actually centers under centered kickers (Since 1991, Key
+        Figures, Amenities, FAQ) instead of sitting flush-left under
+        centered text — a block element doesn't follow its parent's
+        text-align on its own. */}
+    <span className="block mt-2 rounded-full" style={{ width: 34, height: 2.5, background: C.gold }} />
+  </span>
+)
+
+// Same word-by-word rise ProjectLandingContent.tsx's KineticHeading
+// uses — each word sits in its own overflow-hidden mask and slides up
+// into place with its own stagger. Every section heading on this page
+// was a plain, static <h2>/<h3> until now; every other project landing
+// page already had this.
+const KineticHeading = ({
+  text,
+  className,
+  style,
+  delay = 0,
+}: {
+  text: string
+  className?: string
+  style?: React.CSSProperties
+  delay?: number
+}) => {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const words = text.split(' ')
+  if (!mounted) {
+    return <h2 className={className} style={style}>{text}</h2>
+  }
+  return (
+    <h2 className={className} style={style}>
+      {words.map((w, i) => (
+        <span
+          key={i}
+          style={{
+            display: 'inline-block',
+            overflow: 'hidden',
+            paddingBottom: '0.15em',
+            marginBottom: '-0.15em',
+            marginRight: i < words.length - 1 ? '0.28em' : 0,
+          }}
+        >
+          <motion.span
+            style={{ display: 'inline-block' }}
+            initial={{ y: '110%', rotate: 4 }}
+            whileInView={{ y: '0%', rotate: 0 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.7, delay: delay + i * 0.08, ease: easeLux }}
+          >
+            {w}
+          </motion.span>
+        </span>
+      ))}
+    </h2>
+  )
+}
+
+// A single oversized outline numeral, stroke-only and low-opacity —
+// same device ProjectLandingContent.tsx's GhostNumeral uses behind the
+// Connectivity/Amenities section counts. Real counts only.
+const GhostNumeral = ({ n, color }: { n: number | string; color: string }) => (
+  <span
+    aria-hidden
+    className="absolute select-none pointer-events-none hidden md:block"
+    style={{
+      ...display,
+      top: '-2.5rem',
+      right: 0,
+      fontSize: 'clamp(6rem, 13vw, 10rem)',
+      fontWeight: 700,
+      lineHeight: 1,
+      color: 'transparent',
+      WebkitTextStroke: `1.5px ${color}`,
+      opacity: 0.5,
+    }}
+  >
+    {typeof n === 'number' ? String(n).padStart(2, '0') : n}
+  </span>
+)
+
+// Soft, low-opacity foliage anchored to a corner — same decorative
+// tree cutout ProjectLandingContent.tsx's TreeAccent uses on
+// Specifications/Since-1991/Amenities/Mission/FAQ/Visit. `tone` swaps
+// between warm original greens (light backgrounds) and a duotone-navy
+// recolor (dark-gradient sections).
+const TreeAccent = ({
+  side = 'left',
+  tone = 'natural',
+  size = 340,
+  bottom = -40,
+  opacity = 0.22,
+}: {
+  side?: 'left' | 'right'
+  tone?: 'natural' | 'navy'
+  size?: number
+  bottom?: number
+  opacity?: number
+}) => (
+  <div
+    aria-hidden
+    className="absolute pointer-events-none select-none hidden md:block"
+    style={{
+      [side]: -size * 0.22,
+      bottom,
+      width: size,
+      height: size,
+      opacity,
+      filter: tone === 'navy' ? 'grayscale(1) brightness(0.6) sepia(1) hue-rotate(175deg) saturate(3)' : undefined,
+      transform: side === 'right' ? 'scaleX(-1)' : undefined,
+    }}
+  >
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src={TREE} alt="" className="w-full h-full object-contain object-bottom" />
+  </div>
+)
+
+// A thin rule + diamond glyph between a section's kicker/heading block
+// and its body — same "heritage" flourish ProjectLandingContent.tsx's
+// OrnamentDivider uses on Since 1991. In blue, not gold — same
+// substitution reasoning as Kicker's rule above.
+const OrnamentDivider = ({ color }: { color: string }) => (
+  <div className="flex items-center justify-center gap-3 my-6" aria-hidden>
+    <span style={{ width: 44, height: 1, background: color, opacity: 0.4 }} />
+    <span style={{ width: 7, height: 7, background: C.blue, transform: 'rotate(45deg)', flexShrink: 0 }} />
+    <span style={{ width: 44, height: 1, background: color, opacity: 0.4 }} />
+  </div>
+)
+
+// Small corner brackets on two opposite corners — same framed-print
+// treatment ProjectLandingContent.tsx's CornerFrame gives its map
+// embed, applied here for the first time. In blue, not gold.
+const CornerFrame = ({ children }: { children: React.ReactNode }) => (
+  <div className="relative">
+    {[
+      { top: -10, left: -10, borderWidth: '3px 0 0 3px' },
+      { bottom: -10, right: -10, borderWidth: '0 3px 3px 0' },
+    ].map((pos, i) => (
+      <span
+        key={i}
+        aria-hidden
+        className="absolute hidden md:block"
+        style={{ width: 36, height: 36, borderColor: C.blue, borderStyle: 'solid', ...pos }}
+      />
+    ))}
     {children}
+  </div>
+)
+
+// A single oversized serif quote mark behind a pull-quote statement —
+// same device ProjectLandingContent.tsx's GoldQuoteMark uses on
+// Mission/Vision. Named the same for cross-file consistency even
+// though the color is blue here, not gold — same substitution as
+// everywhere else above.
+const GoldQuoteMark = () => (
+  <span
+    aria-hidden
+    className="block leading-none select-none"
+    style={{ ...display, fontSize: '5rem', color: C.blue, opacity: 0.45, height: '2.2rem', marginBottom: '0.25rem' }}
+  >
+    &ldquo;
   </span>
 )
 
@@ -209,7 +387,7 @@ const RegaliaSiteVisitForm = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="w-full px-5 py-3 rounded-full text-sm outline-none"
+          className="rg-input w-full px-5 py-3 rounded-full text-sm outline-none"
           style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: '#fff' }}
         />
         <input
@@ -217,7 +395,7 @@ const RegaliaSiteVisitForm = () => {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Mobile number"
-          className="w-full px-5 py-3 rounded-full text-sm outline-none"
+          className="rg-input w-full px-5 py-3 rounded-full text-sm outline-none"
           style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: '#fff' }}
         />
         <input
@@ -225,12 +403,12 @@ const RegaliaSiteVisitForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email address"
-          className="w-full px-5 py-3 rounded-full text-sm outline-none"
+          className="rg-input w-full px-5 py-3 rounded-full text-sm outline-none"
           style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: '#fff' }}
         />
         <button
           type="submit"
-          className="mt-1 px-6 py-3 rounded-full text-sm font-semibold self-start"
+          className="rg-btn mt-1 px-6 py-3 rounded-full text-sm font-semibold self-start"
           style={{ ...mono, backgroundColor: C.blueDeep, color: '#fff' }}
         >
           Send via WhatsApp
@@ -306,7 +484,7 @@ const Regalia = () => {
         >
           <motion.span
             className="block mb-4"
-            style={{ ...mono, color: C.blue }}
+            style={{ ...mono, color: C.paper }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: easeLux }}
@@ -324,7 +502,7 @@ const Regalia = () => {
           </motion.h1>
           <motion.p
             className="mt-5 text-base md:text-xl"
-            style={{ ...body, color: C.paperMuted }}
+            style={{ ...body, color: '#FFFFFF', fontWeight: 500 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: easeLux }}
@@ -353,11 +531,12 @@ const Regalia = () => {
           <Reveal>
             <Kicker>Generating Real Assets</Kicker>
           </Reveal>
-          <Reveal delay={0.08}>
-            <h2 className="text-3xl md:text-5xl mb-8" style={{ ...display, color: C.ink, fontWeight: 500 }}>
-              We don't sell plots. We help families plant something that outlives us.
-            </h2>
-          </Reveal>
+          <KineticHeading
+            delay={0.08}
+            text="We don't sell plots. We help families plant something that outlives us."
+            className="text-3xl md:text-5xl mb-8"
+            style={{ ...display, color: C.ink, fontWeight: 500 }}
+          />
           <Reveal delay={0.16}>
             <p style={{ color: C.inkMuted }}>
               Omshakthy begins with a simple conviction — that the most honest wealth a family can
@@ -380,14 +559,17 @@ const Regalia = () => {
           number, gray label), floating on the same blue gradient
           Footer.css uses — not converted to a flat white section, the
           gradient itself stays. */}
-      <section className="px-6 md:px-16 py-20" style={{ background: darkGradient }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="relative overflow-hidden px-6 md:px-16 py-20" style={{ background: darkGradient }}>
+        <TreeAccent side="right" tone="navy" size={240} bottom={-20} opacity={0.14} />
+        <div className="relative max-w-6xl mx-auto">
           <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-4">
             <div>
               <Kicker color={C.mist}>Specifications</Kicker>
-              <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.paper, fontWeight: 500 }}>
-                The Plot, In Numbers
-              </h2>
+              <KineticHeading
+                text="The Plot, In Numbers"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: C.paper, fontWeight: 500 }}
+              />
             </div>
             {/* regalia-lp.html has a "Download Brochure" button here —
                 its own link points to a different project's PDF
@@ -417,7 +599,7 @@ const Regalia = () => {
             ].map((s, i) => (
               <Reveal key={s.label} delay={i * 0.05}>
                 <div
-                  className="h-full rounded-2xl bg-white p-6 text-center"
+                  className="rg-stat-card h-full rounded-2xl bg-white p-6 text-center"
                   style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}
                 >
                   <div className="flex justify-center">
@@ -441,13 +623,19 @@ const Regalia = () => {
           absent before, only the structured list existed.
           paper, not ink — Specifications right above is now ink,
           alternating properly instead of two ink sections in a row. */}
-      <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.paper, color: C.ink }}>
-        <div className="max-w-5xl mx-auto">
+      <section className="relative overflow-hidden px-6 md:px-16 py-20" style={{ backgroundColor: C.paper, color: C.ink }}>
+        <div className="relative max-w-5xl mx-auto">
+          {/* Ghost numeral is the real count of locations listed below —
+              same restraint ProjectLandingContent.tsx's own Connectivity
+              section uses. */}
+          <GhostNumeral n={10} color={C.panel} />
           <Reveal className="mb-12">
             <Kicker>Connectivity</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>
-              A Tambaram Address That Keeps You Close
-            </h2>
+            <KineticHeading
+              text="A Tambaram Address That Keeps You Close"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.ink, fontWeight: 500 }}
+            />
             <p className="mt-4 max-w-2xl" style={{ color: C.slate }}>
               Tambaram is valued by families and working professionals for its access to schools,
               colleges, healthcare facilities, workplaces and major road networks — the Outer Ring
@@ -494,9 +682,13 @@ const Regalia = () => {
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <Kicker>Nature Dream Influence</Kicker>
-            <h2 className="text-3xl md:text-5xl mb-6" style={{ ...display, color: C.ink, fontWeight: 500 }}>
-              Build Your Future at Omshakthy Regalia
-            </h2>
+          </Reveal>
+          <KineticHeading
+            text="Build Your Future at Omshakthy Regalia"
+            className="text-3xl md:text-5xl mb-6"
+            style={{ ...display, color: C.ink, fontWeight: 500 }}
+          />
+          <Reveal delay={0.08}>
             <p style={{ color: C.inkMuted }}>
               A home begins with the freedom to shape it your way. Omshakthy Homes Regalia brings
               that freedom to life through thoughtfully planned residential plots in a secure,
@@ -563,12 +755,14 @@ const Regalia = () => {
           above it is dropped entirely (didn't fit either version). */}
       <section className="px-6 md:px-16 py-24" style={{ background: darkGradient }}>
         <div className="max-w-7xl mx-auto">
-          <Reveal className="text-center mb-16">
-            <Kicker color={C.mist}>By The Numbers</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.paper, fontWeight: 500 }}>
-              Thirty-plus years. Zero title disputes.
-            </h2>
-          </Reveal>
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={C.mist}>By The Numbers</Kicker></Reveal>
+            <KineticHeading
+              text="Thirty-plus years. Zero title disputes."
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.paper, fontWeight: 500 }}
+            />
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { icon: 'map', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, unit: 'Acres', label: 'Successfully aggregated & developed' },
@@ -578,7 +772,7 @@ const Regalia = () => {
             ].map((s, i) => (
               <Reveal key={s.label} delay={i * 0.08}>
                 <div
-                  className="h-full rounded-2xl bg-white p-6 text-center"
+                  className="rg-stat-card h-full rounded-2xl bg-white p-6 text-center"
                   style={{ boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)', border: `1px solid ${C.border}` }}
                 >
                   <div className="flex justify-center">
@@ -599,11 +793,14 @@ const Regalia = () => {
           paper, not ink — Key Figures right above is ink; this and
           Amenities right below were both ink too (three ink sections
           in a row before this fix). */}
-      <section className="px-6 md:px-16 py-28 text-center" style={{ backgroundColor: C.paper, color: C.ink }}>
-        <div className="max-w-3xl mx-auto">
+      <section className="relative overflow-hidden px-6 md:px-16 py-28 text-center" style={{ backgroundColor: C.paper, color: C.ink }}>
+        <TreeAccent side="left" tone="natural" size={280} bottom={-30} opacity={0.14} />
+        <TreeAccent side="right" tone="natural" size={280} bottom={-30} opacity={0.14} />
+        <div className="relative max-w-3xl mx-auto">
           <Reveal>
-            <Kicker>Est. 1991 · Chennai</Kicker>
+            <Kicker center>Est. 1991 · Chennai</Kicker>
           </Reveal>
+          <OrnamentDivider color={C.hairLight} />
           <Reveal delay={0.1}>
             <p className="text-2xl md:text-4xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>
               Incorporated in 1991 to consolidate land for the future — industries, Special Economic
@@ -619,24 +816,33 @@ const Regalia = () => {
           specific to this project ("Fast-Growing Location", "Modern
           Amenities") before. White icon circles float on the same
           Footer.css blue gradient, same as Specifications/Key Figures. */}
-      <section className="px-6 md:px-16 py-28" style={{ background: darkGradient }}>
-        <div className="max-w-7xl mx-auto">
-          <Reveal className="text-center mb-16">
-            <Kicker color={C.mist}>Amenities</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.paper }}>
-              Where Lifestyle Meets Coziness
-            </h2>
+      <section className="relative overflow-hidden px-6 md:px-16 py-28" style={{ background: darkGradient }}>
+        <TreeAccent side="left" tone="navy" size={260} bottom={-20} opacity={0.16} />
+        <div className="relative max-w-7xl mx-auto">
+          {/* Ghost numeral is the real count of amenities listed below —
+              same restraint ProjectLandingContent.tsx's own Amenities
+              section uses. */}
+          <GhostNumeral n={10} color={C.mist} />
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={C.mist}>Amenities</Kicker></Reveal>
+            <KineticHeading
+              text="Where Lifestyle Meets Coziness"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.paper, fontWeight: 500 }}
+            />
             {/* regalia-lp.html's own "A Gated Plot Community Designed
                 for Everyday Comfort" copy, word for word — was entirely
                 absent, only the structured badge list existed. */}
-            <p className="mt-4 max-w-2xl mx-auto" style={{ color: C.paperMuted }}>
-              A welcoming grand entrance creates a strong first impression, while blacktop internal
-              roads support smooth movement within the community. The gated setting and 24×7 CCTV
-              surveillance offer an added sense of security, while landscaped open spaces, a
-              children&rsquo;s play area and walking &amp; jogging tracks weave lifestyle into the
-              layout itself.
-            </p>
-          </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-4 max-w-2xl mx-auto" style={{ color: C.paperMuted }}>
+                A welcoming grand entrance creates a strong first impression, while blacktop internal
+                roads support smooth movement within the community. The gated setting and 24×7 CCTV
+                surveillance offer an added sense of security, while landscaped open spaces, a
+                children&rsquo;s play area and walking &amp; jogging tracks weave lifestyle into the
+                layout itself.
+              </p>
+            </Reveal>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
             {[
               { label: 'Grand Entrance', icon: 'gate' },
@@ -666,14 +872,16 @@ const Regalia = () => {
       </section>
 
       {/* ---------------- Mission / Vision (white) ---------------- */}
-      <section className="px-6 md:px-16 py-28" style={{ backgroundColor: C.paper, color: C.ink }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="relative overflow-hidden px-6 md:px-16 py-28" style={{ backgroundColor: C.paper, color: C.ink }}>
+        <TreeAccent side="left" tone="natural" size={230} bottom={-30} opacity={0.1} />
+        <div className="relative max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           {[
             { t: 'Our Mission', p: 'To turn every rupee of trust into a real, title-clear asset that lasts for generations.' },
             { t: 'Our Vision', p: "To be South India's most trusted steward of land — where legacy is engineered, not imagined." },
           ].map((m, i) => (
             <Reveal key={m.t} delay={i * 0.1}>
               <Kicker>{m.t}</Kicker>
+              <GoldQuoteMark />
               <p className="text-2xl md:text-3xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>
                 {m.p}
               </p>
@@ -683,14 +891,17 @@ const Regalia = () => {
       </section>
 
       {/* ---------------- FAQ (footer-blue gradient) ---------------- */}
-      <section className="px-6 md:px-16 py-28" style={{ background: darkGradient }}>
-        <div className="max-w-4xl mx-auto">
-          <Reveal className="text-center mb-16">
-            <Kicker color={C.mist}>Good to Know</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.paper, fontWeight: 500 }}>
-              Frequently Asked Questions
-            </h2>
-          </Reveal>
+      <section className="relative overflow-hidden px-6 md:px-16 py-28" style={{ background: darkGradient }}>
+        <TreeAccent side="right" tone="navy" size={230} bottom={-30} opacity={0.14} />
+        <div className="relative max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={C.mist}>Good to Know</Kicker></Reveal>
+            <KineticHeading
+              text="Frequently Asked Questions"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.paper, fontWeight: 500 }}
+            />
+          </div>
           <div>
             {[
               {
@@ -736,12 +947,14 @@ const Regalia = () => {
           not the 3 generic ones this had a moment ago. */}
       <section className="px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink }}>
         <div className="max-w-6xl mx-auto">
-          <Reveal className="mb-12">
-            <Kicker>Project Images</Kicker>
-            <h2 className="text-2xl md:text-4xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>
-              See Regalia for Yourself
-            </h2>
-          </Reveal>
+          <div className="mb-12">
+            <Reveal><Kicker>Project Images</Kicker></Reveal>
+            <KineticHeading
+              text="See Regalia for Yourself"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.ink, fontWeight: 500 }}
+            />
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
               'snap.0123', 'snap.0134', 'snap.0169',
@@ -782,16 +995,23 @@ const Regalia = () => {
               Find the Directions From Nearby Locations
             </h2>
           </Reveal>
-          <Reveal delay={0.08} className="rounded-2xl overflow-hidden mb-6" style={{ height: 360 }}>
-            <iframe
-              title="Omshakthy Regalia location"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(ADDRESS)}&output=embed`}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <Reveal delay={0.08} className="mb-6">
+            {/* Corner-bracket frame — same framed-print treatment
+                ProjectLandingContent.tsx's CornerFrame gives every
+                other project page's map embed, missing here before. */}
+            <CornerFrame>
+              <div className="rounded-2xl overflow-hidden" style={{ height: 360 }}>
+                <iframe
+                  title="Omshakthy Regalia location"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(ADDRESS)}&output=embed`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            </CornerFrame>
           </Reveal>
           <Reveal delay={0.16} className="flex flex-wrap gap-3">
             {['Mudichur', 'Chromepet', 'Thirumudivakkam', 'Vandalur'].map((area) => (
@@ -819,8 +1039,9 @@ const Regalia = () => {
           real WhatsApp number Footer.tsx's own button uses, instead of
           pretending to submit to an endpoint that isn't there (same
           pattern as ContactContent.tsx's form). */}
-      <section className="px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink }}>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
+      <section className="relative overflow-hidden px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink }}>
+        <TreeAccent side="right" tone="natural" size={240} bottom={-20} opacity={0.14} />
+        <div className="relative max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
           <Reveal>
             <Kicker>Take the First Step</Kicker>
             <h2 className="text-2xl md:text-4xl mb-6" style={{ ...display, color: C.ink, fontWeight: 500 }}>
@@ -853,7 +1074,7 @@ const Regalia = () => {
           hands off smoothly into Footer's own dark blue right below. */}
       <section className="px-6 md:px-16 py-24 text-center" style={{ background: darkGradient, color: C.paper }}>
         <Reveal>
-          <Kicker color={C.mist}>Get in Touch</Kicker>
+          <Kicker center color={C.mist}>Get in Touch</Kicker>
           <p className="text-2xl md:text-4xl mb-4" style={{ ...display, color: C.paper, fontWeight: 500 }}>
             Omshakthy Agencies (Madras) Pvt Ltd
           </p>

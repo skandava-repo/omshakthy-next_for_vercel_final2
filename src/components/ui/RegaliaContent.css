@@ -1,0 +1,53 @@
+/* Same three hover micro-interactions ProjectLandingContent.css gives
+   every other project landing page's stat cards and site-visit form —
+   missing here entirely until now (no CSS file imported at all).
+   Stat card recolored to gold (#C9A227), not blue: same one
+   deliberate exception RegaliaContent.tsx's own C.gold comment
+   explains — ProjectLandingContent.tsx's .pl-stat-card uses this
+   exact gold too, so this page's stat cards now match for parity
+   rather than being the odd one out. Site-visit form below is
+   unrelated (not flagged), stays blue. */
+
+/* Stat cards (Specifications, Key Figures) — a thin gold top edge
+   that only appears on hover, plus a slight lift. */
+.rg-stat-card {
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rg-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2.5px;
+  border-radius: 999px;
+  background: #C9A227;
+  transform: scaleX(0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rg-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -16px rgba(11, 31, 58, 0.28);
+}
+.rg-stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Site-visit form — blue focus ring instead of the browser default,
+   and a lift + glow on the submit button's hover. */
+.rg-input {
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.rg-input:focus {
+  border-color: #0D6BB2 !important;
+  box-shadow: 0 0 0 3px rgba(13, 107, 178, 0.18);
+}
+.rg-btn {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rg-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgba(13, 107, 178, 0.55);
+}
