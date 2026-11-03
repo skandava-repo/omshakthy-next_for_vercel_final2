@@ -10,10 +10,17 @@ import {
 // Same "BANKS Offering Loans" bank-logo strip regalia-lp.html has —
 // reused directly from the home page rather than rebuilt, since a
 // real version of it already exists there (FinancialPartnersSection).
+import Link from 'next/link'
 import FinancialPartnersSection from './FinancialPartnersSection'
 // The real, audited "Site Links" footer block — see that component's
 // own header comment for what it contains and why it's shared.
 import SiteLinksSection from './SiteLinksSection'
+// Same cross-sell data ProjectLandingContent.tsx pulls from — see
+// that file's own comments on both of these. Duplicated here rather
+// than imported, matching this file's own established convention of
+// not cross-importing primitives between these two pages.
+import { projects } from '@/lib/projectsData'
+import blogPosts from '@/data/blog/summary.json'
 import './RegaliaContent.css'
 
 /* ------------------------------------------------------------------
@@ -84,6 +91,44 @@ const mono: React.CSSProperties = {
 
 /* ---------- Motion helpers ---------- */
 const easeLux = [0.16, 1, 0.3, 1] as const
+
+// Real reviews from the old site's own testimonials.html — same
+// "Know More... Directly from the Owners" block every project landing
+// page on the old mirror showed (confirmed on industrial-park.html),
+// missing entirely on this page until now. Same fixed set
+// ProjectLandingContent.tsx uses, not page-specific content.
+const testimonials = [
+  {
+    quote: 'Definitely! I feel happier and luckier after purchasing this flat. Life has changed for better. Owning a flat in Santha Towers is a symbol of security for my retired life.',
+    name: 'Jalaja Madanmohan',
+    detail: 'B103 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/jalaja-madanmohan.webp',
+  },
+  {
+    quote: 'I specifically would like to thank OmShakthy and its team for providing, at extra cost, Reticulated Gas facility which was not originally listed in the construction agreement.',
+    name: 'D. Dhanasekaran',
+    detail: 'D802 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/dhanasekaran.webp',
+  },
+  {
+    quote: "We are proud to be the owners of Santha Towers which has fulfilled all our criteria's. Our special thanks to the management who have conceptualised budget homes.",
+    name: 'C. Nireesh',
+    detail: 'B703 — OmShakthy Santha Towers',
+    photo: '/testimonials/real/nireesh.webp',
+  },
+]
+
+// Same "Our Blogs - Explore Property Development in Chennai!" fixed
+// 3-post cross-sell ProjectLandingContent.tsx uses, also missing here
+// until now.
+const BLOG_CROSS_SELL_SLUGS = [
+  'what-is-rera-act-in-real-estate-and-why-is-rera-registration-important',
+  'how-to-check-if-your-plot-is-dtcp-approved-or-not',
+  '6-best-places-to-buy-residential-plots-in-chennai',
+]
+const crossSellPosts = BLOG_CROSS_SELL_SLUGS
+  .map((slug) => blogPosts.find((b) => b.slug === slug))
+  .filter((b): b is (typeof blogPosts)[number] => Boolean(b))
 
 const Reveal = ({
   children,
@@ -871,6 +916,58 @@ const Regalia = () => {
         </div>
       </section>
 
+      {/* ---------------- Featured Projects (panel) ----------------
+          "Also Available" cross-sell strip every other project page
+          (ProjectLandingContent.tsx, which this page itself inspired)
+          now has — missing here until now. Pulls from the same real
+          /projects array, excluding Regalia's own listing. panel (the
+          light blue-tinted tone "Build Your Future" above already
+          uses), not paper — Amenities right above this is already
+          dark, and Mission/Vision right below is already paper/white,
+          so panel keeps a visible step between the two without two
+          same-toned sections sitting back to back. */}
+      {(() => {
+        const featured = projects.filter((p) => p.link && p.link !== '/regalia-lp').slice(0, 3)
+        if (featured.length === 0) return null
+        return (
+          <section className="px-6 md:px-16 py-28" style={{ backgroundColor: C.panel, color: C.ink }}>
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <Reveal><Kicker center>Also Available</Kicker></Reveal>
+                <KineticHeading
+                  text="Other Projects Worth a Look"
+                  className="text-2xl md:text-4xl"
+                  style={{ ...display, color: C.ink, fontWeight: 500 }}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featured.map((p, i) => (
+                  <Reveal key={p.name} delay={i * 0.08}>
+                    <Link
+                      href={p.link!}
+                      className="block rounded-2xl overflow-hidden bg-white h-full"
+                      style={{ border: `1px solid ${C.border}`, boxShadow: '0 10px 30px -14px rgba(11,31,58,0.15)' }}
+                    >
+                      <div className="relative" style={{ aspectRatio: '4 / 3' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.image} alt={p.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" style={p.imagePosition ? { objectPosition: p.imagePosition } : undefined} />
+                      </div>
+                      <div className="p-5">
+                        <p style={{ ...mono, color: C.blue, fontSize: '0.68rem' }}>{p.type}</p>
+                        <h3 className="mt-2 text-lg" style={{ ...display, color: C.ink, fontWeight: 500 }}>{p.name}</h3>
+                        <p className="mt-1 text-sm" style={{ color: C.slate }}>{p.location}</p>
+                        <p className="mt-3 text-sm font-semibold" style={{ color: C.ink }}>{p.price}</p>
+                        <span className="mt-4 inline-block text-sm" style={{ color: C.blue }}>Know More →</span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      })()}
+
       {/* ---------------- Mission / Vision (white) ---------------- */}
       <section className="relative overflow-hidden px-6 md:px-16 py-28" style={{ backgroundColor: C.paper, color: C.ink }}>
         <TreeAccent side="left" tone="natural" size={230} bottom={-30} opacity={0.1} />
@@ -980,6 +1077,86 @@ const Regalia = () => {
           (FinancialPartnersSection), reused here as-is rather than
           rebuilt from scratch. */}
       <FinancialPartnersSection />
+
+      {/* ---------------- Testimonials (footer-blue gradient) ----------------
+          "Know More... Directly from the Owners" — every other project
+          page now has this, missing here until now. dark, not paper:
+          Loans right above has no strong background of its own
+          (FinancialPartnersSection sits on plain white), so this opens
+          with a real color step before Related Blog Posts (paper) and
+          Location Map (dark) continue the alternation below. */}
+      <section className="px-6 md:px-16 py-28" style={{ background: darkGradient }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <Reveal><Kicker center color={C.mist}>From Our Owners</Kicker></Reveal>
+            <KineticHeading
+              text="Know More, Directly From the Owners"
+              className="text-2xl md:text-4xl"
+              style={{ ...display, color: C.paper, fontWeight: 500 }}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, i) => (
+              <Reveal key={t.name} delay={i * 0.08}>
+                <div
+                  className="h-full rounded-2xl p-6"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)' }}
+                >
+                  <GoldQuoteMark />
+                  <p style={{ color: C.paperMuted }}>{t.quote}</p>
+                  <div className="flex items-center gap-3 mt-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={t.photo} alt={t.name} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
+                    <div>
+                      <p style={{ ...display, color: C.paper, fontWeight: 500 }}>{t.name}</p>
+                      <p className="text-xs" style={{ color: C.paperMuted }}>{t.detail}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- Related Blog Posts (paper) ----------------
+          "Our Blogs - Explore Property Development in Chennai!" —
+          same gap as Testimonials above, same fix. */}
+      {crossSellPosts.length > 0 && (
+        <section className="px-6 md:px-16 py-28" style={{ backgroundColor: C.paper, color: C.ink }}>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <Reveal><Kicker center>From the Blog</Kicker></Reveal>
+              <KineticHeading
+                text="Explore Property Development in Chennai"
+                className="text-2xl md:text-4xl"
+                style={{ ...display, color: C.ink, fontWeight: 500 }}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {crossSellPosts.map((post, i) => (
+                <Reveal key={post.slug} delay={i * 0.08}>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="block rounded-2xl overflow-hidden h-full bg-white"
+                    style={{ border: `1px solid ${C.border}` }}
+                  >
+                    <div className="relative" style={{ aspectRatio: '16 / 10' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={post.heroImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    </div>
+                    <div className="p-5">
+                      <p style={{ ...mono, color: C.blue, fontSize: '0.68rem' }}>{post.category}</p>
+                      <h3 className="mt-2 text-lg" style={{ ...display, color: C.ink, fontWeight: 500 }}>{post.title}</h3>
+                      <span className="mt-4 inline-block text-sm" style={{ color: C.blue }}>Continue Reading →</span>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ---------------- Location Map (footer-blue gradient) ----------------
           regalia-lp.html's "Location Map" + "Find the directions from
