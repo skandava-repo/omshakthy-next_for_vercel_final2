@@ -28,9 +28,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // One post's real indexed URL has a literal '&' its safe route slug
   // had to drop (see src/app/blog/[slug]/page.tsx's own comment) — list
   // the real, canonical '&' URL here, not the internal safe-slug
-  // duplicate it resolves through via next.config.ts's rewrite.
+  // duplicate it resolves through via next.config.ts's rewrite. Written
+  // as the XML entity '&amp;', not a raw '&': confirmed in
+  // node_modules/next/dist/build/webpack/loaders/metadata/resolve-route-data.js
+  // that Next interpolates `url` into `<loc>` with zero XML-escaping of
+  // its own, so a raw '&' here would emit invalid XML (a bare '&' isn't
+  // legal inside XML text content) — '&amp;' decodes back to the exact
+  // same indexed URL once any XML parser reads it, just validly.
   const BLOG_SITEMAP_SLUG_OVERRIDE: Record<string, string> = {
-    'e-stamp-application-verification-and-registry-explained': 'e-stamp-application-verification-&-registry-explained',
+    'e-stamp-application-verification-and-registry-explained': 'e-stamp-application-verification-&amp;-registry-explained',
   }
   const blogPosts: MetadataRoute.Sitemap = getAllBlogSlugs().map((slug) => ({
     url: `${baseUrl}/blog/${BLOG_SITEMAP_SLUG_OVERRIDE[slug] ?? slug}`,
@@ -63,6 +69,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/testimonials`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/what-we-do`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    // The 4 category-filter views — real, indexed URLs on the old site
+    // (its own sitemap.xml lists exactly these), now a real feature
+    // here too (see BlogListingContent.tsx's tabs), not just listed.
+    { url: `${baseUrl}/blog?category=buying`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/blog?category=investment`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/blog?category=legal`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/blog?category=lifestyle`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
     ...blogPosts,
     { url: `${baseUrl}/emi-calculator`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/homeloan`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },

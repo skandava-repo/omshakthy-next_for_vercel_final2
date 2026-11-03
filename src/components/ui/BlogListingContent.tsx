@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import blogPosts from '@/data/blog/summary.json'
@@ -70,6 +71,29 @@ const corridors: Record<string, string> = {
 
 const categories = ['All', ...Array.from(new Set(blogPosts.map((b) => b.category)))]
 
+// Real, indexed category-filter URLs the old site has (sitemap.xml:
+// /blog/?category=buying|investment|legal|lifestyle) — short slugs
+// that don't match our fuller on-page category labels 1:1, so they're
+// mapped explicitly rather than derived. Any category without a real
+// indexed slug (just "Company & Community", one post) still gets a
+// working slug via the generic fallback below — filtering still works
+// for it, it's just not a URL Google already has indexed.
+const EXPLICIT_CATEGORY_SLUGS: Record<string, string> = {
+  'Buying Guides': 'buying',
+  'Market & Investment': 'investment',
+  'Legal & Documents': 'legal',
+  'Lifestyle & Decor': 'lifestyle',
+}
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+const categoryToSlug = (c: string) => EXPLICIT_CATEGORY_SLUGS[c] ?? slugify(c)
+const CATEGORY_SLUGS: Record<string, string> = Object.fromEntries(
+  categories.filter((c) => c !== 'All').map((c) => [c, categoryToSlug(c)])
+)
+const SLUG_TO_CATEGORY: Record<string, string> = Object.fromEntries(
+  Object.entries(CATEGORY_SLUGS).map(([category, slug]) => [slug, category])
+)
+
 // Spells out the post count in the closing note below — this used to be a
 // hardcoded "Three entries" that quietly went wrong the moment a fourth
 // post was added; keying off blogPosts.length means it can never go
@@ -128,8 +152,19 @@ const RECENT_GRID_SIZE = 5
 const MORE_PAGE_SIZE = 12
 
 const BlogListingContent = () => {
-  const [filter, setFilter] = useState('All')
+  // Filter now lives in the URL (?category=buying), not just local
+  // state — so the 4 category views are real, bookmarkable, crawlable
+  // pages matching what the old site already has indexed
+  // (sitemap.xml: /blog/?category=buying|investment|legal|lifestyle),
+  // instead of a client-only toggle no search engine could ever see a
+  // link to. The tabs below are real <Link>s now, not onClick buttons.
+  const searchParams = useSearchParams()
+  const categorySlug = searchParams.get('category')
+  const filter = categorySlug ? (SLUG_TO_CATEGORY[categorySlug] ?? 'All') : 'All'
   const [moreCount, setMoreCount] = useState(MORE_PAGE_SIZE)
+  useEffect(() => {
+    setMoreCount(MORE_PAGE_SIZE)
+  }, [filter])
   const hero = bySlug(HERO_SLUG)
   const feature = bySlug(FEATURE_SLUG)
   const banner = bySlug(BANNER_SLUG)
@@ -276,14 +311,11 @@ const BlogListingContent = () => {
           <h2 className="bp__recent-title">Recently Added</h2>
           <div className="bp__recent-tabs">
             {categories.map((c) => (
-              <button
+              <Link
                 key={c}
-                type="button"
+                href={c === 'All' ? '/blog' : `/blog?category=${CATEGORY_SLUGS[c]}`}
+                scroll={false}
                 className={`bp__tab${filter === c ? ' is-active' : ''}`}
-                onClick={() => {
-                  setFilter(c)
-                  setMoreCount(MORE_PAGE_SIZE)
-                }}
               >
                 {/* Shared layoutId — framer-motion animates this one pill
                     sliding between buttons as it unmounts/remounts in
@@ -297,7 +329,7 @@ const BlogListingContent = () => {
                   />
                 )}
                 <span className="bp__tab-label">{c}</span>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
