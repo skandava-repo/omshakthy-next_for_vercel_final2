@@ -48,6 +48,27 @@
   "tagline": "Get a glimpse of your future success - view our sleek plots nestled amidst vibrant greenery. Immaculately paved roads and flourishing landscapes set the stage for a thriving business environment with a touch of tranquillity.",
   "narrativeIntro": [],
   "narrativeSections": [],
-  "faq": [],
+  "faq": [
+    {
+      "q": "Where and what is OmShakthy Industrial Park?",
+      "a": "OmShakthy Industrial Park is Chennai's first and only private industry park, offering 53 industrial plots across 8.10 acres, ranging from 2327 Sq.ft to 5980 Sq.ft — designed for SMEs, IT companies, warehouses, manufacturers, distributors, cloud kitchens and BPOs."
+    },
+    {
+      "q": "How connected is OmShakthy Industrial Park?",
+      "a": "OmShakthy Industrial Park sits just 1 minute from the Outer Ring Road (ORR), 10 minutes from the airport, and 15 minutes from Tambaram Railway Station and Guindy, with the upcoming major District Road (MD1163) nearby — giving businesses fast access to key logistics and transport corridors."
+    },
+    {
+      "q": "What is the price for an industrial plot at OmShakthy Industrial Park?",
+      "a": "Pricing for OmShakthy Industrial Park's 53 plots (2327 Sq.ft to 5980 Sq.ft, across 8.10 acres) is currently on request — contact our team or book a free site visit for the latest rates."
+    },
+    {
+      "q": "What are the advantages of investing in OmShakthy Industrial Park?",
+      "a": "Plots at OmShakthy Industrial Park offer potential for high rentals, price appreciation, seamless connectivity to key destinations, and hassle-free financing — a launchpad for businesses from SMEs to IT giants, warehouses, manufacturers, distributors, cloud kitchens and BPOs."
+    },
+    {
+      "q": "How do I Book my Plot at OmShakthy Industrial Park?",
+      "a": "To book a plot at OmShakthy Industrial Park, you can schedule a free site visit through this page. Our executive will walk you through plot availability, sizes and pricing for this private industry park."
+    }
+  ],
   "mapIframe": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15552.599584983725!2d80.0980473!3d12.9622585!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f000220d9d9%3A0x88421f958278b081!2sOmshakthy%20Industrial%20park!5e0!3m2!1sen!2sin!4v1720521220708!5m2!1sen!2sin"
 }

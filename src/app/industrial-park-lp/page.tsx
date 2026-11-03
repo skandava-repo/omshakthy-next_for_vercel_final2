@@ -6,20 +6,31 @@ import { getProjectData } from '@/lib/projects'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
 // Real content extracted from industrial-park-lp.html — see
-// src/data/projects/industrial-park.json. Its own page names no
-// specific locality (title tag/meta description both just say
-// "Chennai"), and its own real drive times (Airport 10 min, Tambaram
-// Railway Station 15 min) don't match ProjectsContent.tsx's existing
-// "Sriperumbudur, Chennai" (a ~40+ min drive from the airport) — left
-// that field alone rather than guess a replacement locality with no
-// real source to back it up; flagging the mismatch here instead.
-// The source page's own Price spec was literally "XXXX" (an unfinished
-// placeholder, still there on the live site today) — shown here as
-// "Price on Request" instead. This project is status: 'Ongoing' in
-// ProjectsContent.tsx, not 'Sold': its own live page still runs an
-// active "Book a Free Site Visit" form with no "Sold Out" banner
-// anywhere (unlike Elite Orchard's page, which explicitly says
+// src/data/projects/industrial-park-lp.json (this comment previously
+// pointed at industrial-park.json, a different real page's data file
+// for the separate /industrial-park route — fixed). Its own page
+// names no specific locality (title tag/meta description both just
+// say "Chennai"), and its own real drive times (Airport 10 min,
+// Tambaram Railway Station 15 min) don't match ProjectsContent.tsx's
+// existing "Sriperumbudur, Chennai" (a ~40+ min drive from the
+// airport) — left that field alone rather than guess a replacement
+// locality with no real source to back it up; flagging the mismatch
+// here instead. The source page's own Price spec was literally "XXXX"
+// (an unfinished placeholder, still there on the live site today) —
+// shown here as "Price on Request" instead. This project is status:
+// 'Ongoing' in ProjectsData.ts, not 'Sold': its own live page still
+// runs an active "Book a Free Site Visit" form with no "Sold Out"
+// banner anywhere (unlike Elite Orchard's page, which explicitly says
 // "Price: Sold Out") — an earlier pass had mismarked it as sold.
+//
+// Parity pass against elite-grand-lp (Nov 2026): added real FAQ
+// (industrial-park-lp.json's faq was empty) using the site's own
+// reused 5-question template, filled with this project's real specs.
+// narrativeSections deliberately left empty — confirmed via a full
+// read of industrial-park-lp.php that the real page genuinely has no
+// body-narrative section at all (just banner/tabs/loans/map), so
+// there's no real content to source without inventing bespoke
+// paragraphs from nothing.
 export const metadata: Metadata = {
   alternates: { canonical: '/industrial-park-lp' },
   title: 'OmShakthy Industrial Park — Industrial Plots in Chennai | OmShakthy Homes',
