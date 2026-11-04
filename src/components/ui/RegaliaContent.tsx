@@ -612,9 +612,17 @@ const Regalia = () => {
       </div>
 
       {/* ---------------- Brand story (paper, pulled up over hero) ---------------- */}
+      {/* Found the actual remaining source of "blue at the bottom" —
+          not the hero's own overlay (already removed), but THIS
+          panel's box-shadow: rgba(0,67,133,0.6) with a -40px vertical
+          offset throws a 0.6-opacity blue glow upward into the hero's
+          bottom ~120px (offset + blur radius), independent of
+          anything in the hero section itself. Removed outright, same
+          as the gradient — no neutral-shadow replacement either, to
+          be certain nothing blue is left glowing there at all. */}
       <div
         className="relative -mt-16 rounded-t-[2.5rem] overflow-hidden"
-        style={{ backgroundColor: C.paper, boxShadow: '0 -40px 80px rgba(0,67,133,0.6)' }}
+        style={{ backgroundColor: C.paper }}
       >
         <section className="relative px-6 md:px-16 py-28 max-w-4xl mx-auto">
           <Reveal>
