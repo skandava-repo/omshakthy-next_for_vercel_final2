@@ -521,7 +521,7 @@ const Regalia = () => {
           different fallback background (C.blueDeep, not C.ink — the
           same blue/ink mismatch already fixed once for the gradient
           and shadow above). Matched both below. */}
-      <div ref={heroRef} className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: C.ink }}>
+      <div ref={heroRef} className="relative w-full h-screen flex items-end overflow-hidden px-6 md:px-16 pb-20 pt-32" style={{ backgroundColor: C.ink }}>
         <motion.video
           className="absolute inset-0 w-full h-full object-cover"
           style={{ scale: videoScale, y: videoY }}
@@ -545,10 +545,21 @@ const Regalia = () => {
             replacement — the video plays under the hero text with
             nothing dimming it. */}
 
-        {/* Foreground hero copy */}
+        {/* Foreground hero copy — was absolutely positioned
+            (bottom-20 left-6/md:left-16), which sat it flush against
+            the raw padding edge. ProjectLandingContent.tsx instead
+            makes the section itself flex+items-end (above) and lets
+            this block flow normally as max-w-6xl mx-auto w-full —
+            at typical desktop widths the 6xl (1152px) cap is narrower
+            than the padded section, so mx-auto adds real extra space
+            beyond the padding alone, reported live as "the text is
+            far from the left" on that page vs. this one sitting hard
+            against the edge. Same wrapper classes here now, so the
+            text starts at the same distance from the left on both
+            pages, not just the same base padding number. */}
         <motion.div
           style={{ y: heroTextY, opacity: heroTextOpacity }}
-          className="absolute bottom-20 left-6 md:left-16 max-w-3xl"
+          className="relative max-w-6xl mx-auto w-full"
         >
           <motion.span
             className="block mb-4"
@@ -620,17 +631,20 @@ const Regalia = () => {
         </motion.div>
       </div>
 
-      {/* ---------------- Brand story (paper, pulled up over hero) ---------------- */}
-      {/* Found the actual remaining source of "blue at the bottom" —
-          not the hero's own overlay (already removed), but THIS
-          panel's box-shadow: rgba(0,67,133,0.6) with a -40px vertical
-          offset throws a 0.6-opacity blue glow upward into the hero's
-          bottom ~120px (offset + blur radius), independent of
-          anything in the hero section itself. Removed outright, same
-          as the gradient — no neutral-shadow replacement either, to
-          be certain nothing blue is left glowing there at all. */}
+      {/* ---------------- Brand story (paper) ----------------
+          Was "pulled up over hero" — a -mt-16 negative margin +
+          rounded-t-[2.5rem] overlap, with a box-shadow (already
+          removed in an earlier pass: rgba(0,67,133,0.6), the actual
+          remaining source of "blue at the bottom" that pass found).
+          ProjectLandingContent.tsx's hero has no equivalent at all —
+          its own next section (Specifications) starts flat, right
+          where the hero ends, no curve, no overlap. Reported live
+          directly against mathura-elite-lp: "no curve white color" —
+          matched by dropping the negative margin and rounded corner
+          here too, so this page's hero now closes exactly the same
+          flat way every other project page's does. */}
       <div
-        className="relative -mt-16 rounded-t-[2.5rem] overflow-hidden"
+        className="relative overflow-hidden"
         style={{ backgroundColor: C.paper }}
       >
         <section className="relative px-6 md:px-16 py-28 max-w-4xl mx-auto">
