@@ -455,7 +455,7 @@ const RegaliaSiteVisitForm = () => {
         <button
           type="submit"
           className="rg-btn mt-1 px-6 py-3 rounded-full text-sm font-semibold self-start"
-          style={{ ...mono, backgroundColor: C.blueDeep, color: '#fff' }}
+          style={{ ...mono, backgroundColor: C.blue, color: '#fff' }}
         >
           Send via WhatsApp
         </button>
@@ -564,6 +564,36 @@ const Regalia = () => {
           >
             Plots you can walk. Papers you can trust.
           </motion.p>
+          {/* Hero CTAs — missing entirely before (every other project
+              page's hero has these two buttons; this one had none).
+              Same site-wide button system ProjectLandingContent.tsx
+              now uses: solid C.blue/white for the primary action,
+              matching Header.tsx's own "Book Site Visit" pill exactly;
+              secondary mirrors the header's OWN second button (the
+              phone pill — a plain currentColor outline, no fill). */}
+          <motion.div
+            className="flex flex-wrap items-center gap-4 mt-7"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75, ease: easeLux }}
+          >
+            <a
+              href={`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent("Hi, I'm interested in Omshakthy Regalia. Could you share more details?")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
+              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
+            >
+              Enquire on WhatsApp
+            </a>
+            <a
+              href="#visit"
+              className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
+              style={{ ...body, color: '#fff', border: '1px solid rgba(255,255,255,0.7)' }}
+            >
+              Book a Site Visit
+            </a>
+          </motion.div>
         </motion.div>
 
         {/* Scroll cue */}
@@ -638,7 +668,7 @@ const Regalia = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-full text-sm font-semibold"
-              style={{ ...body, backgroundColor: C.paper, color: C.blueDeep }}
+              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
             >
               Request Brochure
             </a>
@@ -1260,7 +1290,7 @@ const Regalia = () => {
           real WhatsApp number Footer.tsx's own button uses, instead of
           pretending to submit to an endpoint that isn't there (same
           pattern as ContactContent.tsx's form). */}
-      <section className="relative overflow-hidden px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink }}>
+      <section id="visit" className="relative overflow-hidden px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink }}>
         <TreeAccent side="right" tone="natural" size={240} bottom={-20} opacity={0.14} />
         <div className="relative max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
           <Reveal>

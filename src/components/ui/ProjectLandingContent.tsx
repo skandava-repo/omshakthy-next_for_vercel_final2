@@ -600,22 +600,31 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
             style={{ ...display, color: '#fff', fontWeight: 500, textShadow: '0 2px 40px rgba(0,0,0,0.35)' }}
           />
           <Reveal delay={0.1} className="flex flex-wrap items-center gap-4">
+            {/* Single site-wide button system now (was: white-fill
+                primary + gold-bordered ghost secondary — two more
+                treatments on top of the solid-blue pill Header.tsx's
+                own "Book Site Visit" already establishes as the site's
+                one real CTA style, plus this page's own site-visit-form
+                submit button a few sections down, which already
+                matched it). Primary action solid C.blue/white, exactly
+                like the header; secondary mirrors the header's OWN
+                second button (the phone pill: a plain currentColor
+                outline, no fill) rather than inventing a third
+                treatment — both now read as "the same site," not two
+                competing accent colors. */}
             <a
               href={`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(`Hi, I'm interested in ${data.name}. Could you share more details?`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
-              style={{ ...body, backgroundColor: '#fff', color: C.blueDeep }}
+              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
             >
               Enquire on WhatsApp
             </a>
-            {/* Thin gold-bordered ghost button — the one place a second,
-                lighter-weight CTA style earns its keep, echoing the gold
-                kicker rule rather than repeating the solid white pill. */}
             <a
               href="#visit"
               className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
-              style={{ ...body, color: '#fff', border: `1px solid ${C.goldSoft}` }}
+              style={{ ...body, color: '#fff', border: '1px solid rgba(255,255,255,0.7)' }}
             >
               Book a Site Visit
             </a>
