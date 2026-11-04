@@ -511,8 +511,17 @@ const Regalia = () => {
         }}
       />
 
-      {/* ---------------- Cinematic hero ---------------- */}
-      <div ref={heroRef} className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: C.blueDeep }}>
+      {/* ---------------- Cinematic hero ----------------
+          Found a real padding/color mismatch against
+          ProjectLandingContent.tsx's own hero: that one positions its
+          text block via the SECTION's own flex+padding
+          (pb-20 = 80px bottom, px-6/md:px-16 sides, background C.ink)
+          while this hero used an absolutely-positioned text block with
+          bottom-16 (64px, 16px short of the 80px match) and a
+          different fallback background (C.blueDeep, not C.ink — the
+          same blue/ink mismatch already fixed once for the gradient
+          and shadow above). Matched both below. */}
+      <div ref={heroRef} className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: C.ink }}>
         <motion.video
           className="absolute inset-0 w-full h-full object-cover"
           style={{ scale: videoScale, y: videoY }}
@@ -539,7 +548,7 @@ const Regalia = () => {
         {/* Foreground hero copy */}
         <motion.div
           style={{ y: heroTextY, opacity: heroTextOpacity }}
-          className="absolute bottom-16 left-6 md:left-16 max-w-3xl"
+          className="absolute bottom-20 left-6 md:left-16 max-w-3xl"
         >
           <motion.span
             className="block mb-4"
