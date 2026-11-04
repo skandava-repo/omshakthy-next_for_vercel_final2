@@ -64,11 +64,14 @@ export const projects: Project[] = [
   // New project, added from "Mathura broucher PDF FILE 5mm Bleed.pdf"
   // (OCR'd — no text layer, print-ready file). Distinct from the
   // existing "OmShakthy Mathura" above (Chromepet) — this one is
-  // Thirumazhisai, a separate, newly-launching project. Price is a
-  // placeholder (PRICE_TBD, matching the one in mathura-elite-lp.json)
-  // until the real figure is supplied — the brochure itself states no
-  // price.
-  { image: '/projects/mathura-elite.webp', name: 'OmShakthy Mathura Elite', location: 'Thirumazhisai, Chennai', status: 'Ongoing', type: 'Residential Plots', price: 'PRICE_TBD', priceLakh: null, link: '/mathura-elite-lp' },
+  // Thirumazhisai, a separate, newly-launching project. The brochure
+  // itself states no price — was a raw "PRICE_TBD" literal (a
+  // programmer placeholder, never meant for real users) shown verbatim
+  // on-screen everywhere this card renders, caught live on /regalia-lp's
+  // own new Featured Projects cross-sell card during a parity pass.
+  // "Price on Request" instead — same real treatment Industrial Park's
+  // own still-unresolved price already uses.
+  { image: '/projects/mathura-elite.webp', name: 'OmShakthy Mathura Elite', location: 'Thirumazhisai, Chennai', status: 'Ongoing', type: 'Residential Plots', price: 'Price on Request', priceLakh: null, link: '/mathura-elite-lp' },
   // Location left as-is, flagged rather than guessed: industrial-park-lp.html
   // names no specific locality at all (title/meta both just say
   // "Chennai"), and its own real drive times (Airport 10 min, Tambaram
