@@ -570,15 +570,6 @@ const Regalia = () => {
           >
             Omshakthy Regalia
           </motion.h1>
-          <motion.p
-            className="mt-5 text-base md:text-xl"
-            style={{ ...body, color: '#FFFFFF', fontWeight: 500 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: easeLux }}
-          >
-            Plots you can walk. Papers you can trust.
-          </motion.p>
           {/* Hero CTAs — missing entirely before (every other project
               page's hero has these two buttons; this one had none).
               Same site-wide button system ProjectLandingContent.tsx
