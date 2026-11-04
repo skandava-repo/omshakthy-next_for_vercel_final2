@@ -257,9 +257,9 @@ const ImageReveal = ({
   )
 }
 
-const Kicker = ({ children, color = C.blue, center = false }: { children: React.ReactNode; color?: string; center?: boolean }) => (
+const Kicker = ({ children, color = C.blue, center = false, weight }: { children: React.ReactNode; color?: string; center?: boolean; weight?: number }) => (
   <span className={`mb-4 ${center ? 'flex flex-col items-center' : 'block'}`}>
-    <span style={{ ...mono, color }}>{children}</span>
+    <span style={{ ...mono, color, ...(weight ? { fontWeight: weight } : {}) }}>{children}</span>
     {/* Small gold rule under every kicker — the one place this page's
         accent color shows up consistently, so it reads as a deliberate
         motif rather than decoration in only one spot. */}
@@ -589,7 +589,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         <div className="absolute inset-0" style={{ background: 'radial-gradient(120% 70% at 50% 100%, rgba(201,162,39,0.16) 0%, rgba(201,162,39,0) 60%)' }} />
         <motion.div className="relative max-w-6xl mx-auto w-full" style={{ y: heroTextY, opacity: heroTextOpacity }}>
           <Reveal>
-            {data.type && <Kicker color={C.mist}>{data.type}</Kicker>}
+            {data.type && <Kicker color="#FFFFFF" weight={900}>{data.type}</Kicker>}
           </Reveal>
           {/* KineticHeading animates its own words — not wrapped in
               Reveal, which would double-animate the same text as a

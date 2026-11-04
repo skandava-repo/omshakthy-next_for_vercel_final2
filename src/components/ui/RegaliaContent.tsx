@@ -168,9 +168,9 @@ const Reveal = ({
   )
 }
 
-const Kicker = ({ children, color = C.blue, center = false }: { children: React.ReactNode; color?: string; center?: boolean }) => (
+const Kicker = ({ children, color = C.blue, center = false, weight }: { children: React.ReactNode; color?: string; center?: boolean; weight?: number }) => (
   <span className={`mb-4 ${center ? 'flex flex-col items-center' : 'block'}`}>
-    <span style={{ ...mono, color }}>{children}</span>
+    <span style={{ ...mono, color, ...(weight ? { fontWeight: weight } : {}) }}>{children}</span>
     {/* Small accent rule under every kicker, same motif
         ProjectLandingContent.tsx's own Kicker has (in gold there) —
         missing here before. In blue, not gold: this page deliberately
@@ -568,7 +568,7 @@ const Regalia = () => {
               Plots" too (same real value), so this isn't a new fact,
               just surfaced here too. */}
           <Reveal>
-            <Kicker color={C.mist}>Residential Plots</Kicker>
+            <Kicker color="#FFFFFF" weight={900}>Residential Plots</Kicker>
           </Reveal>
           <motion.h1
             className="text-5xl md:text-8xl"
