@@ -128,6 +128,15 @@ const CountUp = ({ to, format }: { to: number; format: (n: number) => string }) 
   return <span ref={ref}>{format(val)}</span>
 }
 
+// Card titles only, not the underlying data — projectsData.ts's own
+// `name` field is inconsistent (some projects are "OmShakthy X", others
+// just "X"; left as-is there since it's used elsewhere too — page
+// titles, hero titles, meta tags — where the full real name is
+// correct). Strips the prefix just for what's displayed on these
+// cards, so every title reads the same way regardless of which
+// convention that project's own name happened to use.
+const cardTitle = (name: string) => name.replace(/^OmShakthy\s+/, '')
+
 // Badge label/color per status, shown on each project card.
 const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color: string }> = {
   Ongoing: {
@@ -458,7 +467,7 @@ const ProjectsContent = () => {
                         maxWidth: 210,
                       }}
                     >
-                      {p.name}
+                      {cardTitle(p.name)}
                     </h3>
                     <p
                       className="flex items-center gap-1"
@@ -548,7 +557,7 @@ const ProjectsContent = () => {
                         color: C.ink,
                       }}
                     >
-                      {p.name}
+                      {cardTitle(p.name)}
                     </h3>
                     <p
                       className="flex items-center gap-1"
