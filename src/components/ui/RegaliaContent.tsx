@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useTransform,
   useInView,
@@ -469,6 +470,15 @@ const Regalia = () => {
     document.body.style.backgroundColor = C.paper
     return () => { document.body.style.backgroundColor = '' }
   }, [])
+
+  // FAQ accordion state — every other project page (ProjectLandingContent.tsx)
+  // has a real clickable button here (only the open question's answer
+  // shows, toggled by a +/− mark); this page's own FAQ was plain static
+  // text with all 5 answers permanently visible and no button at all —
+  // the actual UI-element gap a parity pass caught. First question
+  // starts open so the section doesn't read as empty rows of
+  // questions-only on first paint.
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   /* Page scroll progress */
   const { scrollYProgress } = useScroll()
@@ -1021,16 +1031,50 @@ const Regalia = () => {
                 q: 'Can NRIs buy plots from Omshakthy?',
                 a: 'Yes. NRIs can invest subject to standard RBI and FEMA guidelines governing NRI property purchases in India.',
               },
-            ].map((f, i) => (
-              <Reveal key={f.q} delay={i * 0.04}>
-                <div className="py-7" style={{ borderTop: `1px solid ${C.hairLight}` }}>
-                  <h3 className="text-lg md:text-xl mb-3" style={{ ...display, color: C.paper }}>
-                    {f.q}
-                  </h3>
-                  <p style={{ color: C.paperMuted }}>{f.a}</p>
-                </div>
-              </Reveal>
-            ))}
+            ].map((f, i) => {
+              const isOpen = openFaq === i
+              return (
+                <Reveal key={f.q} delay={i * 0.04}>
+                  <div style={{ borderTop: `1px solid ${C.hairLight}` }}>
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      className="w-full flex items-center justify-between gap-4 py-7 text-left"
+                    >
+                      <h3 className="text-lg md:text-xl" style={{ ...display, color: C.paper }}>{f.q}</h3>
+                      <span
+                        aria-hidden
+                        className="flex-shrink-0 flex items-center justify-center rounded-full"
+                        style={{
+                          width: 28, height: 28,
+                          border: `1.5px solid ${C.blue}`,
+                          color: C.blue,
+                          fontSize: '1.1rem',
+                          lineHeight: 1,
+                          transform: isOpen ? 'rotate(45deg)' : 'none',
+                          transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      >
+                        +
+                      </span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: easeLux }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <p className="pb-7" style={{ color: C.paperMuted }}>{f.a}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
