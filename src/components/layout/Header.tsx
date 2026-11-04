@@ -105,17 +105,9 @@ const Header = () => {
       const themedEl = activeSection?.querySelector('[data-header-theme]')
       setTheme(themedEl?.getAttribute('data-header-theme') || '')
 
-      const nav = document.querySelector('.site-nav__inner') as HTMLElement
-      if (nav) {
-        nav.style.transition = 'padding 0.5s ease'
-        // Left padding fixed at 15px; right padding stays wide/compact per section
-        nav.style.paddingLeft = '15px'
-        if (currentSection >= 1) {
-          nav.style.paddingRight = '90px'
-        } else {
-          nav.style.paddingRight = '90px'
-        }
-      }
+      // .site-nav__inner padding now lives in Header.css (desktop 15px/90px,
+      // tighter on mobile). It used to be set inline here, which overrode
+      // any responsive CSS and left large empty gutters on phones.
     }
 
     updateNav()

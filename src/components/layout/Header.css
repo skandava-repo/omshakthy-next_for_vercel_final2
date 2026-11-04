@@ -93,7 +93,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 30px 10px 15px;
+  padding: 0px 90px 10px 15px;
   max-width: 100%;
   transition: padding 0.5s ease;
   gap: 40px;
@@ -194,6 +194,21 @@
   transform: translateY(10px);
   filter: drop-shadow(0 4px 16px rgba(13, 107, 178, 0.35));
   transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Mobile/tablet: pull the logo and hamburger in to the screen edges —
+   desktop's 80px logo inset + 90px right gutter left big empty gaps. */
+@media (max-width: 1024px) {
+  .site-nav__inner {
+    padding: 0 16px 10px 16px;
+    gap: 16px;
+  }
+  .site-nav__logo {
+    padding-left: 0;
+  }
+  .site-nav__burger {
+    margin-left: 0;
+  }
 }
 
 .site-nav__logo:hover {
