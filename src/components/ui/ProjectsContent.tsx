@@ -550,7 +550,7 @@ const ProjectsContent = () => {
                       style={{
                         ...display,
                         margin: 0,
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: 600,
                         lineHeight: 1.15,
                         letterSpacing: '0.02em',
