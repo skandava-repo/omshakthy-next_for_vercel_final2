@@ -29,6 +29,22 @@
   z-index: 0;
 }
 
+/* Wraps .ct-track + the mobile arrows. Takes over the flex:1 slot the
+   track used to fill directly, and passes it on (column + track flex:1),
+   so desktop layout is unchanged. */
+.ct-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile-only prev/next — hidden on desktop. */
+.ct-arrows {
+  display: none;
+}
+
 /* Horizontal track — holds all slides side by side. Takes the remaining
    height above the separated .ct-bar footer band, not the full section. */
 .ct-track {
@@ -599,6 +615,58 @@
      applied to .wc for the identical reason. */
   .ct-section {
     height: auto;
+  }
+  .ct-stage {
+    flex: none;
+  }
+
+  /* Prev/next pair, bottom-right of the slide image (clear of the
+     vertically-centred year/title/description). */
+  .ct-arrows {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 5;
+  }
+  .ct-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(13, 107, 178, 0.35);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #004385;
+    box-shadow: 0 6px 18px -8px rgba(0, 67, 133, 0.45);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+  }
+  .ct-arrow svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ct-arrow:active:not(:disabled) {
+    transform: scale(0.92);
+    background: #004385;
+    color: #fff;
+  }
+  .ct-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
   }
   .ct-track {
     flex: none;

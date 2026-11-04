@@ -136,9 +136,24 @@ const PropertyGrid = () => {
         ))}
       </div>
 
-      {/* View More CTA */}
+      {/* View More CTA. On mobile (<=992px, PropertyGrid.css) it becomes a
+          text link with a right-arrow, followed by an "end of section"
+          divider. On desktop the arrow + divider are hidden and the
+          original pill button is unchanged. */}
       <div className="property-cta">
-        <a href="/projects" className="property-cta__btn">View More</a>
+        <a href="/projects" className="property-cta__btn">
+          <span className="property-cta__label">View More</span>
+          <span className="property-cta__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </a>
+        <div className="property-end" aria-hidden="true">
+          <span className="property-end__line" />
+          <span className="property-end__mark" />
+          <span className="property-end__line" />
+        </div>
       </div>
     </section>
   )

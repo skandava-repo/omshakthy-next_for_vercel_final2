@@ -138,6 +138,11 @@ const CinematicTimeline = () => {
 
   return (
     <div className="ct-section">
+      {/* .ct-stage wraps the track so the mobile prev/next arrows can be
+          positioned against the slide area only (not the .ct-bar below).
+          On desktop it's a transparent flex:1 column, same box the track
+          used to fill directly, and the arrows are display:none. */}
+      <div className="ct-stage">
       <div
         className="ct-track"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
@@ -173,6 +178,34 @@ const CinematicTimeline = () => {
             )}
           </div>
         ))}
+      </div>
+
+        {/* Mobile-only prev/next (CinematicTimeline.css hides these above
+            768px, where wheel-stepping drives the slider instead). */}
+        <div className="ct-arrows">
+          <button
+            type="button"
+            className="ct-arrow ct-arrow--prev"
+            onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
+            disabled={activeIndex === 0}
+            aria-label="Previous milestone"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15 6l-6 6 6 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="ct-arrow ct-arrow--next"
+            onClick={() => setActiveIndex((i) => Math.min(milestones.length - 1, i + 1))}
+            disabled={activeIndex === milestones.length - 1}
+            aria-label="Next milestone"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Innovative timeline progress bar */}

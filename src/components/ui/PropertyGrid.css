@@ -432,3 +432,111 @@
   background-color: #8F592D;
   border-color: #8F592D;
 }
+
+/* Arrow + end-of-section divider are mobile-only additions — hidden on
+   desktop so the original pill button renders exactly as before. */
+.property-cta__arrow,
+.property-end {
+  display: none;
+}
+
+/* ============================================
+   MOBILE — "View More" as an arrow link + end-of-section marker
+   ============================================ */
+@media (max-width: 992px) {
+  .property-cta {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 0 30px;
+  }
+
+  /* Link style: no filled pill, brand-blue text, underlined label, arrow
+     in a thin outlined circle on the right. */
+  .property-cta__btn,
+  .property-cta__btn:hover {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  .property-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    color: #0D6BB2;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .property-cta__label {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  .property-cta__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.3s ease, color 0.3s ease;
+  }
+  .property-cta__arrow svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Tap/hover feedback: arrow nudges right and fills in. */
+  .property-cta__btn:hover,
+  .property-cta__btn:active {
+    color: #004385;
+  }
+  .property-cta__btn:hover .property-cta__arrow,
+  .property-cta__btn:active .property-cta__arrow {
+    transform: translateX(4px);
+    background: #004385;
+    color: #fff;
+    border-color: #004385;
+  }
+
+  /* End-of-section marker: two fading hairlines with a small brass
+     diamond between them — signals "this section ends here" before the
+     next one starts. */
+  .property-end {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(260px, 70%);
+  }
+  .property-end__line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(13, 107, 178, 0.35));
+  }
+  .property-end__line:last-child {
+    background: linear-gradient(to left, transparent, rgba(13, 107, 178, 0.35));
+  }
+  .property-end__mark {
+    width: 7px;
+    height: 7px;
+    background: var(--os-brass, #C8A15A);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 992px) and (prefers-reduced-motion: reduce) {
+  .property-cta__arrow {
+    transition: none;
+  }
+}
