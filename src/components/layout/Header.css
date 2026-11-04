@@ -172,21 +172,35 @@
   background: #004385;
 }
 
-/* Was 1180px — reported live (iPad Pro 11" simulator, 1194px
-   landscape) as "Book Site Visit" touching the right edge of the
-   screen. At 1194px this breakpoint hadn't fired yet (1194 > 1180),
-   so the phone pill was still showing, and the full row — logo +
-   nav links + phone + CTA + the inner padding — genuinely doesn't
-   fit: confirmed by measuring each piece's real rendered width
-   earlier (logo 172px, nav links ~622px, phone 164px, CTA 139px,
-   gaps/padding ~185px, totalling ~1280px) against the 1194px
-   available. .site-nav__actions has flex-shrink:0, so nothing
-   shrinks to compensate — the CTA just gets pushed past the edge.
-   Raised to 1250px so the phone hides (freeing ~190px) before that
-   width is reached, not just after. */
-@media (max-width: 1250px) {
+@media (max-width: 1180px) {
   .site-nav__phone {
     display: none;
+  }
+}
+
+/* The real fix for "Book Site Visit" touching the right edge on
+   iPad (1194px landscape) — reverted hiding the phone number (that
+   was avoiding the problem, not solving it; the phone number should
+   stay visible). Instead, tighten the spacing that's actually
+   negotiable (gaps, nav-link padding, the CTA's own left margin) so
+   logo + all 5 nav links + phone + CTA genuinely fit together in this
+   width band, all still visible. Confirmed by measuring the real
+   rendered total beforehand (~1241px at full spacing) against what's
+   available here — this frees up over 100px, comfortably covering
+   the ~47px that was actually missing at 1194px with real margin to
+   spare. 1350px down to 1024px (where the hamburger menu takes over
+   entirely and this whole row disappears) is the band where desktop
+   nav is shown but room is tightest. */
+@media (max-width: 1350px) {
+  .site-nav__inner {
+    gap: 20px;
+    padding-right: 18px;
+  }
+  .site-nav__link {
+    padding: 8px 12px;
+  }
+  .site-nav__cta {
+    margin-left: 0.5rem;
   }
 }
 @media (max-width: 860px) {
