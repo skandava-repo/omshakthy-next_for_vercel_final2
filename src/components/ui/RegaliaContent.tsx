@@ -561,6 +561,15 @@ const Regalia = () => {
           style={{ y: heroTextY, opacity: heroTextOpacity }}
           className="relative max-w-6xl mx-auto w-full"
         >
+          {/* Same kicker ProjectLandingContent.tsx's hero shows above
+              the title (data.type, e.g. elite-grand-lp's "Residential
+              Plots") — missing here. Regalia's own Specifications
+              section already states its own Type as "Residential
+              Plots" too (same real value), so this isn't a new fact,
+              just surfaced here too. */}
+          <Reveal>
+            <Kicker color={C.mist}>Residential Plots</Kicker>
+          </Reveal>
           <motion.h1
             className="text-5xl md:text-8xl"
             style={{ ...display, color: C.paper, fontWeight: 500 }}
