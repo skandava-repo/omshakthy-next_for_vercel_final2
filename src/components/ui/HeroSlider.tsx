@@ -2,8 +2,13 @@
 import { useState, useEffect } from 'react'
 import './HeroSlider.css'
 
-const slides = [
-  { image: '/hero-new-3.webp', title: 'OmShakthy Regalia' },
+// mobileImage (optional): portrait-cropped variant served at <=768px via
+// <picture>, so phones get a proper vertical crop instead of a squeezed
+// landscape photo. Same breakpoint HeroSlider.css uses for its mobile layout.
+const MOBILE_MEDIA = '(max-width: 768px)'
+
+const slides: { image: string; mobileImage?: string; title: string }[] = [
+  { image: '/hero-new-3.webp', mobileImage: '/mobile/hero-new-3.webp', title: 'OmShakthy Regalia' },
   { image: '/hero-slide-9.webp', title: 'Elite Apartments' },
   // Was mislabeled 'Elite Grand' — this is the real "OMSHAKTHY Elite"
   // gate photo, which is Elite Phase 1's (a different, older project;
@@ -53,7 +58,10 @@ const HeroSlider = () => {
             i === current ? 'hero-slider__slide--active' : ''
           } ${i === prev ? 'hero-slider__slide--prev' : ''}`}
         >
-          <img src={slide.image} alt={slide.title} style={{ objectPosition: ['/hero-slide-9.webp', '/hero-slide-8.webp'].includes(slide.image) ? 'center 35%' : 'center 20%' }} />
+          <picture>
+            {slide.mobileImage && <source media={MOBILE_MEDIA} srcSet={slide.mobileImage} />}
+            <img src={slide.image} alt={slide.title} style={{ objectPosition: ['/hero-slide-9.webp', '/hero-slide-8.webp'].includes(slide.image) ? 'center 35%' : 'center 20%' }} />
+          </picture>
         </div>
       ))}
 

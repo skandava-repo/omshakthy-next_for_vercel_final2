@@ -55,6 +55,13 @@
 @media (max-width: 992px) {
   .property-list {
     flex-direction: column;
+    /* Mobile only: 10px breathing room between the stacked cards (the
+       #f0f0f0 section background shows through). Desktop strips stay
+       flush (gap: 0 above). */
+    gap: 10px;
+    /* Same 10px above the first card, so it doesn't butt up against
+       the hero slider above it. */
+    padding-top: 10px;
   }
 }
 
@@ -105,6 +112,9 @@
     max-width: 100%;
     flex: none;
     height: 220px;
+    /* Mobile only: softly rounded cards. .property-item already has
+       overflow:hidden, so the photo and info gradient clip to this. */
+    border-radius: 12px;
   }
   .property-item.active {
     flex-grow: 0;
