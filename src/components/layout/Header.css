@@ -139,39 +139,37 @@
 
 /* "Book Site Visit" CTA — solid brand blue regardless of theme, so it
    stays the one unmistakably-clickable element across every section.
-   #004385 (C.blueDeep), not the shared --os-blue (#0D6BB2) variable —
-   every project page's own primary CTA (hero buttons, site-visit
-   submit, Request Brochure) was just switched to this same deeper
-   shade, so this button needs to match them, not the other way
-   around. Hardcoded rather than pointed at --os-blue on purpose:
-   that variable also drives Footer.css/LeadersSection.css, which
-   weren't part of this change and shouldn't shift color as a side
-   effect of it. */
+   Tried #004385 (matching the rest of the unified button system) —
+   reverted, reported live as "merging" into the header bar: .site-nav
+   itself (above) is a gradient built from #004385e6 fading to
+   #004385ba — literally the same color, just semi-transparent. A
+   solid #004385 pill on top of a near-identical #004385 backdrop had
+   almost no contrast to read as a distinct button. #0D6BB2 instead,
+   specifically for this button — it needs contrast against its own
+   header background, which none of the other unified buttons (hero
+   CTAs, site-visit submit, Request Brochure) share, since those sit
+   on video footage or white panels where #004385 reads fine. */
 .site-nav__cta {
   display: inline-flex;
   align-items: center;
   margin-left: 1.2rem;
   padding: 0.65rem 1.4rem;
-  background: #004385;
+  background: #0D6BB2;
   color: #fff;
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px rgba(0, 67, 133, 0.7);
+  box-shadow: 0 10px 24px -12px rgba(13, 107, 178, 0.7);
   transition: transform 0.2s ease, background 0.2s ease;
 }
-/* Was var(--os-blue-lift, #004385) — a real hover-darken effect back
-   when the resting background above was #0D6BB2. Now that the resting
-   color is #004385 itself, that same token would make hover a no-op
-   (identical to rest). Hardcoded a step darker instead, local to this
-   rule rather than repointing the shared --os-blue-lift token (it's
-   not referenced anywhere else, but changing its value site-wide felt
-   like a bigger blast radius than this button needed). */
+/* #004385 on hover — the exact color this button used to always be
+   before the #0D6BB2 swap above, so this darken-on-hover step is
+   back to being a real step again instead of a no-op. */
 .site-nav__cta:hover {
   transform: translateY(-1px);
-  background: #003264;
+  background: #004385;
 }
 
 @media (max-width: 1180px) {
@@ -920,16 +918,17 @@ a.site-nav__link--active span::after {
   align-items: center;
   justify-content: center;
   padding: 0.85rem 1.4rem;
-  /* Same #004385 (C.blueDeep) as .site-nav__cta above — this is that
-     same "Book Site Visit" button, just the mobile-menu rendering of
-     it, so it needs to match. */
-  background: #004385;
+  /* Same #0D6BB2 as .site-nav__cta above now (not #004385 — reverted
+     there, see that rule's own comment) — this is that same "Book
+     Site Visit" button, just the mobile-menu rendering of it, so it
+     needs to match. */
+  background: #0D6BB2;
   color: #fff;
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px rgba(0, 67, 133, 0.7);
+  box-shadow: 0 10px 24px -12px rgba(13, 107, 178, 0.7);
 }
 
 @media (min-width: 1025px) {
