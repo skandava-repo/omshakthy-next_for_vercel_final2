@@ -172,7 +172,19 @@
   background: #004385;
 }
 
-@media (max-width: 1180px) {
+/* Was 1180px — reported live (iPad Pro 11" simulator, 1194px
+   landscape) as "Book Site Visit" touching the right edge of the
+   screen. At 1194px this breakpoint hadn't fired yet (1194 > 1180),
+   so the phone pill was still showing, and the full row — logo +
+   nav links + phone + CTA + the inner padding — genuinely doesn't
+   fit: confirmed by measuring each piece's real rendered width
+   earlier (logo 172px, nav links ~622px, phone 164px, CTA 139px,
+   gaps/padding ~185px, totalling ~1280px) against the 1194px
+   available. .site-nav__actions has flex-shrink:0, so nothing
+   shrinks to compensate — the CTA just gets pushed past the edge.
+   Raised to 1250px so the phone hides (freeing ~190px) before that
+   width is reached, not just after. */
+@media (max-width: 1250px) {
   .site-nav__phone {
     display: none;
   }
