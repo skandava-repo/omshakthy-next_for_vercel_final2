@@ -455,7 +455,7 @@ const RegaliaSiteVisitForm = () => {
         <button
           type="submit"
           className="rg-btn mt-1 px-6 py-3 rounded-full text-sm font-semibold self-start"
-          style={{ ...mono, backgroundColor: C.blue, color: '#fff' }}
+          style={{ ...mono, backgroundColor: C.blueDeep, color: '#fff' }}
         >
           Send via WhatsApp
         </button>
@@ -597,7 +597,7 @@ const Regalia = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
-              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
+              style={{ ...body, backgroundColor: C.blueDeep, color: '#fff' }}
             >
               Enquire on WhatsApp
             </a>
@@ -694,7 +694,7 @@ const Regalia = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-full text-sm font-semibold"
-              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
+              style={{ ...body, backgroundColor: C.blueDeep, color: '#fff' }}
             >
               Request Brochure
             </a>

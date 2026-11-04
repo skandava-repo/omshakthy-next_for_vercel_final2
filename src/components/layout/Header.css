@@ -138,25 +138,40 @@
 }
 
 /* "Book Site Visit" CTA — solid brand blue regardless of theme, so it
-   stays the one unmistakably-clickable element across every section. */
+   stays the one unmistakably-clickable element across every section.
+   #004385 (C.blueDeep), not the shared --os-blue (#0D6BB2) variable —
+   every project page's own primary CTA (hero buttons, site-visit
+   submit, Request Brochure) was just switched to this same deeper
+   shade, so this button needs to match them, not the other way
+   around. Hardcoded rather than pointed at --os-blue on purpose:
+   that variable also drives Footer.css/LeadersSection.css, which
+   weren't part of this change and shouldn't shift color as a side
+   effect of it. */
 .site-nav__cta {
   display: inline-flex;
   align-items: center;
   margin-left: 1.2rem;
   padding: 0.65rem 1.4rem;
-  background: var(--os-blue, #0D6BB2);
+  background: #004385;
   color: #fff;
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px rgba(13, 107, 178, 0.7);
+  box-shadow: 0 10px 24px -12px rgba(0, 67, 133, 0.7);
   transition: transform 0.2s ease, background 0.2s ease;
 }
+/* Was var(--os-blue-lift, #004385) — a real hover-darken effect back
+   when the resting background above was #0D6BB2. Now that the resting
+   color is #004385 itself, that same token would make hover a no-op
+   (identical to rest). Hardcoded a step darker instead, local to this
+   rule rather than repointing the shared --os-blue-lift token (it's
+   not referenced anywhere else, but changing its value site-wide felt
+   like a bigger blast radius than this button needed). */
 .site-nav__cta:hover {
   transform: translateY(-1px);
-  background: var(--os-blue-lift, #004385);
+  background: #003264;
 }
 
 @media (max-width: 1180px) {
@@ -905,13 +920,16 @@ a.site-nav__link--active span::after {
   align-items: center;
   justify-content: center;
   padding: 0.85rem 1.4rem;
-  background: var(--os-blue, #0D6BB2);
+  /* Same #004385 (C.blueDeep) as .site-nav__cta above — this is that
+     same "Book Site Visit" button, just the mobile-menu rendering of
+     it, so it needs to match. */
+  background: #004385;
   color: #fff;
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px rgba(13, 107, 178, 0.7);
+  box-shadow: 0 10px 24px -12px rgba(0, 67, 133, 0.7);
 }
 
 @media (min-width: 1025px) {

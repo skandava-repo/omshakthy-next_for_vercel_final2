@@ -49,5 +49,8 @@
 }
 .rg-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -8px rgba(13, 107, 178, 0.55);
+  /* Was rgba(13,107,178,...) — #0D6BB2's own glow, now mismatched
+     since the button's resting background switched to #004385
+     (C.blueDeep). Matching rgb here too. */
+  box-shadow: 0 10px 24px -8px rgba(0, 67, 133, 0.55);
 }

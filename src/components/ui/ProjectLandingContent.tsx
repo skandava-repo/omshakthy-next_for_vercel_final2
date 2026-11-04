@@ -459,7 +459,7 @@ const SiteVisitForm = ({ projectName }: { projectName: string }) => {
           className="pl-input px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
         <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="email"
           className="pl-input px-4 py-3 rounded-lg text-sm" style={{ ...body, backgroundColor: '#fff', border: `1px solid ${C.border}`, color: C.ink }} />
-        <button type="submit" className="pl-gold-btn mt-2 px-6 py-3 rounded-full text-sm font-semibold" style={{ ...body, backgroundColor: C.blue, color: '#fff' }}>
+        <button type="submit" className="pl-gold-btn mt-2 px-6 py-3 rounded-full text-sm font-semibold" style={{ ...body, backgroundColor: C.blueDeep, color: '#fff' }}>
           Book a Free Site Visit
         </button>
       </form>
@@ -617,7 +617,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
-              style={{ ...body, backgroundColor: C.blue, color: '#fff' }}
+              style={{ ...body, backgroundColor: C.blueDeep, color: '#fff' }}
             >
               Enquire on WhatsApp
             </a>
