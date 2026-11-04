@@ -561,15 +561,6 @@ const Regalia = () => {
           style={{ y: heroTextY, opacity: heroTextOpacity }}
           className="relative max-w-6xl mx-auto w-full"
         >
-          <motion.span
-            className="block mb-4"
-            style={{ ...mono, color: C.paper }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: easeLux }}
-          >
-            Now Open · Tambaram, Chennai
-          </motion.span>
           <motion.h1
             className="text-5xl md:text-8xl"
             style={{ ...display, color: C.paper, fontWeight: 500 }}
