@@ -527,19 +527,14 @@ const Regalia = () => {
             if (v.duration) v.currentTime = v.duration
           }}
         />
-        {/* Was rgba(0,67,133,...) — C.blueDeep, an actual blue — which
-            read as a visible blue tint washing over the video rather
-            than a neutral shadow, heaviest right at the bottom (94%
-            opacity) where it's most noticeable. C.ink (dark navy,
-            nearly black) instead, matching the same neutral-dark scrim
-            ProjectLandingContent.tsx's own hero already uses for the
-            identical job (text legibility over a video) — same
-            opacity shape/stops, just no longer tinting the footage
-            itself blue. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(11,31,58,0.94) 4%, rgba(11,31,58,0.25) 45%, rgba(11,31,58,0.4))' }}
-        />
+        {/* Two prior passes here both kept some form of darkening
+            gradient across the bottom of the hero (first just
+            recolored it blueDeep -> ink, then matched
+            ProjectLandingContent.tsx's lighter 65%-max version) —
+            both still read as an unwanted tint. Direct instruction:
+            no gradient at the bottom at all. Removed outright, no
+            replacement — the video plays under the hero text with
+            nothing dimming it. */}
 
         {/* Foreground hero copy */}
         <motion.div
