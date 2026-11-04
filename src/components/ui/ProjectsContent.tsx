@@ -169,10 +169,20 @@ const ProjectsContent = () => {
   // "are we at the single-column breakpoint" check is far safer than
   // trying to force one DOM shape to cover both with CSS alone — this
   // mirrors the width ProjectsContent already treats as the single-
-  // column cutover (grid md:grid-cols-2, Tailwind's md: = 768px).
+  // column cutover (grid lg:grid-cols-2, Tailwind's lg: = 1024px).
+  // Was 768px/md: — reported live on an actual iPad (834px portrait,
+  // confirmed via the real device screenshot): still above 768px, so
+  // it was still getting the desktop card, and at that width the
+  // exact same clipping bug the mobile card was built to avoid
+  // (see that card's own comment below) came back — "Kanopus Magha"
+  // rendering as "PUS MAGHA", "Mathura Elite" as "URA ELITE", their
+  // opening letters sheared off above the visible card. 1024px is
+  // wide enough that a 2-column desktop card actually has the height
+  // this design needs, and it's the same tablet/mobile cutover
+  // Header.css already uses elsewhere on this site, not a new number.
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
+    const check = () => setIsMobile(window.innerWidth < 1024)
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
@@ -386,7 +396,7 @@ const ProjectsContent = () => {
             </Reveal>
           )}
           {filtered.length > 0 && (
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid lg:grid-cols-2 gap-5">
             {filtered.map((p, i) => {
               /* Link vs. plain div can't share one polymorphic tag
                  without fighting TS's LinkProps typing — the inner
