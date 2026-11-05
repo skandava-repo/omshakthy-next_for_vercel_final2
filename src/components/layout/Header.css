@@ -237,6 +237,35 @@
   }
 }
 
+/* Tablet-specific, not phone: reported live on an iPad 13" in portrait
+   — logo flush against the left edge (0 padding, same as a phone), the
+   phone number hidden entirely (the max-width:1180px rule above
+   applies regardless of device type), and "Book Site Visit" cramped
+   right against the bezel (16px right padding, sized for a phone that
+   never shows this button past 860px anyway). A tablet has the real
+   width to show all of this properly — it was just inheriting the
+   phone-oriented rules above wholesale. Same (pointer: coarse) and
+   (orientation: portrait) signal, with the same min-width: 700px floor
+   TestimonialsSection.tsx's isTabletPortrait uses to mean "any tablet,
+   not a phone" — phones never cross it and keep today's header
+   untouched. Placed after every rule above so it wins the cascade. */
+@media (pointer: coarse) and (orientation: portrait) and (min-width: 700px) {
+  .site-nav__logo {
+    padding-left: 24px;
+  }
+  .site-nav__phone {
+    display: inline-flex;
+  }
+  .site-nav__cta {
+    display: inline-flex;
+    margin-left: 0.75rem;
+  }
+  .site-nav__inner {
+    padding-right: 28px;
+    gap: 14px;
+  }
+}
+
 .site-nav__logo:hover {
   transform: translateY(8px);
   filter: drop-shadow(0 6px 24px rgba(13, 107, 178, 0.5));
