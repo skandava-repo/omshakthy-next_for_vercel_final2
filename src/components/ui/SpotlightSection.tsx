@@ -78,6 +78,7 @@ const tiles = [
     key: 'newsletter',
     label: 'News Letter',
     caption: 'Stay in the loop with our latest updates and offers.',
+    href: '/blog',
     switchMs: 5000,
     images: [
       '/spotlight/newsletter.webp',
