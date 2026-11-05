@@ -38,20 +38,10 @@ const tiles = [
     caption: 'A visual archive of our projects, people and milestones.',
     href: '/image-gallery',
     switchMs: 2000,
-    // Reuses the same hero/property photos as the /gallery page bento grid
-    // — except hero-new-1.webp and hero-slide-4.webp, both of which turned
-    // out to be full marketing infographics (a "2024 Legacy" stats/timeline
-    // graphic and a "Commercial District" amenities-icon graphic), not
-    // plain photography. Harmless on /image-gallery's plain photo grid
-    // (no caption sits over any tile there), but reported live here: this
-    // tile's own "Gallery" caption renders over the image's bottom edge,
-    // and these two images already have their OWN dense text/icon row
-    // baked in at that same spot — the two text layers visually collided
-    // ("content is merging"). Swapped for two more hero-slide-N.webp
-    // photos confirmed to be plain photography, no baked-in text.
+    // Reuses the same hero/property photos as the /gallery page bento grid.
     images: [
-      '/hero-slide-5.webp',
-      '/hero-slide-11.webp',
+      '/hero-new-1.webp',
+      '/hero-slide-4.webp',
       '/hero-slide-88.webp',
       '/hero-slide-9.webp',
       '/canopus-magha.webp',
