@@ -238,17 +238,21 @@
 }
 
 /* Tablet-specific, not phone: reported live on an iPad 13" in portrait
-   — logo flush against the left edge (0 padding, same as a phone), the
-   phone number hidden entirely (the max-width:1180px rule above
-   applies regardless of device type), and "Book Site Visit" cramped
-   right against the bezel (16px right padding, sized for a phone that
-   never shows this button past 860px anyway). A tablet has the real
-   width to show all of this properly — it was just inheriting the
-   phone-oriented rules above wholesale. Same (pointer: coarse) and
-   (orientation: portrait) signal, with the same min-width: 700px floor
-   TestimonialsSection.tsx's isTabletPortrait uses to mean "any tablet,
-   not a phone" — phones never cross it and keep today's header
-   untouched. Placed after every rule above so it wins the cascade. */
+   — logo flush against the left AND top edge (0 left padding, same as
+   a phone; the row's own top padding is 0 everywhere, relying on the
+   logo's own 10px translateY to carry all the top breathing room,
+   which wasn't enough once the logo itself sat right under the status
+   bar on a tablet), the phone number hidden entirely (the
+   max-width:1180px rule above applies regardless of device type), and
+   "Book Site Visit" cramped right against the bezel (16px right
+   padding, sized for a phone that never shows this button past 860px
+   anyway). A tablet has the real width/height to show all of this
+   properly — it was just inheriting the phone-oriented rules above
+   wholesale. Same (pointer: coarse) and (orientation: portrait)
+   signal, with the same min-width: 700px floor TestimonialsSection.tsx's
+   isTabletPortrait uses to mean "any tablet, not a phone" — phones
+   never cross it and keep today's header untouched. Placed after
+   every rule above so it wins the cascade. */
 @media (pointer: coarse) and (orientation: portrait) and (min-width: 700px) {
   .site-nav__logo {
     padding-left: 24px;
@@ -262,6 +266,7 @@
   }
   .site-nav__inner {
     padding-right: 28px;
+    padding-top: 20px;
     gap: 14px;
   }
 }
