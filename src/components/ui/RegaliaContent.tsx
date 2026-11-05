@@ -954,7 +954,14 @@ const Regalia = () => {
               </p>
             </Reveal>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+          {/* Same fix as ProjectLandingContent.tsx's own Amenities grid:
+              grid-cols-2 jumped straight to md:grid-cols-5 (768px), so
+              iPad portrait (834px) already qualified for "md" and was
+              squeezing 5 columns into ~700px — worse here, since these
+              labels ("Rainwater Harvesting", "Solar LED Streetlights")
+              run longer. Adds the same md (768-1023px) 3-column step
+              before 5 columns kick in at lg (1024px). */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
             {[
               { label: 'Grand Entrance', icon: 'gate' },
               { label: 'Blacktop Roads', icon: 'road' },

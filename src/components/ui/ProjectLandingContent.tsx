@@ -882,7 +882,19 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
                 </Reveal>
               )}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+            {/* grid-cols-2 jumped straight to md:grid-cols-5 (768px) —
+                iPad portrait (834px) already qualifies for "md" even
+                though it has nowhere near desktop width, so it was
+                squeezing 5 columns of icon+label into ~700px (~110px
+                each), cramming longer labels like "Rainwater
+                Harvesting" onto 2-3 wrapped lines of 11px text. A
+                3-column step for the md (768-1023px) tablet range
+                before the real 5-column desktop layout kicks in at lg
+                (1024px) — matching this codebase's own established
+                tablet/desktop boundary (PageController.tsx's
+                MOBILE_BREAKPOINT, Header.css) — gives each icon+label
+                real room at iPad widths. */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
               {data.amenities.map((label, i) => (
                 <Reveal key={label} delay={i * 0.05} className="text-center">
                   <motion.div
