@@ -320,7 +320,12 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Same inconsistency fixed in WhatWeDoCloneContent.css/LeadersSection.css:
+   this was width-only, so iPad portrait (834px, past 640px) kept the
+   980px tablet row grid while a phone got this narrower one — two
+   different portrait treatments. Every touch device in portrait now
+   gets this one. */
+@media (max-width: 640px), (pointer: coarse) and (orientation: portrait) {
   .cs {
     padding-top: calc(88px + 2rem);
   }

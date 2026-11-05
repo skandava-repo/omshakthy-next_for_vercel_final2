@@ -529,7 +529,12 @@
     max-width: 320px;
   }
 }
-@media (max-width: 640px) {
+/* Same inconsistency fixed in WhatWeDoCloneContent.css: this was
+   width-only, so iPad portrait (834px, past 640px) kept the 2-cards-
+   per-row tablet layout from the 980px block above while a phone got
+   the real 1-card-per-row stack here — two different portrait
+   treatments. Every touch device in portrait now gets this one. */
+@media (max-width: 640px), (pointer: coarse) and (orientation: portrait) {
   .ld3 {
     padding: clamp(6rem, 14vh, 7rem) 1.2rem 3rem;
   }

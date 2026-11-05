@@ -565,7 +565,14 @@
 
 /* ---------------- Phone-only redesign ----------------
    Everything above (desktop's one-screen layout AND the 980px tablet
-   fallback) is untouched by this block — it only engages below 640px.
+   fallback) is untouched by this block — it only engages below 640px,
+   OR on any touch device held in portrait, same as every other
+   breakpoint in this file now does. Was width-only, which meant iPad
+   portrait (834px, past 640px) fell through to the 980px tablet
+   fallback below while a phone got this redesign instead — two
+   different portrait treatments for two different portrait devices,
+   exactly the inconsistency this whole pass exists to remove. Every
+   touch device in portrait now gets this one, not just narrow ones.
    The 980px fallback is a plain stacked list: full-width photo, icon
    above it, text below, five times. That's a reasonable tablet
    compromise but reads as a bare default on an actual phone. This
@@ -574,7 +581,7 @@
    badge instead of three stacked text lines, and each discipline as a
    rounded photo card with its icon as a badge overlapping the photo's
    corner, instead of a plain icon-then-banner-then-text list. */
-@media (max-width: 640px) {
+@media (max-width: 640px), (pointer: coarse) and (orientation: portrait) {
   .wc {
     padding-top: calc(80px + 1.25rem);
     padding-bottom: 2.5rem;
