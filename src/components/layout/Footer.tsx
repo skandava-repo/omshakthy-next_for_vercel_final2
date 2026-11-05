@@ -53,16 +53,20 @@ const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName }: FooterProps) =
             <div>
               <h3 className="ft__col-title">Projects</h3>
               <ul className="ft__col-links">
+                {/* Was every project name pointing at the same generic
+                    /projects listing regardless of which one was clicked
+                    -- same real pages SiteLinksSection.tsx already links
+                    to for these exact five names. */}
                 {[
-                  'Kanopus Magha',
-                  'OmShakthy Regalia',
-                  'Elite Grand',
-                  'Industrial Park',
-                  'OmShakthy Mathura',
+                  { name: 'Kanopus Magha', path: '/canopus-magha-lp' },
+                  { name: 'OmShakthy Regalia', path: '/regalia-lp' },
+                  { name: 'Elite Grand', path: '/elite-grand-lp' },
+                  { name: 'Industrial Park', path: '/industrial-park-lp' },
+                  { name: 'OmShakthy Mathura', path: '/mathura-lp' },
                 ].map((project) => (
-                  <li key={project}>
-                    <Link href="/projects" className="ft__link">
-                      {project}
+                  <li key={project.name}>
+                    <Link href={project.path} className="ft__link">
+                      {project.name}
                     </Link>
                   </li>
                 ))}

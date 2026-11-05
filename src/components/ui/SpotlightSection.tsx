@@ -22,6 +22,7 @@ const tiles = [
     key: 'events',
     label: 'Events',
     caption: 'Moments from the ground — launches, drives and celebrations.',
+    href: '/events',
     switchMs: 3000,
     images: [
       '/spotlight/events.webp',
@@ -35,6 +36,7 @@ const tiles = [
     key: 'gallery',
     label: 'Gallery',
     caption: 'A visual archive of our projects, people and milestones.',
+    href: '/image-gallery',
     switchMs: 2000,
     // Reuses the same hero/property photos as the /gallery page bento grid.
     images: [
@@ -62,6 +64,7 @@ const tiles = [
     key: 'buzz',
     label: 'Latest Buzz',
     caption: 'What people are saying about us, right now.',
+    href: '/testimonials',
     switchMs: 2000,
     images: [
       '/spotlight/buzz.webp',
@@ -173,7 +176,7 @@ const SpotlightSection = () => {
             <motion.a
               className={`sl__tile sl__tile--${t.key}`}
               key={t.key}
-              href="#"
+              href={'href' in t ? t.href : '#'}
               initial={{ opacity: 0, y: 24 }}
               animate={built ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, ease: EASE, delay: 0.2 + i * 0.08 }}
