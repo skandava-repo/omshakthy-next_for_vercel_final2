@@ -162,7 +162,17 @@
 .sl__tile-label {
   position: absolute;
   left: 1.1rem;
-  bottom: 2.4rem;
+  /* Was 2.4rem — a fixed guess that didn't account for .sl__tile-caption
+     below it actually using its full 2-line clamp (confirmed live, e.g.
+     Gallery's "A visual archive of our projects, people and
+     milestones." wraps to 2 real lines): caption's own box, at
+     font-size 0.74rem/line-height 1.4/bottom 0.9rem, reaches roughly
+     2.97rem up from the tile's bottom edge at 2 lines — past where this
+     label started, so the two visually ran together ("content is
+     merging"). 3.3rem clears that with a small real gap instead of a
+     number picked without checking the caption's own worst-case
+     height. */
+  bottom: 3.3rem;
   z-index: 1;
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 600;
@@ -235,5 +245,17 @@
   .sl__tile--awards .sl__tile-caption,
   .sl__tile--buzz .sl__tile-caption {
     display: -webkit-box;
+  }
+
+  /* Re-enabling the caption above brings back the same overlap
+     .sl__tile-label's own comment describes -- worse here, since the
+     desktop rule for these two tiles (.sl__tile--awards/buzz
+     .sl__tile-label) sits at bottom: 0.9rem specifically BECAUSE their
+     caption is display:none at wider widths, the exact value the
+     caption itself also uses. Re-clear it the same way the base label
+     rule already does now that the caption is visible again here. */
+  .sl__tile--awards .sl__tile-label,
+  .sl__tile--buzz .sl__tile-label {
+    bottom: 3.3rem;
   }
 }
