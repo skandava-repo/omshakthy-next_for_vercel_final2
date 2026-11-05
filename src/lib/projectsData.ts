@@ -88,31 +88,34 @@ export const projects: Project[] = [
   // says "Enveloped in the epicenter of Avadi" — 'Guduvanchery' looks
   // like leftover boilerplate copy-pasted from a different project (the
   // same class of error regalia-lp.html itself had once, for Regalia).
-  // Marked Sold per direct instruction — link dropped (see note above);
-  // /canopus-magha-lp itself is unchanged/still live, just no longer
-  // linked from this card.
-  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
+  // Marked Sold; link restored per direct instruction — the earlier "no
+  // independent page navigation for sold projects" rule is reversed.
+  // /canopus-magha-lp itself was always unchanged/still live; the
+  // real site's own footer (omshakthy-mirror) still links "Canopus
+  // Magha" straight to canopus-magha-lp.html too, same as this.
+  { image: '/projects/canopus-magha.webp', name: 'Kanopus Magha', location: 'Avadi, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/canopus-magha-lp' },
   // Location corrected: mathura-lp.html's own real FAQ says plainly
   // "OmShakthy Mathura is a residential plot development project
-  // located in Chromepet" — 'Tambaram' was wrong. Marked Sold per
-  // direct instruction, link dropped — note mathura-lp itself still
-  // shows a live price/form unless that page is separately updated.
-  // Distinct from "OmShakthy Mathura Elite" (Thirumazhisai) below.
-  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
+  // located in Chromepet" — 'Tambaram' was wrong. Marked Sold; link
+  // restored per direct instruction (same reversal as Kanopus Magha
+  // above) — note mathura-lp itself still shows a live price/form
+  // unless that page is separately updated. Distinct from "OmShakthy
+  // Mathura Elite" (Thirumazhisai) below.
+  { image: '/projects/mathura.webp', name: 'OmShakthy Mathura', location: 'Chromepet, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/mathura-lp' },
   // Location corrected: canopus-mithila-lp.html's own "Locations
   // Nearby" list (Avadi Railway Station, Ayyapakkam, Mogappair, Heavy
   // Vehicles Factory) places this in the Avadi corridor — 'Vandalur'
-  // was wrong. Marked Sold per direct instruction, link dropped — note
-  // canopus-mithila-lp itself still shows a live price/form unless
-  // that page is separately updated.
-  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Sold', type: 'Gated Community', price: 'Sold Out', priceLakh: null },
+  // was wrong. Marked Sold; link restored per direct instruction (same
+  // reversal) — note canopus-mithila-lp itself still shows a live
+  // price/form unless that page is separately updated.
+  { image: '/projects/property-5.webp', name: 'Kanopus Mithila', location: 'Avadi, Chennai', status: 'Sold', type: 'Gated Community', price: 'Sold Out', priceLakh: null, link: '/canopus-mithila-lp' },
   // Location corrected: elite-orchard-lp.html's own "Locations Nearby"
   // list (Guduvanchery Railway Station, Kilambakkam Bus Terminal,
   // Mahindra World City, Potheri Railway Station, ORR) places this in
-  // Guduvanchery — 'Paruthipattu, Avadi' was wrong. Was already Sold,
-  // but still had a `link` to elite-orchard-lp — dropped now per the
-  // "no independent page navigation for sold projects" rule.
-  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null },
+  // Guduvanchery — 'Paruthipattu, Avadi' was wrong. Marked Sold; link
+  // restored per direct instruction (same reversal) — this one had
+  // already had its link dropped once before this same rule, now back.
+  { image: '/projects/elite-orchard.webp', name: 'Elite Orchard', location: 'Guduvanchery, Chennai', status: 'Sold', type: 'Residential Plots', price: 'Sold Out', priceLakh: null, link: '/elite-orchard-lp' },
   // The 7 entries below are real, older completed projects that were
   // missing entirely — confirmed against the live site's own
   // /completed-projects carousel (checked directly, not the mirror,
