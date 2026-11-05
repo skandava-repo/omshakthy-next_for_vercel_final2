@@ -591,6 +591,28 @@
     flex: 0 0 108px;
     height: 108px;
   }
+
+  /* Tablet-only (any tablet screen, not just one model — see
+     TestimonialsSection.tsx's isTabletPortrait check): a 3-tile row at
+     this fixed 108px tile size only fills about half a real tablet's
+     width, leaving the other half empty — confirmed live, reported
+     directly off a screenshot. Rather than split 3-and-3 around the
+     featured card, the component renders all 6 as ONE group below it
+     when isTabletPortrait is true, and this variant makes that one row
+     fill the width properly: no horizontal scroll/mask (six tiles are
+     meant to all be visible at once, not a scrollable strip), and
+     tiles grow to fill the row instead of staying a fixed 108px, so
+     the row reaches the same edges .tw-featured-stage above it does
+     regardless of exactly how wide the tablet is. */
+  .tw__tiles--combined {
+    overflow-x: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    flex-wrap: wrap;
+  }
+  .tw__tiles--combined .tw-tile {
+    flex: 1 1 100px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

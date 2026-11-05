@@ -337,6 +337,23 @@ const TestimonialsSection = () => {
   const left = videoReviews.slice(0, 3)
   const right = videoReviews.slice(3, 6)
 
+  // Tablet-only exception, reported directly off a real screenshot:
+  // splitting the 6 tiles 3-and-3 around the featured card leaves each
+  // row filling only about half a tablet's real width. (min-width: 700px)
+  // on top of the usual (pointer: coarse) and (orientation: portrait)
+  // signal is what scopes this to "any tablet, not a phone" — phones top
+  // out around 430px portrait, so they never cross that floor and keep
+  // the existing split-3-and-3 layout (and so does desktop/landscape,
+  // which never matches pointer:coarse at all).
+  const [isTabletPortrait, setIsTabletPortrait] = useState(false)
+  useEffect(() => {
+    const tabletPortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait) and (min-width: 700px)')
+    const check = () => setIsTabletPortrait(tabletPortraitQuery.matches)
+    check()
+    tabletPortraitQuery.addEventListener('change', check)
+    return () => tabletPortraitQuery.removeEventListener('change', check)
+  }, [])
+
   // Drives ONLY the featured card, cycling all 7 reviews — entirely
   // separate from the (static) video tiles above. Stopped entirely under
   // prefers-reduced-motion rather than just skipping the transition
@@ -383,19 +400,35 @@ const TestimonialsSection = () => {
             timer, unrelated to whichever tile a visitor happens to be
             looking at. */}
         <div className="tw__grid">
-          <div className="tw__tiles">
-            {left.map((r, i) => (
-              <Tile key={`${r.name}-${i}`} review={r} />
-            ))}
-          </div>
+          {isTabletPortrait ? (
+            // Tablet exception (see isTabletPortrait's own comment above):
+            // featured card first, then all 6 tiles together as one row
+            // below it instead of split 3-and-3 around it.
+            <>
+              <FeaturedCard review={reviews[centerIndex]} reduce={!!reduce} activeKey={centerIndex} />
+              <div className="tw__tiles tw__tiles--combined">
+                {videoReviews.slice(0, 6).map((r, i) => (
+                  <Tile key={`${r.name}-${i}`} review={r} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="tw__tiles">
+                {left.map((r, i) => (
+                  <Tile key={`${r.name}-${i}`} review={r} />
+                ))}
+              </div>
 
-          <FeaturedCard review={reviews[centerIndex]} reduce={!!reduce} activeKey={centerIndex} />
+              <FeaturedCard review={reviews[centerIndex]} reduce={!!reduce} activeKey={centerIndex} />
 
-          <div className="tw__tiles">
-            {right.map((r, i) => (
-              <Tile key={`${r.name}-${i + left.length}`} review={r} />
-            ))}
-          </div>
+              <div className="tw__tiles">
+                {right.map((r, i) => (
+                  <Tile key={`${r.name}-${i + left.length}`} review={r} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* auto-scrolling "wall of love" ribbon */}
