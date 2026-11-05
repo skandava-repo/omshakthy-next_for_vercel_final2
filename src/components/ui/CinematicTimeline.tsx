@@ -22,6 +22,11 @@ const milestones = [
   {
     year: '1993',
     title: 'SIDCO Partnership',
+    // barTitle: the bottom-bar label's text, with \n marking where it
+    // breaks on mobile (CinematicTimeline.css). Kept separate from
+    // `title` so the big slide title isn't affected. Falls back to
+    // `title` when omitted (1991 stays on one line).
+    barTitle: 'SIDCO\nPartnership',
     description: 'Acquired **350 acres** for **SIDCO**, establishing credibility and laying the foundation for enduring partnerships.',
     stat: '350',
     statLabel: 'Acres Acquired',
@@ -44,6 +49,7 @@ const milestones = [
   {
     year: '1998',
     title: 'Construction Era',
+    barTitle: 'Construction\nEra',
     description: 'Entered construction, winning projects close to **5 million sq.ft.** — turning years of land aggregation into real, delivered developments.',
     stat: '5M',
     statLabel: 'Sq.Ft Projects',
@@ -53,6 +59,7 @@ const milestones = [
   {
     year: '2000',
     title: 'Corporate Giants',
+    barTitle: 'Corporate\nGiants',
     description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu, aggregating industrial-grade parcels built to national corporate standards.',
     stat: '40',
     statLabel: 'Acres for Pepsi',
@@ -62,6 +69,7 @@ const milestones = [
   {
     year: '2024',
     title: 'Legacy Continues',
+    barTitle: 'Legacy\nContinues',
     description: 'Over **5,000+** acres aggregated across residential, commercial and industrial real estate, backed by a 100% litigation-free record.',
     stat: '5,000+',
     statLabel: 'Acres Aggregated',
@@ -215,7 +223,19 @@ const CinematicTimeline = () => {
           <span className="ct-bar__bigyear-text" key={activeIndex}>
             {milestones[activeIndex].year}
           </span>
-          <span className="ct-bar__bigyear-label">{milestones[activeIndex].title}</span>
+          <span className="ct-bar__bigyear-label">
+            {/* Honours the \n in titles (e.g. "Mahindra\nWorld City") via a
+                <br> that CinematicTimeline.css only shows on mobile. The
+                leading space keeps desktop reading "Mahindra World City"
+                on one line while the <br> is hidden; on mobile the browser
+                drops that space at the start of the new line. */}
+            {(milestones[activeIndex].barTitle ?? milestones[activeIndex].title).split('\n').map((line, i) => (
+              <span key={i}>
+                {i > 0 && <br className="ct-bar__bigyear-br" />}
+                {i > 0 ? ` ${line}` : line}
+              </span>
+            ))}
+          </span>
         </div>
 
         {/* Segmented liquid-fill progress */}

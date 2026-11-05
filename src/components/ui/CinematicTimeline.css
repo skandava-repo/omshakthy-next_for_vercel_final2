@@ -347,6 +347,12 @@
   margin-top: 8px;
 }
 
+/* Title line-break in the bar label — mobile only (shown in the 768px
+   block below); desktop keeps the title on one line. */
+.ct-bar__bigyear-br {
+  display: none;
+}
+
 /* ---- Segmented liquid-fill progress ---- */
 .ct-bar__segments {
   flex: 1;
@@ -714,20 +720,50 @@
   .ct-bar__bigyear-label {
     font-size: 13px;
   }
+  .ct-bar__bigyear-br {
+    display: inline;
+  }
   .ct-bar__segments {
     gap: 1px;
+    /* Room below the bars for the even (down-staggered) year labels. */
+    padding-bottom: 30px;
   }
-  /* Each label is position:absolute; left:0 against its own flex:1
-     segment (~20-25px wide at this breakpoint) — even at 10px, the
-     previous font-size/letter-spacing values left each 4-digit label
-     only a couple px narrower than its segment, so adjacent labels
-     still overlapped by 1-5px (measured live: "1991" and "1993"
-     touching, "2000"/"2024" overlapping by 5px). Letter-spacing:0 and
-     a 1px-smaller floor trim just enough width off each label to clear
-     that, without shrinking so far the years stop reading as years. */
+  /* Mobile: alternate the year labels above/below the bars (odd = up,
+     even = down), centred on their own segment and joined to it by a
+     short vertical tick, so neighbouring years sit on different rows
+     and can't collide. Same-row labels are two segments apart. */
   .ct-seg__year {
-    font-size: 9px;
-    letter-spacing: 0;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .ct-seg:nth-child(odd) .ct-seg__year {
+    bottom: calc(100% + 9px);
+  }
+  .ct-seg:nth-child(even) .ct-seg__year {
+    top: calc(100% + 9px);
+  }
+  /* The tick: 1px line bridging the 9px between label and bar, in the
+     label's own colour (gold when active, muted when done). */
+  .ct-seg__year::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 1px;
+    height: 7px;
+    background: currentColor;
+    opacity: 0.6;
+    transform: translateX(-50%);
+  }
+  .ct-seg:nth-child(odd) .ct-seg__year::after {
+    top: calc(100% + 2px);
+  }
+  .ct-seg:nth-child(even) .ct-seg__year::after {
+    bottom: calc(100% + 2px);
   }
   .ct-bar__counter-current {
     font-size: 18px;
