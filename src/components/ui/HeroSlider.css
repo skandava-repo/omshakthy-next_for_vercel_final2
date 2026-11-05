@@ -157,7 +157,12 @@
   object-fit: cover;
 }
 
-@media (max-width: 768px) {
+/* Same breakpoint HeroSlider.tsx's MOBILE_MEDIA uses for the mobile image
+   crop — kept matching so the content padding/wrap treatment here never
+   disagrees with which image is actually showing. (pointer: coarse) and
+   (orientation: portrait) added for the same reason as everywhere else
+   in this codebase: iPad portrait doesn't reliably report under 768px. */
+@media (max-width: 768px), (pointer: coarse) and (orientation: portrait) {
   .hero-slider__thumbnail {
     width: 100px;
     height: 65px;

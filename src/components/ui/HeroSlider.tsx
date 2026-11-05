@@ -2,10 +2,16 @@
 import { useState, useEffect } from 'react'
 import './HeroSlider.css'
 
-// mobileImage (optional): portrait-cropped variant served at <=768px via
-// <picture>, so phones get a proper vertical crop instead of a squeezed
-// landscape photo. Same breakpoint HeroSlider.css uses for its mobile layout.
-const MOBILE_MEDIA = '(max-width: 768px)'
+// mobileImage (optional): portrait-cropped variant served via <picture>,
+// so phones get a proper vertical crop instead of a squeezed landscape
+// photo. Was width-only (max-width: 768px) — same bug as every other
+// breakpoint in this codebase: iPad portrait doesn't reliably report
+// under 768px, so it kept falling through to the desktop crop (user-
+// reported live: "why i see the desktop images in the portrait mode").
+// (pointer: coarse) and (orientation: portrait) adds the real signal —
+// any touch device held in portrait gets the mobile crop regardless of
+// reported width — without touching desktop or landscape.
+const MOBILE_MEDIA = '(max-width: 768px), (pointer: coarse) and (orientation: portrait)'
 
 const slides: { image: string; mobileImage?: string; title: string }[] = [
   { image: '/hero-new-3.webp', mobileImage: '/mobile/hero-new-3.webp', title: 'OmShakthy Regalia' },
