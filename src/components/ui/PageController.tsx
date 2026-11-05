@@ -53,10 +53,24 @@ const PageController = ({ children, freeFlowFrom }: PageControllerProps) => {
   const freeFlowChildren = children.slice(pinnedCount)
 
   useEffect(() => {
-    const check = () => setIsNarrow(window.innerWidth <= MOBILE_BREAKPOINT)
+    // Width alone isn't a reliable mobile/tablet signal — confirmed live,
+    // iPad portrait (834px, well under MOBILE_BREAKPOINT already) still
+    // rendered pinned sections as their full side-by-side desktop layout.
+    // (pointer: coarse) is true only for touch input (never a mouse-driven
+    // desktop/laptop, even one resized down to a narrow, tall window — the
+    // thing this check must NOT catch), and (orientation: portrait) is the
+    // actual ask: landscape keeps today's width-based desktop treatment
+    // untouched, any touch device held in portrait gets the same free-flow
+    // treatment phones already get here, regardless of its reported width.
+    const coarsePortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait)')
+    const check = () => setIsNarrow(window.innerWidth <= MOBILE_BREAKPOINT || coarsePortraitQuery.matches)
     check()
     window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+    coarsePortraitQuery.addEventListener('change', check)
+    return () => {
+      window.removeEventListener('resize', check)
+      coarsePortraitQuery.removeEventListener('change', check)
+    }
   }, [])
 
   const goTo = useCallback((index: number) => {

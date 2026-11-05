@@ -201,16 +201,25 @@ const BlogListingContent = () => {
   useEffect(() => {
     const el = mixedListRef.current
     if (!el) return
+    // Same fix as PageController.tsx/ProjectsContent.tsx: width alone
+    // (innerWidth > 860) isn't a reliable "is this the desktop layout"
+    // signal — a touch device in portrait needs the stacked layout
+    // regardless of its reported width, matching BlogListingContent.css's
+    // own now-updated 860px media query.
+    const coarsePortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait)')
+    const isStacked = () => window.innerWidth <= 860 || coarsePortraitQuery.matches
     const update = () => {
-      setBannerHeight(window.innerWidth > 860 ? el.getBoundingClientRect().height : undefined)
+      setBannerHeight(isStacked() ? undefined : el.getBoundingClientRect().height)
     }
     update()
     const ro = new ResizeObserver(update)
     ro.observe(el)
     window.addEventListener('resize', update)
+    coarsePortraitQuery.addEventListener('change', update)
     return () => {
       ro.disconnect()
       window.removeEventListener('resize', update)
+      coarsePortraitQuery.removeEventListener('change', update)
     }
   }, [])
 
@@ -244,8 +253,10 @@ const BlogListingContent = () => {
     const sideEl = sideRef.current
     if (!mainEl || !bodyEl || !titleEl || !sideEl) return
 
+    const coarsePortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait)')
     const fit = () => {
-      if (window.innerWidth <= 860) {
+      // Same stacked-layout condition as bannerHeight's effect above.
+      if (window.innerWidth <= 860 || coarsePortraitQuery.matches) {
         mainEl.style.height = ''
         titleEl.style.fontSize = ''
         return
@@ -265,9 +276,11 @@ const BlogListingContent = () => {
     const ro = new ResizeObserver(fit)
     ro.observe(sideEl)
     window.addEventListener('resize', fit)
+    coarsePortraitQuery.addEventListener('change', fit)
     return () => {
       ro.disconnect()
       window.removeEventListener('resize', fit)
+      coarsePortraitQuery.removeEventListener('change', fit)
     }
   }, [hero.title, hero.description, hero.readTime])
 

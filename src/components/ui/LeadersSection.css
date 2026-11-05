@@ -502,7 +502,7 @@
 }
 
 /* ---------------- responsive ---------------- */
-@media (max-width: 980px) {
+@media (max-width: 980px), (pointer: coarse) and (orientation: portrait) {
   .ld3 {
     height: auto;
     min-height: 100vh;

@@ -182,10 +182,20 @@ const ProjectsContent = () => {
   // Header.css already uses elsewhere on this site, not a new number.
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024)
+    // Width alone isn't reliable for this — same fix as PageController.tsx:
+    // (pointer: coarse) and (orientation: portrait) catches a touch device
+    // held in portrait regardless of what width it reports, without
+    // touching desktop (mouse input never matches pointer:coarse) or
+    // landscape (untouched, same as before).
+    const coarsePortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait)')
+    const check = () => setIsMobile(window.innerWidth < 1024 || coarsePortraitQuery.matches)
     check()
     window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+    coarsePortraitQuery.addEventListener('change', check)
+    return () => {
+      window.removeEventListener('resize', check)
+      coarsePortraitQuery.removeEventListener('change', check)
+    }
   }, [])
 
   const filtered = useMemo(() => {
@@ -396,7 +406,13 @@ const ProjectsContent = () => {
             </Reveal>
           )}
           {filtered.length > 0 && (
-            <div className="grid lg:grid-cols-2 gap-5">
+            // Column count now follows the exact same `isMobile` state the
+            // card JSX above branches on (was a separate, static
+            // lg:grid-cols-2 Tailwind class — width-only, so it could
+            // disagree with isMobile once isMobile also started reacting
+            // to pointer/orientation and not just width, pairing the
+            // single-column mobile card shape with a 2-column grid).
+            <div className="grid gap-5" style={{ gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))' }}>
             {filtered.map((p, i) => {
               /* Link vs. plain div can't share one polymorphic tag
                  without fighting TS's LinkProps typing — the inner

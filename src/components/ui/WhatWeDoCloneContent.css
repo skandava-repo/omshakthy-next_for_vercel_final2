@@ -511,7 +511,7 @@
    fit one mobile viewport without becoming illegibly small, so below
    980px this reverts to a normal scrolling page instead of clipping
    content that has nowhere left to shrink. */
-@media (max-width: 980px) {
+@media (max-width: 980px), (pointer: coarse) and (orientation: portrait) {
   .wc {
     height: auto;
     min-height: 100vh;

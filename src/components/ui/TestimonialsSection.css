@@ -552,7 +552,7 @@
 }
 
 /* ---- responsive ---- */
-@media (max-width: 900px) {
+@media (max-width: 900px), (pointer: coarse) and (orientation: portrait) {
   /* Three side-by-side columns don't fit a phone width — stack them: tile
      row, featured card, tile row, in the same DOM order the desktop
      layout already uses (left tiles, featured, right tiles), just

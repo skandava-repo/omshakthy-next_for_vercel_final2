@@ -810,7 +810,7 @@
 }
 
 /* ---------------- Responsive ---------------- */
-@media (max-width: 860px) {
+@media (max-width: 860px), (pointer: coarse) and (orientation: portrait) {
   .bp__hero {
     grid-template-columns: 1fr;
   }

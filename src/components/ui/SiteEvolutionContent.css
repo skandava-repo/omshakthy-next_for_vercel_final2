@@ -162,7 +162,7 @@
    progresses as the page scrolls past .se__scroller (the pathLength
    transforms are driven by scroll position, not by the pin itself),
    it just isn't held in view while it does. */
-@media (max-width: 860px) {
+@media (max-width: 860px), (pointer: coarse) and (orientation: portrait) {
   .se__scroller {
     flex-direction: column;
   }

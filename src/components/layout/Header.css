@@ -224,7 +224,7 @@
 
 /* Mobile/tablet: pull the logo and hamburger in to the screen edges —
    desktop's 80px logo inset + 90px right gutter left big empty gaps. */
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (pointer: coarse) and (orientation: portrait) {
   .site-nav__inner {
     padding: 0 16px 10px 16px;
     gap: 16px;
@@ -273,7 +273,7 @@
   list-style: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (pointer: coarse) and (orientation: portrait) {
   .site-nav__links {
     display: none;
   }
@@ -823,7 +823,7 @@ a.site-nav__link--active span::after {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (pointer: coarse) and (orientation: portrait) {
   .site-nav__burger {
     display: flex;
   }

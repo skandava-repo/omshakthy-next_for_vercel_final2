@@ -613,7 +613,7 @@
    exactly so this override fires at precisely the same width
    PageController itself switches modes, not a separately-guessed
    number. */
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (pointer: coarse) and (orientation: portrait) {
   /* .ct-section is a pinned, wheel-captured 100vh section on desktop —
      real here, since PageController wheel-jacks it the same way at
      every width that mechanism is active. But HomeClient's own

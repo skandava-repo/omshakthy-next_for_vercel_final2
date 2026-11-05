@@ -23,7 +23,7 @@
 
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   /* The fixed-height .property-item cards below (6 x 220px = 1320px)
      need real room to stack in — .property-section itself never had a
      matching override here, so it stayed locked to height:100vh
@@ -52,7 +52,7 @@
   flex: 1;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   .property-list {
     flex-direction: column;
     /* Mobile only: 10px breathing room between the stacked cards (the
@@ -106,7 +106,7 @@
    PageController's free-flow tail at this breakpoint (see
    HomeClient.tsx's freeFlowFrom) so a 6-card list this tall isn't
    forced into one 100vh slot either. */
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   .property-item {
     min-width: auto;
     max-width: 100%;
@@ -271,7 +271,7 @@
   font-size: 28px;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   /* Not gated behind .active anymore — see the comment on
      .property-item's own @media block above for why: a touch tap has
      no hover-equivalent to reveal this first. */
@@ -367,7 +367,7 @@
   width: fit-content;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   /* Not gated behind .active — same reasoning as .property-item__name
      above. Every card always shows its own price/status at this
      breakpoint, same styling .active gave it on desktop. */
@@ -443,7 +443,7 @@
 /* ============================================
    MOBILE — "View More" as an arrow link + end-of-section marker
    ============================================ */
-@media (max-width: 992px) {
+@media (max-width: 992px), (pointer: coarse) and (orientation: portrait) {
   .property-cta {
     flex-direction: column;
     align-items: center;
