@@ -564,6 +564,16 @@
     display: flex;
     flex-direction: column;
     height: auto;
+    /* The desktop rule's margin:0 auto centers a width-capped grid
+       track under display:grid — harmless there. Under display:flex
+       (this block), auto margins on the cross axis override
+       align-items:stretch entirely (confirmed live: .tw__grid's own
+       computed width was 346px inside an 828px-wide .tw__stage,
+       shrink-wrapped and centered instead of filling it), so .tw__grid
+       and everything inside it collapsed to a tiny, narrow, centered
+       sliver instead of a full-width stacked section. Resetting the
+       margin here lets stretch win again. */
+    margin: 0;
   }
   .tw-featured-stage {
     max-width: 100%;
