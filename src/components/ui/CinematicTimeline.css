@@ -602,7 +602,18 @@
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 768px) {
+/* Was max-width: 768px — didn't actually match PageController's own
+   MOBILE_BREAKPOINT (1024px, confirmed in PageController.tsx) that
+   this whole override exists to react to. That left a real gap:
+   anything from 769px to 1024px — iPad portrait (834px) included —
+   has ALREADY been released into free-flow by PageController, but
+   this CSS didn't know it yet, so .ct-section kept its pinned
+   height:100vh and reproduced the exact ~370px dead-gap bug described
+   below, just at a width nobody had tested against. Matched to 1024px
+   exactly so this override fires at precisely the same width
+   PageController itself switches modes, not a separately-guessed
+   number. */
+@media (max-width: 1024px) {
   /* .ct-section is a pinned, wheel-captured 100vh section on desktop —
      real here, since PageController wheel-jacks it the same way at
      every width that mechanism is active. But HomeClient's own
