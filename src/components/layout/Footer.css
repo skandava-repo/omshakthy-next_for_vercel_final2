@@ -260,8 +260,14 @@
   height: 16px;
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 900px) {
+/* ---- Responsive ----
+   Both blocks below were width-only -- same bug as every other
+   breakpoint fixed this pass. Confirmed live on an iPad 13" in
+   portrait: .ft__top stayed in its side-by-side desktop row (brand
+   block + 3 columns, not stacked) AND .ft__deco's corner illustration
+   stayed visible sitting under/behind that row instead of hidden --
+   both symptoms traced back to this one unfixed @media. */
+@media (max-width: 900px), (pointer: coarse) and (orientation: portrait) {
   .ft__top {
     flex-direction: column;
     gap: 2.5rem;
@@ -272,7 +278,11 @@
   }
 }
 
-@media (max-width: 560px) {
+/* Same inconsistency already fixed elsewhere: this inner tier was
+   width-only, so a touch device past 560px (any tablet in portrait)
+   kept the 3-column .ft__columns grid the 900px tier above doesn't
+   touch, while a phone got the real 1-column stack. */
+@media (max-width: 560px), (pointer: coarse) and (orientation: portrait) {
   .ft__columns {
     grid-template-columns: 1fr;
     gap: 2rem;

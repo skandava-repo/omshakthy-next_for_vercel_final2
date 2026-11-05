@@ -1,4 +1,5 @@
 'use client'
+import { useState, useEffect } from 'react'
 // Shared "Site Links" footer block — regalia-lp.html's own
 // <div class="innrfooterbox"> content, originally built inline inside
 // RegaliaContent.tsx and audited link-by-link there (see that file's
@@ -38,9 +39,29 @@ const footerBlogPosts = FOOTER_BLOG_SLUGS
 const footerCategories = Array.from(new Set(blogPosts.map((b) => b.category)))
 
 export default function SiteLinksSection({ backgroundColor = '#F8F8F5' }: { backgroundColor?: string }) {
+  // md:grid-cols-4 is a static Tailwind width breakpoint (768px) --
+  // same bug as every other width-only check fixed this pass: any
+  // tablet in portrait (past 768px) kept the 4-column desktop grid
+  // instead of the 2-column phone one. Same (pointer: coarse) and
+  // (orientation: portrait) signal, just driven as inline style since
+  // Tailwind's own prefixes can't express an OR against a non-width
+  // media feature.
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const coarsePortraitQuery = window.matchMedia('(pointer: coarse) and (orientation: portrait)')
+    const check = () => setIsMobile(window.innerWidth < 768 || coarsePortraitQuery.matches)
+    check()
+    window.addEventListener('resize', check)
+    coarsePortraitQuery.addEventListener('change', check)
+    return () => {
+      window.removeEventListener('resize', check)
+      coarsePortraitQuery.removeEventListener('change', check)
+    }
+  }, [])
+
   return (
     <section className="px-6 md:px-16 py-20" style={{ backgroundColor, color: C.ink }}>
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div className="max-w-6xl mx-auto grid gap-10" style={{ gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))' }}>
         <div>
           <h3 className="text-sm font-bold uppercase mb-4" style={{ ...display, color: C.ink, letterSpacing: '0.06em' }}>
             Ongoing Projects
