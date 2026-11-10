@@ -53,7 +53,7 @@ const leaders: Leader[] = [
   },
   {
     name: 'Sakthi Buwaneshwari M',
-    role: 'Executive Director',
+    role: 'Associate Director',
     tag: 'Operations & Excellence',
     // Real distinct photo now provided — the old md-cutout.png (byte-
     // identical to manigantan.png, someone else's face) is still not
