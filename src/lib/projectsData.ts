@@ -78,12 +78,13 @@ export const projects: Project[] = [
   // Railway Station 15 min) don't actually match Sriperumbudur (a
   // 40+ min drive from the airport) — but with nothing more specific
   // stated on the source page, this wasn't replaced with a guess.
-  // Was briefly marked Sold per direct instruction, then reverted back
-  // to Ongoing per a later direct instruction — link and price restored
-  // to match industrial-park-lp's own still-live page (an unset
-  // "Price: XXXX" on the real site, no "Sold Out" banner, active
-  // "Book a Free Site Visit" form).
-  { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Ongoing', type: 'Industrial', price: 'Price on Request', priceLakh: null, link: '/industrial-park-lp' },
+  // Status has flip-flopped on direct instruction before (Ongoing ->
+  // Sold -> back to Ongoing, see earlier git history) — now marked
+  // Sold again, link dropped so the card is non-clickable, same per
+  // direct instruction. Note: industrial-park-lp itself is untouched
+  // and still live/reachable directly by URL; it's just no longer
+  // linked from this card.
+  { image: '/projects/property-6.webp', name: 'Industrial Park', location: 'Sriperumbudur, Chennai', status: 'Sold', type: 'Industrial', price: 'Sold Out', priceLakh: null },
   // Location corrected: canopus-magha-lp.html's own copy explicitly
   // says "Enveloped in the epicenter of Avadi" — 'Guduvanchery' looks
   // like leftover boilerplate copy-pasted from a different project (the
