@@ -429,6 +429,17 @@
   color: rgba(11, 31, 58, 0.65);
 }
 
+/* Optional credential line (Hota's "(Retired IRS)"), directly under the
+   name/name-rule, above .ld3__role — same exact styling as .ld3__tag
+   below the role, per direct instruction, just positioned higher up
+   in the card instead of appended inline to the name itself. */
+.ld3__credential {
+  margin-top: 0.15rem;
+  font-size: clamp(0.8rem, 0.89vw, 0.91rem);
+  font-style: italic;
+  color: rgba(11, 31, 58, 0.65);
+}
+
 /* Closing gold tick at the very bottom of the card, in the space the
    social-icon row used to occupy — same 2px gold rule as .ld3__name-rule,
    just bigger, as a closing accent rather than a mid-card divider. */

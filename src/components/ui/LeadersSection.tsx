@@ -19,6 +19,10 @@ type Leader = {
   name: string
   role: string
   tag: string
+  // Optional, only set on Hota below: shown directly under the name,
+  // same styling as .ld3__tag below the role (same font-size/italic/
+  // color), not appended inline to `name` itself.
+  credential?: string
   // No `img` = no real photo exists yet (see Shakthi below) — renders an
   // initials placeholder instead of misattributing someone else's photo.
   img?: string
@@ -47,6 +51,7 @@ const leaders: Leader[] = [
     name: 'Rajib Kumar Hota',
     role: 'Executive Director',
     tag: 'Governance & Ethics',
+    credential: '(Retired IRS)',
     img: '/leaders/hota.webp',
     pos: 'center 22%',
     size: 'cover',
@@ -88,6 +93,7 @@ function Card({ leader, index }: { leader: Leader; index: number }) {
       <div className="ld3__body">
         <h3 className="ld3__name">{leader.name}</h3>
         <span className="ld3__name-rule" aria-hidden="true" />
+        {leader.credential && <p className="ld3__credential">{leader.credential}</p>}
         <p className="ld3__role">{leader.role}</p>
         <p className="ld3__tag">{leader.tag}</p>
       </div>
