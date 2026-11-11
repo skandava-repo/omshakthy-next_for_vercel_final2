@@ -11,7 +11,7 @@ import { getBreadcrumbSchema } from '@/lib/schema-org'
 export const metadata: Metadata = {
   alternates: { canonical: '/events' },
   title: 'News and Events Updates - OmShakthy Homes',
-  description: 'Milestones, launches and moments from three decades of OmShakthy Homes.',
+  description: 'Milestones, launches and moments from 35+ years of OmShakthy Homes.',
 }
 
 export default function EventsPage() {

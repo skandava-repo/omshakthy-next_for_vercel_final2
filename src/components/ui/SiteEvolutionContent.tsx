@@ -54,7 +54,7 @@ const Step = ({ step, index }: { step: Step; index: number }) => {
       <h2 className="se__step-title">{step.title}</h2>
       <p className="se__step-copy">{step.copy}</p>
       {index === steps.length - 1 && (
-        <p className="se__step-close">One site. Five disciplines. Thirty years of building it this way.</p>
+        <p className="se__step-close">One site. Five disciplines. 35+ years of building it this way.</p>
       )}
     </div>
   )
