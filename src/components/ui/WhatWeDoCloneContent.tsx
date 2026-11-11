@@ -154,14 +154,14 @@ const WhatWeDoCloneContent = () => {
           </h1>
 
           <p className="wc__para">
-            Three decades of operating history, read the way it appears in our own reporting — not
+            35+ years of operating history, read the way it appears in our own reporting — not
             as services on a shelf, but as one integrated pipeline from land to keys.
           </p>
 
           <div className="wc__card">
             <p className="wc__card-est">Est. 1991, Chennai</p>
             <p className="wc__card-num">
-              30<span className="wc__card-plus">+</span>
+              35<span className="wc__card-plus">+</span>
             </p>
             <p className="wc__card-label">Years in Operation</p>
           </div>

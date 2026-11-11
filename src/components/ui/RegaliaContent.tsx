@@ -1084,7 +1084,7 @@ const Regalia = () => {
               },
               {
                 q: 'How long has Omshakthy been in the business?',
-                a: 'Omshakthy Agencies (Madras) Pvt Ltd traces its roots to 1991 and carries more than 30 years of experience in the Chennai land market.',
+                a: 'Omshakthy Agencies (Madras) Pvt Ltd traces its roots to 1991 and carries more than 35 years of experience in the Chennai land market.',
               },
               {
                 q: 'Where is Omshakthy located?',

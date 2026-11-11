@@ -1,6 +1,6 @@
 /* ============================================================
    LEADERSHIP — original editorial video-intro band (.ld3__intro and
-   friends: video backdrop, "OUR LEADERSHIP" eyebrow, "Three decades..."
+   friends: video backdrop, "OUR LEADERSHIP" eyebrow, "35+ years..."
    headline) sitting above a "meet the team" pill-card roster (ported from
    a reference design: one flat row of capsule cards with a circular
    photo, name/role/tag, social icon row — no stagger, the reference row
@@ -252,7 +252,7 @@
   line-height: 1.08;
   letter-spacing: -0.01em;
   color: var(--os-ink, #0B1F3A);
-  /* Explicit <br/> in the markup after "Three decades." controls the break
+  /* Explicit <br/> in the markup after "35+ years." controls the break
      now — no max-width needed (it was clipping "vision." onto a 3rd line
      by capping the width too early for "One unwavering vision." to fit
      on the second). */

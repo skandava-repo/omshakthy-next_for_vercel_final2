@@ -5,6 +5,14 @@ import './CinematicTimeline.css'
 const milestones = [
   {
     year: '1991',
+    // yearRange: what .ct-slide__year-display actually renders (the giant
+    // numeral). `year` itself stays untouched — still drives the
+    // ct-slide--<year> CSS class, the bottom bar's big-year text, and the
+    // segment labels. "1991-95" style: full 4-digit start, 2-digit end,
+    // except where the range crosses the 2000 boundary (kept 4-digit on
+    // both ends there for clarity, e.g. "1995-2000"). The dash itself is
+    // rendered small via renderYearRange() below, not inline here.
+    yearRange: '1991-95',
     title: 'The Beginning',
     // **bold** marks the highlighted phrase — see renderDescription() below.
     description: 'Founded **OmShakthy Agencies (Madras) Pvt. Ltd.,** marking the beginning of a legacy in creating enduring real assets.',
@@ -21,6 +29,7 @@ const milestones = [
   },
   {
     year: '1993',
+    yearRange: '1995-2K',
     title: 'SIDCO Partnership',
     // barTitle: the bottom-bar label's text, with \n marking where it
     // breaks on mobile (CinematicTimeline.css). Kept separate from
@@ -35,6 +44,7 @@ const milestones = [
   },
   {
     year: '1997',
+    yearRange: '2K-05',
     // \n here forces "World City" onto its own line in .ct-slide__title
     // (see renderTitle() below) — harmless everywhere else this field is
     // used as plain text (.ct-bar__bigyear-label), where it just
@@ -48,6 +58,7 @@ const milestones = [
   },
   {
     year: '1998',
+    yearRange: '2005-10',
     title: 'Construction Era',
     barTitle: 'Construction\nEra',
     description: 'Entered construction, winning projects close to **5 million sq.ft.** — turning years of land aggregation into real, delivered developments.',
@@ -58,6 +69,7 @@ const milestones = [
   },
   {
     year: '2000',
+    yearRange: '2010-15',
     title: 'Corporate Giants',
     barTitle: 'Corporate\nGiants',
     description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu, aggregating industrial-grade parcels built to national corporate standards.',
@@ -68,12 +80,31 @@ const milestones = [
   },
   {
     year: '2024',
+    yearRange: '2015-20',
     title: 'Legacy Continues',
     barTitle: 'Legacy\nContinues',
     description: 'Over **5,000+** acres aggregated across residential, commercial and industrial real estate, backed by a 100% litigation-free record.',
     stat: '5,000+',
     statLabel: 'Acres Aggregated',
     image: '/timeline-2024.webp',
+    textFree: true,
+  },
+  {
+    // New 7th slide extending the timeline through 2025. Reuses
+    // timeline-2000.webp as the background rather than timeline-2024.webp
+    // (last time's placeholder) — that file now has its own baked-in
+    // "PLOTS / VILLAS / ..." category labels, which clashed with this
+    // slide's live text overlay. 2000's photo is clean, and not adjacent
+    // in the sequence (slide 5, not slide 6), so repeating it reads less
+    // like an obvious duplicate. Swap in a dedicated asset when one exists.
+    year: '2025',
+    yearRange: '2020-25',
+    title: 'The Next Chapter',
+    barTitle: 'The Next\nChapter',
+    description: 'Carrying **35+ years** of trust into a new era of growth across Tamil Nadu.',
+    stat: '2025',
+    statLabel: 'And Beyond',
+    image: '/timeline-2000.webp',
     textFree: true,
   },
 ]
@@ -87,6 +118,20 @@ function renderDescription(text: string) {
   return parts.map((part, i) =>
     i % 2 === 1 ? <strong key={i}>{part}</strong> : part
   )
+}
+
+// Splits a yearRange like "1991-95" on its dash and wraps the dash in its
+// own span (.ct-slide__year-dash) so CSS can render it smaller/tighter
+// than the surrounding digits — at full numeral size a plain "-" reads as
+// an oversized gap between the two year chunks.
+function renderYearRange(text: string) {
+  const parts = text.split('-')
+  return parts.map((part, i) => (
+    <span key={i}>
+      {i > 0 && <span className="ct-slide__year-dash">-</span>}
+      {part}
+    </span>
+  ))
 }
 
 // Splits a title on \n and renders each segment on its own line via <br>.
@@ -177,7 +222,7 @@ const CinematicTimeline = () => {
             <div className="ct-slide__overlay" />
             {m.textFree && (
               <div className="ct-slide__content">
-                <div className="ct-slide__year-display">{m.year}</div>
+                <div className="ct-slide__year-display">{renderYearRange(m.yearRange)}</div>
                 <div className="ct-slide__underline" />
                 <div className="ct-slide__title">{renderTitle(m.title)}</div>
                 <div className="ct-slide__dash" />
