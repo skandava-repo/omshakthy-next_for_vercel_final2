@@ -147,10 +147,13 @@
    kerning, not the wide tracking this had drifted to — matched below. */
 .ct-slide__year-display {
   font-family: 'Playfair Display', 'Fraunces', Georgia, serif;
-  /* Numeral went from a single year (4 chars) to a "1991-95"-style range
-     (~7-9 chars) across every slide — reduced from the old 61/14.78vw/308
-     so the longer string still fits comfortably. */
-  font-size: clamp(32px, 7.8vw, 160px);
+  /* Was shrunk to clamp(32px, 7.8vw, 160px) under the premise that
+     every slide would show a "1991-95"-style range (~7-9 chars)
+     instead of a plain 4-digit year — stale now that displayYear()
+     only does that for the first slide; every other slide is back to
+     a plain year. Reverted to the original big size per direct
+     instruction. */
+  font-size: clamp(61px, 14.78vw, 308px);
   font-weight: 400;
   /* Solid-color fallback for browsers without background-clip: text. */
   color: #004385;
@@ -204,10 +207,10 @@
    gold). Purely decorative. */
 .ct-slide__underline {
   position: relative;
-  /* Scaled down to match .ct-slide__year-display's own ~52% cut (made
-     when the numeral switched to the "1991-95"-style range):
-     126/32.7vw/558 -> 66/17vw/290. */
-  width: clamp(66px, 17vw, 290px);
+  /* Reverted alongside .ct-slide__year-display's own font-size revert
+     above — was scaled down to clamp(66px, 17vw, 290px) to match that
+     stale shrink, back to its original width now. */
+  width: clamp(126px, 32.7vw, 558px);
   height: 2px;
   background: #004385;
   margin: 18px 0 22px;
