@@ -282,11 +282,16 @@ const CinematicTimeline = () => {
               e.g. "1993") — now the same displayYear() helper
               .ct-slide__year-display uses, so the big year here and the
               big year on the slide itself always agree: full range on
-              the first slide, just the range's end year after that.
-              Kept at the same font-size as every other slide per direct
-              instruction — no separate smaller size for the longer
-              first-slide range text. */}
-          <span className="ct-bar__bigyear-text" key={activeIndex}>
+              the first slide, just the range's end year after that. */}
+          {/* --range modifier (first slide only, where displayYear
+              returns the full "1991-95" instead of a plain 4-digit
+              year) gets its own smaller font-size in CSS — the base
+              size stays exactly what it always was for every slide
+              that's showing just a year. */}
+          <span
+            className={`ct-bar__bigyear-text${activeIndex === 0 ? ' ct-bar__bigyear-text--range' : ''}`}
+            key={activeIndex}
+          >
             {displayYear(activeIndex, milestones[activeIndex].yearRange)}
           </span>
           <span className="ct-bar__bigyear-label">
@@ -316,10 +321,10 @@ const CinematicTimeline = () => {
               {/* Was m.year (e.g. "1993") — now the same displayYear()
                   helper as .ct-bar__bigyear-text/.ct-slide__year-display
                   above, so all three agree for this same milestone.
-                  Same font-size as every other segment per direct
-                  instruction — no separate smaller size for the first
-                  segment's longer range text. */}
-              <span className="ct-seg__year">{displayYear(i, m.yearRange)}</span>
+                  Same --range modifier as bigyear-text, same reason:
+                  only the first segment's text is the longer full
+                  range, so only it gets a smaller font-size. */}
+              <span className={`ct-seg__year${i === 0 ? ' ct-seg__year--range' : ''}`}>{displayYear(i, m.yearRange)}</span>
             </button>
           ))}
         </div>
