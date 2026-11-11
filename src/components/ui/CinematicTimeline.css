@@ -333,11 +333,11 @@
 }
 
 /* 1991 alone shows "1991-95" (yearDisplay in the .tsx) instead of a
-   plain 4-digit year — noticeably smaller than the 64px baseline
-   above (~25% off, not the original ~15% cut) so the longer string
-   sits comfortably; every other slide keeps 64px untouched. */
+   plain 4-digit year — ~40% off the 64px baseline above (was ~25%
+   off, still asked for more) so the longer string sits comfortably;
+   every other slide keeps 64px untouched. */
 .ct-bar__bigyear-text--1991 {
-  font-size: 48px;
+  font-size: 38px;
 }
 
 @keyframes yearRise {
@@ -432,10 +432,10 @@
 
 /* Same --1991 modifier as .ct-bar__bigyear-text: only the first
    segment shows "1991-95" instead of a plain year, so only it gets a
-   noticeably smaller size — every other segment keeps 15px (and the
+   ~40% off size (was 11px) — every other segment keeps 15px (and the
    10px mobile override further down) untouched. */
 .ct-seg__year--1991 {
-  font-size: 11px;
+  font-size: 9px;
 }
 
 /* Left as gold (#C9A227), not blue, per explicit instruction — the active
@@ -501,12 +501,11 @@
   transform: translateX(5%);
 }
 /* Shows "1991-95" instead of a plain "1991" (yearDisplay in the .tsx) —
-   noticeably smaller than the shared clamp(61px, 14.78vw, 308px)
-   baseline (~25% off, not the original ~10% cut, which read as barely
-   different at a glance) so the longer string sits comfortably,
-   1991 only. */
+   ~40% off the shared clamp(61px, 14.78vw, 308px) baseline now (was
+   ~25% off, still asked for more) so the longer string sits
+   comfortably, 1991 only. */
 .ct-slide--1991 .ct-slide__year-display {
-  font-size: clamp(46px, 11.1vw, 231px);
+  font-size: clamp(37px, 8.9vw, 185px);
 }
 .ct-slide--1993 .ct-slide__title {
   /* "SIDCO Partnership" specifically dialed down from the shared baseline
@@ -752,10 +751,10 @@
   .ct-bar__bigyear-text {
     font-size: 42px;
   }
-  /* Same --1991 modifier, mobile's own 42px size: noticeably smaller
-     for the longer "1991-95" text here too. */
+  /* Same --1991 modifier, mobile's own 42px size: ~40% off, same as
+     the desktop cut above. */
   .ct-bar__bigyear-text--1991 {
-    font-size: 31px;
+    font-size: 25px;
   }
   .ct-bar__bigyear-label {
     font-size: 13px;
