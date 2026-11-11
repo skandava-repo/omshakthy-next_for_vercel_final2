@@ -5,6 +5,11 @@ import './CinematicTimeline.css'
 const milestones = [
   {
     year: '1991',
+    // Optional, only set here: shown instead of `year` wherever a
+    // milestone's year is displayed (.ct-slide__year-display,
+    // .ct-bar__bigyear-text, .ct-seg__year) — `year` itself stays
+    // '1991' so the ct-slide--1991 CSS hook is untouched.
+    yearDisplay: '1991-95',
     title: 'The Beginning',
     // **bold** marks the highlighted phrase — see renderDescription() below.
     description: 'Founded **OmShakthy Agencies (Madras) Pvt. Ltd.,** marking the beginning of a legacy in creating enduring real assets.',
@@ -177,7 +182,7 @@ const CinematicTimeline = () => {
             <div className="ct-slide__overlay" />
             {m.textFree && (
               <div className="ct-slide__content">
-                <div className="ct-slide__year-display">{m.year}</div>
+                <div className="ct-slide__year-display">{m.yearDisplay ?? m.year}</div>
                 <div className="ct-slide__underline" />
                 <div className="ct-slide__title">{renderTitle(m.title)}</div>
                 <div className="ct-slide__dash" />
@@ -220,8 +225,11 @@ const CinematicTimeline = () => {
       <div className="ct-bar">
         {/* Big morphing year on the left */}
         <div className="ct-bar__bigyear">
-          <span className="ct-bar__bigyear-text" key={activeIndex}>
-            {milestones[activeIndex].year}
+          <span
+            className={`ct-bar__bigyear-text${activeIndex === 0 ? ' ct-bar__bigyear-text--1991' : ''}`}
+            key={activeIndex}
+          >
+            {milestones[activeIndex].yearDisplay ?? milestones[activeIndex].year}
           </span>
           <span className="ct-bar__bigyear-label">
             {/* Honours the \n in titles (e.g. "Mahindra\nWorld City") via a
@@ -247,7 +255,7 @@ const CinematicTimeline = () => {
               onClick={() => setActiveIndex(i)}
             >
               <span className="ct-seg__fill" />
-              <span className="ct-seg__year">{m.year}</span>
+              <span className={`ct-seg__year${i === 0 ? ' ct-seg__year--1991' : ''}`}>{m.yearDisplay ?? m.year}</span>
             </button>
           ))}
         </div>
