@@ -26,6 +26,10 @@ const milestones = [
   },
   {
     year: '1993',
+    // Same yearDisplay device as 1991-95 above: shown instead of `year`
+    // wherever a milestone's year is displayed, `year` itself untouched
+    // so ct-slide--1993 keeps working.
+    yearDisplay: '2000',
     title: 'SIDCO Partnership',
     // barTitle: the bottom-bar label's text, with \n marking where it
     // breaks on mobile (CinematicTimeline.css). Kept separate from
@@ -40,6 +44,7 @@ const milestones = [
   },
   {
     year: '1997',
+    yearDisplay: '2005',
     // \n here forces "World City" onto its own line in .ct-slide__title
     // (see renderTitle() below) — harmless everywhere else this field is
     // used as plain text (.ct-bar__bigyear-label), where it just
@@ -53,6 +58,7 @@ const milestones = [
   },
   {
     year: '1998',
+    yearDisplay: '2010',
     title: 'Construction Era',
     barTitle: 'Construction\nEra',
     description: 'Entered construction, winning projects close to **5 million sq.ft.** — turning years of land aggregation into real, delivered developments.',
@@ -63,6 +69,7 @@ const milestones = [
   },
   {
     year: '2000',
+    yearDisplay: '2015',
     title: 'Corporate Giants',
     barTitle: 'Corporate\nGiants',
     description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu, aggregating industrial-grade parcels built to national corporate standards.',
@@ -73,12 +80,33 @@ const milestones = [
   },
   {
     year: '2024',
+    yearDisplay: '2020',
     title: 'Legacy Continues',
     barTitle: 'Legacy\nContinues',
     description: 'Over **5,000+** acres aggregated across residential, commercial and industrial real estate, backed by a 100% litigation-free record.',
     stat: '5,000+',
     statLabel: 'Acres Aggregated',
     image: '/timeline-2024.webp',
+    textFree: true,
+  },
+  {
+    // New 7th slide extending the timeline through 2025 — same slide
+    // this project had before, recreated here (that earlier pass was
+    // reverted for its year-display/font-size handling, not for this
+    // slide's own content). Reuses timeline-2000.webp as the
+    // background rather than timeline-2024.webp — that file has its
+    // own baked-in "PLOTS / VILLAS / ..." category labels, which clash
+    // with this slide's live text overlay. 2000's photo is clean and
+    // not adjacent in the sequence (slide 5, not slide 6), so
+    // repeating it reads less like an obvious duplicate. Swap in a
+    // dedicated asset when one exists.
+    year: '2025',
+    title: 'The Next Chapter',
+    barTitle: 'The Next\nChapter',
+    description: 'Carrying **35+ years** of trust into a new era of growth across Tamil Nadu.',
+    stat: '2025',
+    statLabel: 'And Beyond',
+    image: '/timeline-2000.webp',
     textFree: true,
   },
 ]
