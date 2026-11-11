@@ -53,4 +53,5 @@ export const PARTNER_PRELOAD_IMAGES = [
   '/partners/kotak.webp',
   '/partners/idfc-first.webp',
   '/partners/bajaj-finserv.webp',
+  '/partners/indian-bank.webp',
 ]
