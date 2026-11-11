@@ -51,7 +51,7 @@ const leaders: Leader[] = [
     name: 'Rajib Kumar Hota',
     role: 'Executive Director',
     tag: 'Governance & Ethics',
-    credential: '(Retired IRS)',
+    credential: 'IRS (Retd.)',
     img: '/leaders/hota.webp',
     pos: 'center 22%',
     size: 'cover',
@@ -93,7 +93,12 @@ function Card({ leader, index }: { leader: Leader; index: number }) {
       <div className="ld3__body">
         <h3 className="ld3__name">
           {leader.name}
-          {leader.credential && <span className="ld3__credential"> {leader.credential}</span>}
+          {leader.credential && (
+            <>
+              <br />
+              <span className="ld3__credential">{leader.credential}</span>
+            </>
+          )}
         </h3>
         <span className="ld3__name-rule" aria-hidden="true" />
         <p className="ld3__role">{leader.role}</p>
