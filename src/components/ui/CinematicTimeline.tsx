@@ -134,6 +134,19 @@ function renderYearRange(text: string) {
   ))
 }
 
+// Per direct instruction: the first milestone shows its full yearRange
+// ("1991-95", via renderYearRange above), but every milestone after
+// that shows just the END of its own range as one clean year instead —
+// "1995-2K" -> "2000", "2K-05" -> "2005", "2005-10" -> "2010", and so
+// on. Applied everywhere a milestone's year is displayed
+// (.ct-slide__year-display, .ct-bar__bigyear-text, .ct-seg__year) so
+// all three keep agreeing with each other, same as before.
+function displayYear(index: number, yearRange: string) {
+  if (index === 0) return renderYearRange(yearRange)
+  const end = yearRange.split('-')[1]
+  return end === '2K' ? '2000' : end.length === 2 ? `20${end}` : end
+}
+
 // Splits a title on \n and renders each segment on its own line via <br>.
 // Only used for .ct-slide__title — other places that read m.title
 // (.ct-bar__bigyear-label) render it as plain text, where a literal \n
@@ -222,7 +235,7 @@ const CinematicTimeline = () => {
             <div className="ct-slide__overlay" />
             {m.textFree && (
               <div className="ct-slide__content">
-                <div className="ct-slide__year-display">{renderYearRange(m.yearRange)}</div>
+                <div className="ct-slide__year-display">{displayYear(i, m.yearRange)}</div>
                 <div className="ct-slide__underline" />
                 <div className="ct-slide__title">{renderTitle(m.title)}</div>
                 <div className="ct-slide__dash" />
@@ -265,8 +278,21 @@ const CinematicTimeline = () => {
       <div className="ct-bar">
         {/* Big morphing year on the left */}
         <div className="ct-bar__bigyear">
-          <span className="ct-bar__bigyear-text" key={activeIndex}>
-            {milestones[activeIndex].year}
+          {/* Was milestones[activeIndex].year (the single event year,
+              e.g. "1993") — now the same displayYear() helper
+              .ct-slide__year-display uses, so the big year here and the
+              big year on the slide itself always agree: full range on
+              the first slide, just the range's end year after that. */}
+          {/* --range modifier (first slide only, where displayYear
+              returns the full "1991-95" instead of a plain 4-digit
+              year) gets its own smaller font-size in CSS — the base
+              size stays exactly what it always was for every slide
+              that's showing just a year. */}
+          <span
+            className={`ct-bar__bigyear-text${activeIndex === 0 ? ' ct-bar__bigyear-text--range' : ''}`}
+            key={activeIndex}
+          >
+            {displayYear(activeIndex, milestones[activeIndex].yearRange)}
           </span>
           <span className="ct-bar__bigyear-label">
             {/* Honours the \n in titles (e.g. "Mahindra\nWorld City") via a
@@ -292,7 +318,13 @@ const CinematicTimeline = () => {
               onClick={() => setActiveIndex(i)}
             >
               <span className="ct-seg__fill" />
-              <span className="ct-seg__year">{m.year}</span>
+              {/* Was m.year (e.g. "1993") — now the same displayYear()
+                  helper as .ct-bar__bigyear-text/.ct-slide__year-display
+                  above, so all three agree for this same milestone.
+                  Same --range modifier as bigyear-text, same reason:
+                  only the first segment's text is the longer full
+                  range, so only it gets a smaller font-size. */}
+              <span className={`ct-seg__year${i === 0 ? ' ct-seg__year--range' : ''}`}>{displayYear(i, m.yearRange)}</span>
             </button>
           ))}
         </div>
