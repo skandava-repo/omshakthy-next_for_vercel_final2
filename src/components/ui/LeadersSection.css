@@ -433,9 +433,16 @@
    name/name-rule, above .ld3__role — same exact styling as .ld3__tag
    below the role, per direct instruction, just positioned higher up
    in the card instead of appended inline to the name itself. */
+/* Now nested inline inside .ld3__name (next to the name text itself,
+   not a separate line near .ld3__name-rule) — resets the serif/bold/
+   larger styling it would otherwise inherit from that parent back to
+   the same sans-serif/400-weight/smaller look .ld3__tag below the
+   role already uses, so it still reads as a muted aside, not part of
+   the name itself. */
 .ld3__credential {
-  margin-top: 0.15rem;
-  font-size: clamp(0.8rem, 0.89vw, 0.91rem);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  font-weight: 400;
   font-style: italic;
   color: rgba(11, 31, 58, 0.65);
 }
