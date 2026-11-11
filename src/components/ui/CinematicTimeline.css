@@ -344,15 +344,6 @@
   animation: yearRise 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Only the first milestone's bigyear-text shows the longer full range
-   ("1991-95") instead of a plain 4-digit year — every other slide
-   keeps the 64px size above untouched. Sized down for that one longer
-   string rather than shrinking the base size every slide would then
-   have to share. */
-.ct-bar__bigyear-text--range {
-  font-size: 40px;
-}
-
 @keyframes yearRise {
   0% { opacity: 0; transform: translateY(100%); }
   100% { opacity: 1; transform: translateY(0); }
@@ -441,14 +432,6 @@
   letter-spacing: 0.08em;
   color: #0D6BB2;
   transition: color 0.4s ease;
-}
-
-/* Same reasoning as .ct-bar__bigyear-text--range: only the first
-   segment shows the longer "1991-95" instead of a plain 4-digit year,
-   so only it gets a smaller size — every other segment's label keeps
-   the 15px (and the 10px mobile override further down) untouched. */
-.ct-seg__year--range {
-  font-size: 11px;
 }
 
 /* Left as gold (#C9A227), not blue, per explicit instruction — the active
@@ -744,12 +727,6 @@
     line-height: 1;
     letter-spacing: 0.02em;
     white-space: nowrap;
-  }
-  /* Same --range modifier, mobile's own already-tight 10px size: the
-     first segment's longer "1991-95" gets sized down further here too,
-     same reasoning as the desktop rule above. */
-  .ct-seg__year--range {
-    font-size: 8px;
   }
   .ct-seg:nth-child(odd) .ct-seg__year {
     bottom: calc(100% + 9px);
