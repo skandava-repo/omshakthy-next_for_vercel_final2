@@ -14,10 +14,11 @@ import './FinancialPartnersSection.css'
    ============================================================ */
 
 const partnerLogos = [
-  { name: 'HDFC Bank', file: '/partners/hdfc.webp' },
+  { name: 'Indian Bank', file: '/partners/indian-bank.webp' },
   { name: 'ICICI Bank', file: '/partners/icici.webp' },
-  { name: 'Axis Bank', file: '/partners/axis.webp' },
+  { name: 'HDFC Bank', file: '/partners/hdfc.webp' },
   { name: 'Kotak Mahindra Bank', file: '/partners/kotak.webp' },
+  { name: 'Axis Bank', file: '/partners/axis.webp' },
   { name: 'IDFC FIRST Bank', file: '/partners/idfc-first.webp' },
   { name: 'Bajaj Finserv', file: '/partners/bajaj-finserv.webp' },
 ]
@@ -50,11 +51,18 @@ const FinancialPartnersSection = () => {
               key={p.name}
               initial={{ opacity: 0, y: 18 }}
               animate={built ? { opacity: 1, y: 0 } : {}}
-              whileHover={{ y: -2 }}
+              // Own transition here — otherwise hover inherits the
+              // staggered entrance delay below (up to ~0.9s on the last
+              // logo) and feels laggy.
+              whileHover={{ y: -4, scale: 1.04, transition: { duration: 0.35, ease: EASE } }}
               transition={{ duration: 0.75, ease: EASE, delay: 0.2 + i * 0.11 }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.file} alt={p.name} loading="lazy" />
+              {/* .fp__logo-card carries the hover backdrop + shine sweep
+                  (FinancialPartnersSection.css). */}
+              <span className="fp__logo-card">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.file} alt={p.name} loading="lazy" />
+              </span>
             </motion.div>
           ))}
         </div>
