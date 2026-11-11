@@ -33,13 +33,6 @@ const RowIcons = {
       <path d="M9 16h.01M9 20h.01M19 12h.01M19 16h.01M19 20h.01" />
     </svg>
   ),
-  hospitality: () => (
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M6 22c0-5.5 4.5-10 10-10s10 4.5 10 10" />
-      <path d="M4 22h24" />
-      <path d="M16 12V8" />
-    </svg>
-  ),
   briefcase: () => (
     <svg viewBox="0 0 32 32" aria-hidden="true">
       <rect x="5" y="12" width="22" height="14" rx="1.5" />
@@ -47,12 +40,13 @@ const RowIcons = {
       <path d="M5 18h22" />
     </svg>
   ),
-  truck: () => (
+  // Pickaxe over a ground line — same 32-grid, stroke-only style as the
+  // other row icons.
+  mining: () => (
     <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M4 10h13v11H4z" />
-      <path d="M17 15h6l4 4v2h-10z" />
-      <circle cx="10" cy="23" r="2" />
-      <circle cx="22" cy="23" r="2" />
+      <path d="M8 6c5-2.5 11.5-2 17 2.5" />
+      <path d="M16.5 5.5L7 24" />
+      <path d="M4 27h24" />
     </svg>
   ),
 }
@@ -68,38 +62,32 @@ interface Row {
 const rows: Row[] = [
   {
     code: '01',
-    title: 'Land Aggregation',
-    desc: 'Research-led acquisition across appraised, title-clear parcels.',
-    image: '/tp/tp-land-aggregation.webp',
-    icon: 'map',
-  },
-  {
-    code: '02',
     title: 'Residential Development',
     desc: 'Community-scale housing delivered end to end, on schedule.',
     image: '/tp/tp-residential.webp',
     icon: 'buildings',
   },
   {
-    code: '03',
-    title: 'Hospitality Management',
-    desc: 'Trained operating teams running hospitality assets in-house.',
-    image: '/tp/tp-hospitality-facade.webp',
-    icon: 'hospitality',
-  },
-  {
-    code: '04',
+    code: '02',
     title: 'Commercial Projects',
     desc: 'Transparent execution — price, permits, schedule, documentation.',
     image: '/tp/tp-commercial.webp',
     icon: 'briefcase',
   },
   {
-    code: '05',
-    title: 'Supply Chain Management',
-    desc: 'Vertically integrated procurement and materials logistics.',
-    image: '/tp/tp-supply-chain.webp',
-    icon: 'truck',
+    code: '03',
+    title: 'Land Aggregation',
+    desc: 'Research-led acquisition across appraised, title-clear parcels.',
+    image: '/tp/tp-land-aggregation.webp',
+    icon: 'map',
+  },
+  {
+    code: '04',
+    title: 'Mining',
+    // TODO: placeholder copy — replace with the approved Mining description.
+    desc: 'Responsible extraction of construction-grade materials at source.',
+    image: '/tp/tp-mining.webp',
+    icon: 'mining',
   },
 ]
 
@@ -149,7 +137,7 @@ const WhatWeDoCloneContent = () => {
 
           <h1 className="wc__title">
             <span className="wc__title-line">One group.</span>
-            <span className="wc__title-line">Five disciplines,</span>
+            <span className="wc__title-line">Four disciplines,</span>
             <span className="wc__title-line wc__title-line--accent">built in-house.</span>
           </h1>
 
