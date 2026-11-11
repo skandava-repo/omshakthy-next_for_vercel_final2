@@ -73,7 +73,7 @@ export default function EventsContent() {
               Events
             </h1>
             <p className="text-base md:text-lg max-w-2xl" style={{ ...body, color: 'rgba(248,248,245,0.75)' }}>
-              Milestones, launches and moments from 35+ years of OmShakthy Homes.
+              Milestones, launches and moments from three decades of OmShakthy Homes.
             </p>
           </Reveal>
         </div>

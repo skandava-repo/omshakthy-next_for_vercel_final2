@@ -147,7 +147,7 @@ const WhatWeDoEssayContent = () => {
 
       <section className="we__close">
         <p className="we__close-text">
-          One site, five disciplines, 35+ years — this is what it looks like end to end.
+          One site, five disciplines, thirty years — this is what it looks like end to end.
         </p>
       </section>
     </main>

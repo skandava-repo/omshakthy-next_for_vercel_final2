@@ -4,7 +4,7 @@ import { useScaleToFit } from '@/lib/useScaleToFit'
 import './LeadersSection.css'
 
 /* Editorial video-intro band (video backdrop, "OUR LEADERSHIP" eyebrow,
-   "35+ years..." headline) sitting above a "meet the team" pill-card
+   "Three decades..." headline) sitting above a "meet the team" pill-card
    roster (circular photo, name/role/tag, gold accents) ported from a
    reference design. The roster's cards keep their pill shape; a
    social-icon row a later pass had added is dropped here, and a numbered
@@ -44,7 +44,7 @@ const leaders: Leader[] = [
     size: 'auto 138%',
   },
   {
-    name: 'Rajib Kumar Hota, IRS (Retd.)',
+    name: 'Rajib Kumar Hota',
     role: 'Executive Director',
     tag: 'Governance & Ethics',
     img: '/leaders/hota.webp',
@@ -138,7 +138,7 @@ const LeadersSection = () => {
               <span className="ld3__eyebrow-line" />
             </p>
             <h1 className="ld3__h1">
-              35+ years.
+              Three decades.
               <br />
               One unwavering <span className="ld3__accent">vision.</span>
             </h1>

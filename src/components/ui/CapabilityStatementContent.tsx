@@ -178,7 +178,7 @@ const CapabilityStatementContent = () => {
             <em>built in-house.</em>
           </h1>
           <p className="cs__lede">
-            35+ years of operating history, read the way it appears in our own reporting — not
+            Three decades of operating history, read the way it appears in our own reporting — not
             as services on a shelf, but as one integrated pipeline from land to keys.
           </p>
 

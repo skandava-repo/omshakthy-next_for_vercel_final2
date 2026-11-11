@@ -114,7 +114,7 @@ const WhatWeDoContent = () => {
         <p className="fl__eyebrow">Field Log · Five Entries</p>
         <h1 className="fl__title">What We Do</h1>
         <p className="fl__sub">
-          Five entries from 35+ years on site, logged in the order they actually happen on the ground.
+          Five entries from three decades on site, logged in the order they actually happen on the ground.
         </p>
       </header>
 
