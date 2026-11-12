@@ -283,7 +283,7 @@ const CinematicTimeline = () => {
               onClick={() => setActiveIndex(i)}
             >
               <span className="ct-seg__fill" />
-              <span className={`ct-seg__year${i === 0 ? ' ct-seg__year--1991' : ''}`}>{m.yearDisplay ?? m.year}</span>
+              <span className="ct-seg__year">{m.yearDisplay ?? m.year}</span>
             </button>
           ))}
         </div>

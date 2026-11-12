@@ -471,14 +471,6 @@
   transition: color 0.4s ease;
 }
 
-/* Same --1991 modifier as .ct-bar__bigyear-text: only the first
-   segment shows "1991-95" instead of a plain year, so only it gets a
-   ~40% off size (was 11px) — every other segment keeps 15px (and the
-   10px mobile override further down) untouched. */
-.ct-seg__year--1991 {
-  font-size: 9px;
-}
-
 /* Left as gold (#C9A227), not blue, per explicit instruction — the active
    segment's year is the one exception to this file's blue pass. */
 .ct-seg--active .ct-seg__year {
@@ -912,10 +904,6 @@
     line-height: 1;
     letter-spacing: 0.02em;
     white-space: nowrap;
-  }
-  /* Same --1991 modifier, mobile's own already-tight 10px size. */
-  .ct-seg__year--1991 {
-    font-size: 9px;
   }
   .ct-seg:nth-child(odd) .ct-seg__year {
     bottom: calc(100% + 9px);
