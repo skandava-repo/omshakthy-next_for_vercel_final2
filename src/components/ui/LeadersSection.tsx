@@ -66,9 +66,13 @@ const leaders: Leader[] = [
     img: '/leaders/sakthi.webp',
     // Zoomed in on the face — same "auto <height>%" zoom trick as
     // chairman/manigantan above, instead of the plain 'cover' every
-    // other entry here that doesn't need extra zoom uses.
-    pos: 'center 5%',
-    size: 'auto 210%',
+    // other entry here that doesn't need extra zoom uses. Was
+    // 'center 5%' / 'auto 210%', tuned for the old photo — reported
+    // live as pushing the new photo's (centered) face to the upper
+    // right instead, since that aggressive a zoom amplifies even a
+    // tiny positioning offset. Dialed back for this photo.
+    pos: 'center 18%',
+    size: 'auto 145%',
   },
 ]
 
