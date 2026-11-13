@@ -65,11 +65,11 @@ export const projects: Project[] = [
   // noted here since there's no dedicated field for acreage/floors/
   // saleable area beyond `price`/`type`:
   // - Paruthipattu: 1.76 acres, Basement + Stilt + 14 floors, 2,10,000 sq.ft. saleable
-  { image: '/projects/msb-paruthipattu.webp', name: 'Paruthipattu', location: 'Paruthipattu, Chennai', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null },
+  { image: '/projects/msb-paruthipattu.webp', name: 'Paruthipattu', location: 'Paruthipattu, Chennai', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 10%' },
   // - Coimbatore: 2.45 acres, Stilt + 5 floors, 2,75,000 sq.ft. saleable
-  { image: '/projects/msb-coimbatore.webp', name: 'Coimbatore', location: 'Coimbatore, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null },
+  { image: '/projects/msb-coimbatore.webp', name: 'Coimbatore', location: 'Coimbatore, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '95% 20%' },
   // - Madurai: 1.65 acres, Stilt + 5 floors, 2,00,000 sq.ft. saleable
-  { image: '/projects/msb-madurai.webp', name: 'Madurai', location: 'Madurai, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null },
+  { image: '/projects/msb-madurai.webp', name: 'Madurai', location: 'Madurai, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 12%' },
   //
   // Status per direct instruction: every project is Sold except these
   // two. Sold projects also lose their `link` — "for sold out project
