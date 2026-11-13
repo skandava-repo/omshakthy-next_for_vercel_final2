@@ -94,44 +94,44 @@ const milestones = [
   {
     year: '2024',
     yearDisplay: '2020',
-    // Real content for 2020, from "Journey Oms.txt" Part V's own intro
-    // paragraph — kept business-focused per direct instruction (the
-    // first pass leaned into the Chairman's personal farming/community
-    // story from Part IV, which was too personal, not what this slide
-    // should be about). N.R. Manigantan formally taking over leadership
-    // IS the real 2020 business event, framed by the source document as
-    // a strategic pivot toward expansion/innovation/diversification.
-    title: 'New\nLeadership',
-    barTitle: 'New\nLeadership',
-    description: 'Mr. N.R. Manigantan took over as leader, driving a renewed focus on **expansion**, **innovation** and diversification.',
-    stat: '2020',
-    statLabel: 'New Leadership Era',
+    // Real content for 2020, from "Journey Oms.txt" Part V: a pure
+    // company-growth fact this time, not the leadership-transition
+    // narrative the previous two passes used (direct feedback: "only
+    // the company growth... not this stuff what company achieved").
+    // The Madurai land aggregation is the real growth stat tied to
+    // this era in the source document.
+    title: 'Madurai\nExpansion',
+    barTitle: 'Madurai\nExpansion',
+    description: 'Undertook a massive land aggregation spanning approximately **2,000 acres** in Madurai, strengthening our large-scale land strategy.',
+    stat: '2,000',
+    statLabel: 'Acres in Madurai',
     // Temporary — timeline-2024.webp (this slide's old image) moved to
     // the 2025 slide below, which fits its "PLOTS/VILLAS/..." category
     // graphic better now that 2025 covers Manigantan's diversified
-    // expansion. This slide's own story is business-leadership now,
-    // not farming — swap for a dedicated image (boardroom/handover/
-    // modern office, not an orchard) once one exists.
+    // expansion. Swap this for a dedicated land/expansion photo
+    // (aerial land parcel, survey markers) once one exists.
     image: '/timeline-2000.webp',
     textFree: true,
   },
   {
     // 7th slide extending the timeline through 2025. Now uses
     // timeline-2024.webp (moved from the 2020 slide above, which needed
-    // it freed up for its own new farming-themed image) — its "PLOTS /
-    // VILLAS / APARTMENTS / COMMERCIAL / TOWNSHIPS / COMMUNITIES"
-    // category graphic fits this slide's real content (Manigantan's
-    // diversified expansion) better than the slide it came from.
+    // it freed up for its own new land/expansion-themed image) — its
+    // "PLOTS / VILLAS / APARTMENTS / COMMERCIAL / TOWNSHIPS /
+    // COMMUNITIES" category graphic fits this slide's real content
+    // (Manigantan's diversified expansion) better than the slide it
+    // came from.
     year: '2025',
     title: 'The Next Chapter',
     barTitle: 'The Next\nChapter',
     // Real content, from "Journey Oms.txt" Part V: Manigantan's
-    // 2021-2024 project launches, the Madurai land deal, and the NBE
-    // quarrying diversification — replaces the generic "35+ years of
-    // trust" copy this slide had as a placeholder.
-    description: 'Launched **Mithila, Elite Orchard, Mathura, Regalia** and more — while expanding into Madurai land and **NBE** quarrying.',
-    stat: '2,000',
-    statLabel: 'Acres in Madurai',
+    // 2021-2024 project launches and the NBE quarrying diversification
+    // — replaces the generic "35+ years of trust" copy this slide had
+    // as a placeholder. The Madurai land figure moved to the 2020 slide
+    // above, which needed its own growth stat.
+    description: 'Launched **Mithila, Elite Orchard, Mathura, Regalia** and more — while diversifying into **NBE** granite and quarrying.',
+    stat: '4',
+    statLabel: 'States (NBE Quarrying)',
     image: '/timeline-2024.webp',
     textFree: true,
   },
