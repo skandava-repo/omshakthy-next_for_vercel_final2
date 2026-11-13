@@ -447,10 +447,10 @@ const AboutContent = () => {
                 and commercial land solutions for both families and institutions.
               </p>
               <p className="mt-4 text-base md:text-lg leading-relaxed" style={{ color: C.slate }}>
-                Founded in 1991 by visionary entrepreneur R. Ramachanthran, the company began by
+                Founded in 1991 by visionary entrepreneur <strong style={{ color: C.ink }}>R. Ramachanthran</strong>, the company began by
                 providing strategic land aggregation for Government bodies and institutions
                 including SIDCO, SIPCOT, Mahindra World City, PepsiCo, and BSNL. Today, under the
-                dynamic leadership of Managing Director N.R. Manigantan, we have successfully
+                dynamic, visionary leadership of Managing Director <strong style={{ color: C.ink }}>N.R. Manigantan</strong>, we have successfully
                 delivered more than 30 landmark projects across Tamil Nadu.
               </p>
             </Reveal>
