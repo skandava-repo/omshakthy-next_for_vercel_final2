@@ -94,21 +94,24 @@ const milestones = [
   {
     year: '2024',
     yearDisplay: '2020',
-    // Real content for 2020, from "Journey Oms.txt" Part IV: replaces
-    // the fabricated "5,000+ acres aggregated" stat with the actual
-    // story — Mr. R. Ramachandran passing leadership to his son and
-    // moving into farming and community service. Image is a temporary
-    // placeholder (see below) pending a dedicated farming/orchard
-    // photo matching this new story.
-    title: 'Beyond\nBusiness',
-    barTitle: 'Beyond\nBusiness',
-    description: 'Mr. Ramachandran passed leadership to his son, embracing a new chapter in **farming** and community service.',
-    stat: '3,500',
-    statLabel: 'Coconut Trees Planted',
+    // Real content for 2020, from "Journey Oms.txt" Part V's own intro
+    // paragraph — kept business-focused per direct instruction (the
+    // first pass leaned into the Chairman's personal farming/community
+    // story from Part IV, which was too personal, not what this slide
+    // should be about). N.R. Manigantan formally taking over leadership
+    // IS the real 2020 business event, framed by the source document as
+    // a strategic pivot toward expansion/innovation/diversification.
+    title: 'New\nLeadership',
+    barTitle: 'New\nLeadership',
+    description: 'Mr. N.R. Manigantan took over as leader, driving a renewed focus on **expansion**, **innovation** and diversification.',
+    stat: '2020',
+    statLabel: 'New Leadership Era',
     // Temporary — timeline-2024.webp (this slide's old image) moved to
     // the 2025 slide below, which fits its "PLOTS/VILLAS/..." category
     // graphic better now that 2025 covers Manigantan's diversified
-    // expansion. Swap this for the farming/orchard image once provided.
+    // expansion. This slide's own story is business-leadership now,
+    // not farming — swap for a dedicated image (boardroom/handover/
+    // modern office, not an orchard) once one exists.
     image: '/timeline-2000.webp',
     textFree: true,
   },
