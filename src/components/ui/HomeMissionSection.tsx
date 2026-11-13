@@ -57,6 +57,17 @@ const pillars = [
   },
 ]
 
+// Same homepage paragraph on the old site continues straight into this
+// 4-item "we focus heavily on" list right before its own customer-count
+// claim (already ported separately, in TestimonialsSection's Odometer)
+// — a real, distinct content block this rebuild had dropped entirely.
+const focusAreas = [
+  'Areas or cities that promise good returns on investment',
+  'CMDA & DTCP approved layouts',
+  'Uncontested ownership titles',
+  'Affordable prices to suit every pocket',
+]
+
 export default function HomeMissionSection() {
   return (
     <section className="px-6 md:px-16 py-24" style={{ backgroundColor: C.paper, color: C.ink, ...body }}>
@@ -71,6 +82,17 @@ export default function HomeMissionSection() {
           </Reveal>
         ))}
       </div>
+      <Reveal delay={0.2} className="max-w-6xl mx-auto mt-16 pt-14" style={{ borderTop: `1px solid ${C.border}` }}>
+        <Kicker color={C.blue}>What We Focus On</Kicker>
+        <ul className="mt-6 grid sm:grid-cols-2 gap-x-10 gap-y-4">
+          {focusAreas.map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base" style={{ color: C.slate }}>
+              <span aria-hidden style={{ color: C.gold, marginTop: 2 }}>●</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
     </section>
   )
 }
