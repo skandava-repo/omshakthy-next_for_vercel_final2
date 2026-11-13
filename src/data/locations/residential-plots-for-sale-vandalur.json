@@ -17,6 +17,40 @@
     "Nearby localities: Kolapakkam, Guduvanchery, GST Road corridor"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "24/7 security, well-paved internal roads, underground drainage, and street lighting across the layout, with landscaped parks, jogging tracks, rainwater harvesting, a sewage treatment plant, and a clubhouse with gym.",
+  "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "highlights": [
+    "Minutes from Vandalur Railway Station, with connectivity to GST Road, Tambaram, and the upcoming metro line.",
+    "Eco-friendly designs, 30 ft blacktop roads, and compound walls on every plot.",
+    "Favourable land value with an appreciating per-sq.ft. rate for strong ROI.",
+    "DTCP approved plots with bank loans available from leading financiers."
+  ],
+  "plotTypes": [
+    "Low-budget plots from 600 sq.ft., ideal for starter homes.",
+    "Mid-range 1,200–1,800 sq.ft. plots for growing families, with corner positions.",
+    "Premium gated-community plots at 2,400+ sq.ft. with east/north-facing orientations."
+  ],
+  "purchaseSteps": [
+    { "title": "Site Visit", "text": "Schedule a free tour of CMDA approved plots to explore your options." },
+    { "title": "Select Plot", "text": "Choose a DTCP approved plot based on size, facing, and budget." },
+    { "title": "Documentation", "text": "We handle patta, encumbrance certificate, and approval papers." },
+    { "title": "Payment", "text": "Flexible plans — spot bookings, EMIs, or bank loans, with no hidden charges." },
+    { "title": "Registration", "text": "Complete the sale deed at the sub-registrar's office; possession within 30 days." }
+  ],
+  "reasonsToInvest": [
+    "Proximity to Arignar Anna Zoological Park, the Rajiv Gandhi Salai IT Corridor, and proposed satellite townships drives demand.",
+    "The elevated corridor and airport expansion are boosting appreciation.",
+    "Affordable entry points with real rental potential from nearby offices.",
+    "Secure, gated community living suited to long-term wealth building."
+  ],
+  "whyOmshakthy": "With over a decade in Chennai real estate, OmShakthy delivers plots in Vandalur with full legal clarity — no disputes, no delays, and a track record of 500+ happy families across DTCP/CMDA projects. We offer no-cost consultations, post-sale support, and resale assistance at competitive, transparent pricing.",
+  "mistakesToAvoid": [
+    "Skipping verification — always confirm CMDA or DTCP approved status via official portals.",
+    "Ignoring location — favour plots near the railway station to avoid future commute woes.",
+    "Overlooking rates — compare land value and per-sq.ft. rate carefully; beware inflated quotes.",
+    "Rushing payments — insist on detailed agreements and avoid verbal promises.",
+    "Neglecting amenities — confirm promised roads and water connections are actually in place."
+  ],
   "faq": [
     { "q": "What is the price of plots for sale in Vandalur?", "a": "Plots typically start from around ₹3,700–₹4,800 per sq.ft. for basic residential layouts, with premium gated-community and CMDA-approved schemes going up to ₹6,000–₹8,000+ per sq.ft." },
     { "q": "What is the plot appreciation rate in Vandalur?", "a": "Land rates have appreciated at an average of about 8–9% per year over the last 12 months, with stronger long-term growth of roughly 25–30% over the past five years." },

@@ -15,6 +15,41 @@
     "Near schools, hospitals, and markets"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "24/7 security, well-planned roads, underground drainage, and street lighting across the layout, plus green spaces, children's play areas, and jogging tracks — with reliable water from the Chennai Metro Water Supply and Sewerage Board.",
+  "amenities": ["Gated Township", "Black Tar Roads", "Avenue Trees", "Potable Ground Water"],
+  "highlights": [
+    "Prime location just 5 km from Avadi Railway Station, close to Sriperumbudur's industrial belt.",
+    "Excellent connectivity via the Chennai-Bangalore Highway.",
+    "Land rate has risen 15–20% annually, driven by infrastructure upgrades.",
+    "Eco-friendly planning, including rainwater harvesting and solar provisions.",
+    "Clean titles with direct patta, and bank loans available."
+  ],
+  "plotTypes": [
+    "1,200 to 5,400 sq.ft. plots, suited to villas or independent homes.",
+    "Compact plots starting around ₹1,200/sq.ft., larger ones up to ₹1,500/sq.ft.",
+    "North-facing, corner, and premium east-facing (Vastu-compliant) options."
+  ],
+  "purchaseSteps": [
+    { "title": "Select Your Plot", "text": "Choose from the available plots at the site." },
+    { "title": "Verify Approvals", "text": "Check CMDA approval and the encumbrance certificate." },
+    { "title": "Token & Agreement", "text": "Pay the token advance and sign the sale agreement." },
+    { "title": "Arrange Financing", "text": "Bank loans up to 90% financing are available if needed." },
+    { "title": "Registration", "text": "Complete registration at the local sub-registrar's office — we handle the paperwork." }
+  ],
+  "reasonsToInvest": [
+    "Avadi's metro rail extension and upcoming IT parks are set to boost land rates further.",
+    "Plots here already run around 40% below Chennai city prices.",
+    "Rental yields from custom-built homes can reach 4–5% annually.",
+    "Low pollution, strong community vibe, and rising demand support capital appreciation."
+  ],
+  "whyOmshakthy": "OmShakthy Homes brings over 20 years of experience, 50+ successful projects, and 10,000+ happy customers to Paruthipattu, with transparent dealings and no hidden costs. Our team guides you from site visit to possession, with bank tie-ups and legal support that make the process stress-free.",
+  "mistakesToAvoid": [
+    "Check soil quality and flood history first — Paruthipattu itself is elevated and safe, but verify each plot.",
+    "Verify CMDA approval to avoid illegal layouts.",
+    "Steer clear of unverified brokers pushing deals with inflated land rates.",
+    "Don't skip encumbrance checks — fake titles are a real risk in this market.",
+    "Avoid overpaying without a market comparison; benchmark against registered sales."
+  ],
   "faq": [
     { "q": "What is the price of plots for sale in Paruthipattu?", "a": "Plots range ₹3,500–₹5,000 per sq.ft. for basic layouts, with premium CMDA/DTCP schemes at ₹6,500–₹8,000+ per sq.ft. A 1,000 sq.ft. plot typically costs ₹35–₹60 lakh." },
     { "q": "Is Paruthipattu a good place to invest in a plot?", "a": "Yes — infrastructure upgrades, highway proximity, and industrial hub access support good appreciation plus rental potential." },

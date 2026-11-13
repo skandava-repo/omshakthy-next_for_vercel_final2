@@ -2,14 +2,23 @@ import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ProjectStatusPageContent from '@/components/ui/ProjectStatusPageContent'
+import { projects } from '@/lib/projectsData'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
 // New page: real, indexed URL per Balaji's Aug 2026 SEO report. The
-// old site's own /upcoming-projects.html has no project cards at all
-// right now — genuinely nothing upcoming listed there at capture time
-// — just narrative + FAQ, both real copy via the local mirror. Kept
-// faithful rather than inventing project cards the real site doesn't
-// have either.
+// old site's own /upcoming-projects.html DOES have exactly one real
+// project card (a correction of this comment's earlier claim of
+// "none" — that was wrong, the card is a live, non-commented
+// <div class="item"> further down the same markup, after several
+// genuinely-commented-out placeholder cards that are easy to mistake
+// it for at a glance): "Proposed Scheme III - Industrial Plot",
+// Thirumudivakkam, 8 acres / 349,000 sq.ft, "Coming Soon" — reused
+// from projectsData.ts's real dataset (filtered here) rather than
+// re-typed, same pattern as ongoing-projects/page.tsx. Narrative +
+// FAQ are the old page's own real copy, via the local mirror.
+const UPCOMING_NAMES = ['Proposed Scheme III - Industrial Plot']
+const upcomingProjects = projects.filter((p) => UPCOMING_NAMES.includes(p.name))
+
 const NARRATIVE = [
   {
     heading: 'Explore Upcoming Projects by OmShakthy Homes in Chennai',
@@ -64,6 +73,7 @@ export default function UpcomingProjectsPage() {
         kicker="Coming Soon"
         title="Upcoming Projects"
         intro="Invest in plots for sale in Chennai with high growth potential and complete peace of mind — carefully curated upcoming projects crafted for both home buyers and investors."
+        projects={upcomingProjects}
         narrativeSections={NARRATIVE}
         faq={FAQ}
         ctaText="Want to Be First in Line?"

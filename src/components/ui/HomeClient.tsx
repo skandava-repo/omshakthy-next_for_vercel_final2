@@ -10,6 +10,9 @@ import TestimonialsSection from '@/components/ui/TestimonialsSection'
 import WhatWeDoCloneContent from '@/components/ui/WhatWeDoCloneContent'
 import FinancialPartnersSection from '@/components/ui/FinancialPartnersSection'
 import SpotlightSection from '@/components/ui/SpotlightSection'
+import HomeMissionSection from '@/components/ui/HomeMissionSection'
+import HomeLatestBlogsSection from '@/components/ui/HomeLatestBlogsSection'
+import HomeFaqSection from '@/components/ui/HomeFaqSection'
 import PageController from '@/components/ui/PageController'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -93,6 +96,13 @@ export default function HomeClient() {
             that slide could dedicate its full 100vh to the gallery alone. */}
         <FinancialPartnersSection />
         <SpotlightSection />
+        {/* Real content from the old live site's homepage that this
+            rebuild never recreated — Mission/Vision, a Latest Blogs
+            preview, and the 14-question homepage FAQ. See each
+            component's own comment for sourcing. */}
+        <HomeMissionSection />
+        <HomeLatestBlogsSection />
+        <HomeFaqSection />
       </main>
       <Footer />
     </>

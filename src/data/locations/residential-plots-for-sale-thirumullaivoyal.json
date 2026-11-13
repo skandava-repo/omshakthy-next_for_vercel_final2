@@ -16,6 +16,41 @@
     "Nearby localities: Avadi, Poonamallee, Vellivoyal"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "Wide internal roads, underground drainage, and round-the-clock street lighting, with rainwater harvesting and avenue plantations — plus a children's play area, jogging tracks, and 24/7 CCTV security.",
+  "amenities": ["Gated Township", "Black Tar Roads", "Avenue Trees", "Potable Ground Water"],
+  "highlights": [
+    "Excellent connectivity via the Chennai-Bangalore Highway, minutes from Avadi Railway Station.",
+    "Nearby schools (DAV, Kendriya Vidyalaya) and hospitals (MIOT International) for a family-friendly setting.",
+    "Landscaped parks and eco-friendly norms within clear-title CMDA approved layouts.",
+    "EMI plots with minimal down payments, spread over 24–60 months."
+  ],
+  "plotTypes": [
+    "Compact 600 sq.ft. starter plots.",
+    "Spacious 1,200–2,400 sq.ft. plots for villas or multi-storey builds.",
+    "Premium corner plots with dual road access, and larger 3,000+ sq.ft. parcels for developers."
+  ],
+  "purchaseSteps": [
+    { "title": "Site Visit", "text": "Experience the CMDA approved plots firsthand, with detailed layout maps and rate breakdowns." },
+    { "title": "Choose Payment Mode", "text": "Pay outright or via EMI, then sign the agreement after due diligence on DTCP approvals." },
+    { "title": "Registration", "text": "We handle encumbrance certificates, patta transfers, and registration — typically within 15–30 days." },
+    { "title": "Post-Purchase Support", "text": "We assist with building plan approvals for a smooth transition to homeownership." }
+  ],
+  "reasonsToInvest": [
+    "15–20% annual appreciation, outpacing many Chennai locales thanks to metro rail Phase 2 and industrial corridors.",
+    "Lower plot rates than comparable areas like Porur or Mogappair, with similar amenities.",
+    "Rental yields from built homes reaching 4–6%, driven by professionals commuting to nearby IT parks.",
+    "A greener, less congested environment than central Chennai, boosting livability."
+  ],
+  "whyOmshakthy": "OmShakthy Homes has built a strong reputation in Chennai real estate, delivering 100+ projects with zero delays. We stand by our CMDA approved plots with transparent dealings, free legal verification, and post-sale support including architect consultations — backed by ironclad warranties on every DTCP approved venture.",
+  "mistakesToAvoid": [
+    "Don't skip independent CMDA/DTCP verification — unauthorized layouts are a common pitfall that can lead to demolitions.",
+    "Avoid verbal promises on land rates — insist on written agreements detailing square feet rates and escalation clauses.",
+    "Don't overleverage on EMI plots without checking interest rates and prepayment penalties.",
+    "Don't ignore site soil tests — poor quality can inflate construction costs later.",
+    "Steer clear of plots near waterbodies prone to flooding, and always cross-check patta status at the tahsildar office.",
+    "Budget 10–15% extra for registration and utilities on top of the plot cost.",
+    "Consult a lawyer before signing — rushing has cost many buyers here dearly."
+  ],
   "faq": [
     { "q": "What is the price of plots for sale in Thirumullaivoyal?", "a": "Starting at ₹4,500–₹6,500 per sq.ft.; a 1,200 sq.ft. plot costs approximately ₹60–70 lakhs, with EMI options available." },
     { "q": "What is the stamp duty for buying land in Thirumullaivoyal?", "a": "Tamil Nadu applies 7% stamp duty on properties above ₹10 lakhs, plus 1% registry and 4% on guideline value if higher — totalling 8–12% of plot cost." },

@@ -459,6 +459,112 @@
   background: var(--os-brass, #C8A15A);
 }
 
+/* The whole capsule is the bio trigger on cards whose leader has real
+   bio content (see Leader.bio's own comment) — no separate "Read bio"
+   link inside it any more. .ld3__card:hover above already lifts every
+   card (--ld3-hover-y + box-shadow) regardless of this modifier, so
+   this only adds the pointer cursor and a keyboard-focus ring — it
+   doesn't redeclare transform/box-shadow itself and fight that
+   existing animation-driven hover. */
+.ld3__card--clickable {
+  cursor: pointer;
+}
+.ld3__card--clickable:focus-visible {
+  outline: 2px solid #0D6BB2;
+  outline-offset: 3px;
+}
+
+/* ---------------- bio modal ----------------
+   position: fixed, rendered at the end of .ld3__stage but entirely
+   outside its normal layout box — same reasoning Header.css's own
+   site-nav comment gives for why fixed-position chrome has to live
+   outside whatever useScaleToFit is measuring: this must never affect
+   the roster's own fixed-100vh sizing math. z-index above the site
+   nav's own 1000 (see .ld3's padding-top comment) so the modal always
+   wins regardless of which section it was opened from. */
+.ld3__bio-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(11, 31, 58, 0.55);
+  backdrop-filter: blur(2px);
+}
+.ld3__bio-modal {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow: 0 30px 80px -20px rgba(11, 31, 58, 0.4);
+}
+.ld3__bio-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(11, 31, 58, 0.06);
+  color: #0b1f3a;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ld3__bio-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0b1f3a;
+}
+.ld3__bio-credential {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(11, 31, 58, 0.6);
+}
+.ld3__bio-role {
+  margin-top: 0.2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0D6BB2;
+}
+.ld3__bio-list {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.ld3__bio-list li {
+  position: relative;
+  padding-left: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(11, 31, 58, 0.78);
+}
+.ld3__bio-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background: var(--os-brass, #C8A15A);
+}
+
 /* ---------------- closing tagline strip ---------------- */
 .ld3__tagline {
   position: relative;

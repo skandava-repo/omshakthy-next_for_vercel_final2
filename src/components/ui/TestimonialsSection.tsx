@@ -10,107 +10,75 @@ interface Review {
   detail: string
   photo: string
   rating: number
-  // No real video files exist per customer yet — `video: true` just adds a
-  // small play-icon hint on that person's tile; the featured card itself
-  // still just shows their written quote (there's nothing to play).
-  video?: boolean
-  videoDuration?: string
 }
 
-// Content sourced from the Figma "Customer Stories" section.
-// NOTE: `photo` images in /public/testimonials are royalty-free placeholders
-// (randomuser.me). Swap them for real customer / licensed Indian portraits.
-// PLACEHOLDER PASS: every quote below has had a clearly-marked dummy
-// second half appended (bracketed note + lorem ipsum) to roughly double
-// its length, at the user's own request, purely to preview how the
-// featured card reads/lays out with longer content — the user is
-// swapping this filler for the real expanded quotes afterwards. Nothing
-// past "[PLACEHOLDER — replace with the rest of the real quote.]" on
-// each entry is an actual customer's words.
+// Real content from the old live site's own testimonials.php (via the
+// local mirror) — all 6 written testimonials that exist there, with
+// their real photos (also pulled from the mirror, converted to webp).
+// Replaces an earlier placeholder/fabricated pass: 5 of the previous 7
+// entries (Suresh Rajan, Priya Sharma, Rajesh Kumar, Anitha Patel,
+// Vikram & Meera Iyer) referenced projects that don't exist anywhere
+// on the real site ("OmShakthy Heights/Crown/Residency/Meadows") and
+// had dummy lorem-ipsum text appended to their quotes — neither the
+// people nor the projects were real. All 6 real testimonials here are
+// from OmShakthy Santha Towers, Paruthipattu (the only project the old
+// site's testimonials page actually has quotes for).
 const reviews: Review[] = [
   {
     quote:
-      'Owning a flat in Santha Towers is a symbol of security for my retired life. The team was transparent, on-time and truly cared. [PLACEHOLDER — replace with the rest of the real quote.] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+      "Definitely! I feel happier and luckier after purchasing this flat. Life has changed for better. Owning a flat in Santha Towers is a symbol of security for my retired life.",
     name: 'Jalaja Madanmohan',
     detail: 'B103 – OmShakthy Santha Towers',
-    photo: '/testimonials/jalaja.webp',
+    photo: '/testimonials/real/jalaja-madanmohan.webp',
     rating: 5,
   },
   {
     quote:
-      "They went above and beyond — providing reticulated gas at no extra cost even though it wasn't part of the original agreement. That's OmShakthy. [PLACEHOLDER — replace with the rest of the real quote.] Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
+      "I specifically would like to thank OmShakthy and its team for providing, at extra cost, Reticulated Gas facility which was not originally listed in the construction agreement.",
     name: 'D. Dhanasekaran',
-    detail: 'OmShakthy Santha Towers',
-    photo: '/testimonials/dhanasekaran.webp',
-    rating: 5,
-    video: true,
-    videoDuration: '0:48',
-  },
-  {
-    quote:
-      'We invested in Regalia at launch price. In 18 months, the land value has appreciated by over 22%. Best investment of my life. [PLACEHOLDER — replace with the rest of the real quote.] Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    name: 'Suresh Rajan',
-    detail: 'OmShakthy Regalia, Avadi',
-    photo: '/testimonials/suresh.webp',
+    detail: 'D802 – OmShakthy Santha Towers',
+    photo: '/testimonials/real/dhanasekaran.webp',
     rating: 5,
   },
   {
     quote:
-      'The construction quality is exceptional. Every detail shows their commitment to excellence and customer satisfaction. [PLACEHOLDER — replace with the rest of the real quote.] Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    name: 'Priya Sharma',
-    detail: 'OmShakthy Heights',
-    photo: '/testimonials/priya.webp',
-    rating: 5,
-    video: true,
-    videoDuration: '1:05',
-  },
-  {
-    quote:
-      'Great location, amazing amenities, and the after-sales service is outstanding. I recommend OmShakthy to all my friends. [PLACEHOLDER — replace with the rest of the real quote.] Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-    name: 'Rajesh Kumar',
-    detail: 'OmShakthy Crown',
-    photo: '/testimonials/rajesh.webp',
+      "We are proud to be the owners of Santha Towers which has fulfilled all our criteria. Our special thanks to the management who have conceptualised budget homes.",
+    name: 'C. Nireesh',
+    detail: 'B703 – OmShakthy Santha Towers',
+    photo: '/testimonials/real/nireesh.webp',
     rating: 5,
   },
   {
     quote:
-      'The best real estate investment I could have made. OmShakthy delivered exactly what they promised. [PLACEHOLDER — replace with the rest of the real quote.] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, sed quia.',
-    name: 'Anitha Patel',
-    detail: 'OmShakthy Residency',
-    photo: '/testimonials/anitha.webp',
+      "It's simply awesome, a wonderful living environment — a remarkable tribute to both OmShakthy and Santha Towers for changing the vicinity of Paruthipattu into the pride of Chennai.",
+    name: 'Inturi Sivanarayana',
+    detail: 'B802 – OmShakthy Santha Towers',
+    photo: '/testimonials/real/sivanarayana.webp',
     rating: 5,
-    video: true,
-    videoDuration: '0:36',
   },
   {
     quote:
-      'Getting the keys to our first home together was one of the happiest days of our lives. OmShakthy made the entire journey smooth, transparent and stress-free. [PLACEHOLDER — replace with the rest of the real quote.] At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.',
-    name: 'Vikram & Meera Iyer',
-    detail: 'OmShakthy Meadows, Guduvancheri',
-    photo: '/testimonials/vikram-meera.webp',
+      "OmShakthy built the flats to an uncompromising quality — I observed it stage-wise. OmShakthy stands first in finding a strategic location like Paruthipattu for community living, and is customer-friendly in sorting out every need.",
+    name: 'Aradyula V. Sastry',
+    detail: 'B801 – OmShakthy Santha Towers',
+    photo: '/testimonials/real/aradyula-sastry.webp',
     rating: 5,
-    video: true,
-    videoDuration: '0:52',
+  },
+  {
+    quote:
+      "It is really our weekend getaway for the time being. So at present my views are filled with peace, tranquillity, energy, breeze and brightness.",
+    name: 'S. Vasant Rao',
+    detail: 'C1004 – OmShakthy Santha Towers',
+    photo: '/testimonials/real/vasant-rao.webp',
+    rating: 5,
   },
 ]
 
-// Tiles are video-testimonials only now — only 4 of the 7 reviews above
-// have `video: true`. Padded to 6 (3-and-3 tile columns) by repeating the
-// existing video reviews as a dev-stage placeholder, per instruction,
-// until enough real video-testimonial customers exist to fill 6 distinct
-// slots. Written dynamically (not two hardcoded duplicate entries) so it
-// keeps working correctly once more real video reviews get added above —
-// it'll just repeat less, then stop repeating once there are 6+.
-const videoReviews: Review[] = (() => {
-  const withVideo = reviews.filter((r) => r.video)
-  const padded = [...withVideo]
-  let i = 0
-  while (padded.length < 6) {
-    padded.push(withVideo[i % withVideo.length])
-    i++
-  }
-  return padded.slice(0, 6)
-})()
+// The side-column tiles show all 6 real reviews (3-and-3 columns) —
+// no video/written distinction any more, since none of the 6 real
+// testimonials have an actual video file behind them (see Tile's own
+// comment below).
+const videoReviews: Review[] = reviews
 
 const Stars = ({ n }: { n: number }) => (
   <span className="tw-stars" aria-label={`${n} out of 5 stars`}>
@@ -203,9 +171,9 @@ const Odometer = ({ value, suffix = '' }: { value: string; suffix?: string }) =>
 
 // Short highlights for the auto-scrolling "wall of love" ribbon.
 const highlights = [
-  { t: 'Transparent, on-time and truly cared.', n: 'Jalaja M.' },
+  { t: 'A symbol of security for my retired life.', n: 'Jalaja M.' },
   { t: 'They went above and beyond.', n: 'D. Dhanasekaran' },
-  { t: 'Value up 22% in just 18 months.', n: 'Suresh R.' },
+  { t: 'Fulfilled all our criteria.', n: 'C. Nireesh' },
 ]
 
 /* The featured card is a fixed height (so switching quotes doesn't jump the
@@ -376,7 +344,7 @@ const TestimonialsSection = () => {
           <div>
             <span className="tw__eyebrow">Customer Stories</span>
             <h2 className="tw__title">
-              Trusted by <em><Odometer value="7,500" suffix="+" /></em> Happy Customers.
+              Trusted by <em><Odometer value="20,000" suffix="+" /></em> Happy Customers.
             </h2>
           </div>
           <div className="tw__rating">

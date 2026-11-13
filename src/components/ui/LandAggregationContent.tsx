@@ -62,6 +62,19 @@ const faqs = [
   },
 ]
 
+// Real major institutional/industrial land aggregation clients from
+// the old live site's own land-aggregation-projects-chennai.html (via
+// the local mirror) — this rebuild never recreated this list. Acreage
+// and sq.ft figures are the real ones from that page's own content.
+const majorClients = [
+  { name: 'Mahindra World City', detail: 'I & II — Township', location: 'Chengalpattu & Ponneri', acres: '2,000', sqft: '87.5M sq.ft', note: 'DTCP-approved township accelerating industrial opportunities from prime locations.' },
+  { name: 'Township', detail: 'Industrial & residential', location: 'Thirumudivakkam & Perungalathur', acres: '1,450', sqft: '61M sq.ft', note: 'A vast township project near ancient temples and major automobile companies.' },
+  { name: 'SIDCO', detail: 'Industrial', location: 'Thirumudivakkam', acres: '350', sqft: '15.3M sq.ft', note: 'A massive industrial-estate land parcel with close connectivity to the airport.' },
+  { name: 'Pepsico', detail: 'Industrial', location: 'Mamandur', acres: '65', sqft: '2.35M sq.ft', note: 'High-potential industrial and commercial lots on the Kanchipuram–Vandavasi road.' },
+  { name: 'BSNL', detail: 'Industrial', location: 'Sriperumbudur', acres: '95', sqft: '4.15M sq.ft', note: 'Prime industrial land with excellent connectivity, visibility, and highway access.' },
+  { name: 'SIPCOT', detail: 'Industrial', location: 'Thirumudivakkam', acres: '83', sqft: '3.58M sq.ft', note: 'Amidst upcoming industrial projects, with seamless connectivity to Chennai.' },
+]
+
 // Real, currently-live projects that came out of OmShakthy's land
 // aggregation — links to their own already-built pages rather than
 // duplicating project data here.
@@ -91,6 +104,42 @@ export default function LandAggregationContent() {
               offers security and stability amid market fluctuations.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* ---------------- Major land aggregation clients ----------------
+          Real named industrial/institutional clients from the old
+          live site — see majorClients above for sourcing. */}
+      <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.panel }}>
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-10">
+            <Kicker color={C.blue}>Trusted at Scale</Kicker>
+            <h2 className="text-2xl md:text-3xl mt-3" style={{ ...display, color: C.ink, fontWeight: 500 }}>
+              Major Land Aggregation Clients
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {majorClients.map((c, i) => (
+              <Reveal key={c.name + c.location} delay={i * 0.05}>
+                <div className="h-full rounded-2xl p-6" style={{ backgroundColor: '#fff', border: `1px solid ${C.border}` }}>
+                  <h3 className="text-lg" style={{ ...display, color: C.ink, fontWeight: 500 }}>{c.name}</h3>
+                  <p className="text-sm" style={{ color: C.blue, fontWeight: 600 }}>{c.detail}</p>
+                  <p className="mt-1 text-sm" style={{ color: C.slate }}>{c.location}</p>
+                  <div className="mt-4 flex gap-5">
+                    <div>
+                      <span className="block text-xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>{c.acres}</span>
+                      <span className="text-xs" style={{ color: C.slate }}>Acres</span>
+                    </div>
+                    <div>
+                      <span className="block text-xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>{c.sqft}</span>
+                      <span className="text-xs" style={{ color: C.slate }}>Developed</span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm" style={{ color: C.slate }}>{c.note}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

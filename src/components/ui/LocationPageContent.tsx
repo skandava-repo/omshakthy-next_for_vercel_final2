@@ -61,13 +61,12 @@ const FEATURED: Record<string, { name: string; image: string; price: string; typ
   regalia: { name: 'OmShakthy Regalia', image: '/projects/regalia.webp', price: 'From ₹16.8L', type: 'CMDA & RERA Approved · Near Tambaram', link: '/regalia-lp' },
 }
 
-function isHub(data: LocationPageData | LocationHubData): data is LocationHubData {
-  return 'purchaseSteps' in data
-}
-
 export default function LocationPageContent({ data }: { data: LocationPageData | LocationHubData }) {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
-  const hub = isHub(data) ? data : null
+  // Was gated to the hub page only (`'purchaseSteps' in data`) — these
+  // sections are real content on individual location pages too now, so
+  // every one of them renders off `data` directly, hub or not.
+  const hub = data
 
   return (
     <main style={{ backgroundColor: C.paper, color: C.ink, ...body }}>
@@ -102,7 +101,7 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
       </section>
 
       {/* ---------------- Connectivity / amenities ---------------- */}
-      {(data.connectivity?.length || data.amenities?.length) ? (
+      {(data.connectivity?.length || (data.amenities?.length && !hub.amenitiesIntro)) ? (
         <section className="px-6 md:px-16 py-20">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
             {data.connectivity?.length ? (
@@ -121,7 +120,12 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
                 </ul>
               </Reveal>
             ) : null}
-            {data.amenities?.length ? (
+            {/* data.amenities also feeds the richer "Project Amenities"
+                section below (intro paragraph + these same items) when
+                amenitiesIntro is present — showing the plain bullet list
+                here too would just repeat it under a near-identical
+                heading, so this column is skipped in that case. */}
+            {data.amenities?.length && !hub.amenitiesIntro ? (
               <Reveal delay={0.08}>
                 <Kicker>Amenities</Kicker>
                 <h2 className="text-2xl md:text-3xl mt-4 mb-5" style={{ ...display, color: C.ink, fontWeight: 500 }}>
@@ -141,27 +145,92 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
         </section>
       ) : null}
 
-      {/* ---------------- Hub-only: amenities intro ---------------- */}
-      {hub && (
+      {/* ---------------- Amenities intro + Highlights ---------------- */}
+      {(hub.amenitiesIntro || hub.highlights?.length) ? (
         <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.panel }}>
-          <div className="max-w-3xl mx-auto text-center">
-            <Reveal>
-              <Kicker center>Project Amenities</Kicker>
-              <h2 className="text-2xl md:text-4xl mt-4 mb-5" style={{ ...display, color: C.ink, fontWeight: 500 }}>
-                Well-Planned Infrastructure for Modern Living
-              </h2>
-              <p style={{ ...body, color: C.slate }}>{hub.amenitiesIntro}</p>
-            </Reveal>
-            <Reveal delay={0.1} className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-8">
-              {hub.amenities?.map((a) => (
-                <span key={a} className="text-sm" style={{ ...mono, color: C.blue }}>
-                  {a}
-                </span>
-              ))}
-            </Reveal>
+          <div className="max-w-4xl mx-auto">
+            {hub.amenitiesIntro && (
+              <Reveal className="text-center mb-12">
+                <Kicker center>Project Amenities</Kicker>
+                <h2 className="text-2xl md:text-4xl mt-4 mb-5" style={{ ...display, color: C.ink, fontWeight: 500 }}>
+                  Well-Planned Infrastructure for Modern Living
+                </h2>
+                <p style={{ ...body, color: C.slate }}>{hub.amenitiesIntro}</p>
+                {/* Short tag-style items (e.g. "Gated Township") render as
+                    pills; a full-sentence `amenities` list (several
+                    locations have one, and no separate short-tag set)
+                    renders as a real bulleted list instead — rendering
+                    long sentences as all-caps monospace pills looked
+                    broken, and the Connectivity/Amenities section above
+                    only shows this list when amenitiesIntro is absent, so
+                    this is the one place it needs to appear. */}
+                {hub.amenities?.length && !hub.amenities.every((a) => a.length <= 30) ? (
+                  <ul className="mt-8 max-w-2xl mx-auto text-left space-y-3">
+                    {hub.amenities.map((a) => (
+                      <li key={a} className="flex items-baseline gap-3 text-sm" style={{ ...body, color: C.slate }}>
+                        <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0 }} />
+                        {a}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {hub.amenities?.every((a) => a.length <= 30) && (
+                  <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-8">
+                    {hub.amenities.map((a) => (
+                      <span key={a} className="text-sm" style={{ ...mono, color: C.blue }}>
+                        {a}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </Reveal>
+            )}
+            {hub.highlights?.length ? (
+              <Reveal delay={0.08}>
+                <Kicker center={!hub.amenitiesIntro}>Project Highlights</Kicker>
+                <h2
+                  className="text-2xl md:text-3xl mt-4 mb-5"
+                  style={{ ...display, color: C.ink, fontWeight: 500, textAlign: hub.amenitiesIntro ? 'left' : 'center' }}
+                >
+                  What Makes {data.locationName} Stand Out
+                </h2>
+                <ul className={`space-y-3 ${hub.amenitiesIntro ? '' : 'max-w-2xl mx-auto'}`}>
+                  {hub.highlights.map((h) => (
+                    <li key={h.slice(0, 24)} className="flex items-baseline gap-3 text-sm" style={{ ...body, color: C.slate }}>
+                      <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0 }} />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ) : null}
           </div>
         </section>
-      )}
+      ) : null}
+
+      {/* ---------------- Types of plots ---------------- */}
+      {hub.plotTypes?.length ? (
+        <section className="px-6 md:px-16 py-20">
+          <div className="max-w-3xl mx-auto">
+            <Reveal className="mb-8">
+              <Kicker>Plot Options</Kicker>
+              <h2 className="text-2xl md:text-4xl mt-4" style={{ ...display, color: C.ink, fontWeight: 500 }}>
+                Types of Plots Available in {data.locationName}
+              </h2>
+            </Reveal>
+            <ul className="space-y-4">
+              {hub.plotTypes.map((p, i) => (
+                <Reveal key={p.slice(0, 24)} delay={i * 0.05}>
+                  <li className="flex gap-3 text-sm" style={{ ...body, color: C.slate }}>
+                    <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0, marginTop: 8 }} />
+                    {p}
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       {/* ---------------- Featured projects ---------------- */}
       <section className="px-6 md:px-16 py-20">
@@ -194,8 +263,8 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
         </div>
       </section>
 
-      {/* ---------------- Hub-only: purchase steps ---------------- */}
-      {hub && (
+      {/* ---------------- Purchase steps (when the data has them) ---------------- */}
+      {hub.purchaseSteps?.length ? (
         <section className="px-6 md:px-16 py-20" style={{ background: darkGradient }}>
           <div className="max-w-4xl mx-auto">
             <Reveal className="mb-10">
@@ -224,10 +293,49 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
             </div>
           </div>
         </section>
+      ) : null}
+
+      {/* ---------------- Reasons to invest ---------------- */}
+      {hub.reasonsToInvest?.length ? (
+        <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.panel }}>
+          <div className="max-w-3xl mx-auto">
+            <Reveal className="mb-8">
+              <Kicker>Why Now</Kicker>
+              <h2 className="text-2xl md:text-4xl mt-4" style={{ ...display, color: C.ink, fontWeight: 500 }}>
+                Reasons to Invest in {data.locationName}
+              </h2>
+            </Reveal>
+            <ul className="space-y-4">
+              {hub.reasonsToInvest.map((r, i) => (
+                <Reveal key={r.slice(0, 24)} delay={i * 0.05}>
+                  <li className="flex gap-3 text-sm" style={{ ...body, color: C.slate }}>
+                    <span aria-hidden style={{ width: 5, height: 5, background: C.gold, transform: 'rotate(45deg)', flexShrink: 0, marginTop: 8 }} />
+                    {r}
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ---------------- Why Omshakthy ---------------- */}
+      {hub.whyOmshakthy && (
+        <section className="px-6 md:px-16 py-20 text-center">
+          <div className="max-w-3xl mx-auto">
+            <Reveal>
+              <Kicker center>Why Omshakthy</Kicker>
+              <h2 className="text-2xl md:text-3xl mt-4 mb-5" style={{ ...display, color: C.ink, fontWeight: 500 }}>
+                Trust, Compliance, and Buyer-First Support
+              </h2>
+              <p style={{ ...body, color: C.slate }}>{hub.whyOmshakthy}</p>
+            </Reveal>
+          </div>
+        </section>
       )}
 
-      {/* ---------------- Hub-only: mistakes to avoid ---------------- */}
-      {hub && (
+      {/* ---------------- Mistakes to avoid (when the data has them) ---------------- */}
+      {hub.mistakesToAvoid?.length ? (
         <section className="px-6 md:px-16 py-20">
           <div className="max-w-3xl mx-auto">
             <Reveal className="mb-8">
@@ -248,7 +356,7 @@ export default function LocationPageContent({ data }: { data: LocationPageData |
             </ul>
           </div>
         </section>
-      )}
+      ) : null}
 
       {/* ---------------- FAQ (real accordion) ---------------- */}
       <section className="px-6 md:px-16 py-24" style={{ backgroundColor: C.panel }}>

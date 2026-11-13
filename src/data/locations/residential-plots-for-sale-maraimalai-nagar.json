@@ -13,6 +13,40 @@
     "Close to schools, hospitals, and employment hubs"
   ],
   "amenities": ["Gated township with 24/7 security", "Kids play area", "Avenue trees", "Internal roads, street lighting, well-laid drainage", "Landscaped open spaces", "Provisioned water supply and electricity connections"],
+  "amenitiesIntro": "A gated community with 24/7 security and perimeter fencing, internal roads, street lighting, and well-laid drainage — plus provisioned water and electricity connections, landscaped open spaces, and a children's play area.",
+  "highlights": [
+    "Legally secure plots: all parcels are CMDA and DTCP approved, giving buyers confidence in title and approvals.",
+    "Strategic connectivity to the NH and key arterial roads, reaching Chennai, schools, hospitals, and employment hubs.",
+    "Transparent pricing aligned to current local land rates, helping buyers assess appreciation potential.",
+    "Developer trust: clear documentation, timely handovers, and ongoing customer support strengthen resale and rental prospects."
+  ],
+  "plotTypes": [
+    "Compact plots suitable for starter homes.",
+    "Standard family-sized plots for independent houses.",
+    "Larger plots that allow bespoke building designs, both corner and internal."
+  ],
+  "purchaseSteps": [
+    { "title": "Site Visit & Shortlist", "text": "Visit the project to inspect layouts, orientation, and neighbourhood context." },
+    { "title": "Document Verification", "text": "Confirm title deeds, conversion clearance, and CMDA/DTCP approvals, provided upfront." },
+    { "title": "Booking & Agreement", "text": "Reserve the plot with a token deposit; review the sale agreement and payment milestones." },
+    { "title": "Payment & Registration", "text": "Complete payments per the plan and register the sale deed at the sub-registrar's office." },
+    { "title": "Possession & Utilities", "text": "Once clearances and payments are complete, take possession and apply for water and electricity connections." }
+  ],
+  "reasonsToInvest": [
+    "Legal safety and faster approvals — CMDA/DTCP-approved plots remove developmental uncertainty.",
+    "Affordable rates relative to central Chennai present an entry point for long-term capital growth.",
+    "Growing infrastructure and connectivity improve livability and rental demand.",
+    "Flexible usage: build now or hold for appreciation, with lower carrying costs than finished apartments.",
+    "Community-living benefits of a gated layout preserve property value over time."
+  ],
+  "whyOmshakthy": "OmShakthy Homes delivers legally compliant, well-planned residential layouts with buyer protection and resale prospects in mind. We list CMDA and DTCP-approved plots with full access to approvals, clear payment milestones, and post-sale assistance for registrations and utility tie-ups — balancing quality infrastructure with competitive rates.",
+  "mistakesToAvoid": [
+    "Don't rely solely on verbal assurances — always verify written CMDA and DTCP approvals.",
+    "Don't skip the site visit — inspect drainage, road width, and surrounding development in person.",
+    "Don't skip title and encumbrance checks; a clean title search prevents future disputes.",
+    "Don't overfocus on short-term discounts while ignoring long-term price and value trends.",
+    "Don't assume development timelines — confirm infrastructure handover schedules with the developer."
+  ],
   "featuredProjects": ["elite-grand", "regalia"],
   "faq": [
     { "q": "What is the current land rate in Maraimalai Nagar?", "a": "Pricing varies by location and approvals, depending on proximity to arterial roads and infrastructure." },

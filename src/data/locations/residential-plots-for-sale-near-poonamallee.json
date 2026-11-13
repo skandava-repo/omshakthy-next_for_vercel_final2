@@ -16,6 +16,29 @@
     "Proximity to IT parks and industrial zones, including Sriperumbudur"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "Premium gated-community plots focused on convenience, comfort, and community living, with wide internal roads, street lighting, effective drainage, and ready water and electricity connections.",
+  "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "highlights": [
+    "Varying plot sizes for villas, independent houses, or future investment.",
+    "Close to schools, hospitals, shopping malls, and other major landmarks.",
+    "CMDA approved, with clear titles.",
+    "Competitive pricing with high potential for return on investment.",
+    "Freedom to build a custom home to your own design and lifestyle."
+  ],
+  "purchaseSteps": [
+    { "title": "Verify Approvals", "text": "Ensure the plot has proper DTCP or CMDA approval." },
+    { "title": "Check Encumbrance Certificate", "text": "Confirm the plot is free from legal issues or financial liabilities." },
+    { "title": "Review Property Tax Records", "text": "Make sure all property taxes are paid up to date by the current owner." },
+    { "title": "Compare Market Prices", "text": "Check current Poonamallee land rates so you don't pay above value." }
+  ],
+  "reasonsToInvest": [
+    "Blends historical charm with modern infrastructure and expanding connectivity.",
+    "Relatively affordable land rate with strong appreciation potential as infrastructure improves.",
+    "Fast-paced urbanization transforming it into a sought-after residential zone.",
+    "Community-centric facilities like malls and parks adding to desirability.",
+    "EMI-friendly plots with potential gains from rental income too."
+  ],
+  "whyOmshakthy": "OmShakthy has earned a strong reputation in Chennai real estate, backed by years of experience delivering quality residential plots. We focus on verified, DTCP-approved developments in Poonamallee, with fully transparent transactions — no hidden charges or unclear terms.",
   "faq": [
     { "q": "What is the stamp duty to buy land in Poonamallee?", "a": "The stamp duty in Poonamallee is 7% of the market value of the property, paid to the government during the registration process." },
     { "q": "What is the registration cost for buying land in Poonamallee?", "a": "The registration fee is 4% of the property's market value, paid in addition to the stamp duty at the time of registration." },

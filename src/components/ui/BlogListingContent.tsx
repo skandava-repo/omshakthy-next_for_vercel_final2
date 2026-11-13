@@ -353,7 +353,7 @@ const BlogListingContent = () => {
             </blockquote>
             <figcaption>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/testimonials/jalaja.webp" alt="Jalaja Madanmohan" />
+              <img src="/testimonials/real/jalaja-madanmohan.webp" alt="Jalaja Madanmohan" />
               <span>Jalaja Madanmohan<br /><small>B103 · OmShakthy Santha Towers</small></span>
             </figcaption>
           </figure>

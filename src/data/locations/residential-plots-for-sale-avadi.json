@@ -16,6 +16,41 @@
     "Nearby localities: Thiruninravur, Poonamallee, Nemam, Vellivoyal"
   ],
   "featuredProjects": ["kanopus-magha"],
+  "amenitiesIntro": "Wide, black-topped internal roads, underground drainage, and solar-powered street lighting, with children's play areas, jogging tracks, green pockets, overhead-tank water supply, 24/7 security patrols, and rainwater harvesting.",
+  "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "highlights": [
+    "Prime frontage on the Avadi–Red Hills Highway, under 45 minutes to Chennai's core.",
+    "Steady 12–15% yearly appreciation, driven by metro rail extensions and industrial growth.",
+    "Gated-community security with eco-friendly sewage treatment plants.",
+    "Plot orientations optimized for natural ventilation and Vastu compliance.",
+    "Clear titles with minimal encroachment risk, a rarity in this market."
+  ],
+  "plotTypes": [
+    "Compact 600 sq.ft. plots, perfect for young couples starting out.",
+    "Premium 2,400 sq.ft. plots for larger families envisioning villas.",
+    "Corner plots with dual road access for extra privacy and resale value; north-facing options for Vastu."
+  ],
+  "purchaseSteps": [
+    { "title": "Shortlist & Book", "text": "Select a plot by budget and rate, then pay a nominal token advance to reserve it." },
+    { "title": "Site Visit & Verification", "text": "Inspect the land and amenities; our team verifies DTCP approvals and clear titles on-site." },
+    { "title": "Agreement & Financing", "text": "Sign a sale agreement with milestone payments; bank loans up to 80% financing available." },
+    { "title": "Documentation & Registration", "text": "Complete the encumbrance certificate and patta transfer, then register at the sub-registrar's office." },
+    { "title": "Possession Handover", "text": "Receive keys with utilities activated and a one-year defect warranty, ready to build within 30–45 days." }
+  ],
+  "reasonsToInvest": [
+    "Infrastructure like the proposed satellite ring road and IT parks is driving per-sq.ft. rates up.",
+    "Rentals fetch 4–5% annually amid local housing shortages.",
+    "CMDA approval shields against legal risk, while proximity to employment hubs attracts end-users.",
+    "Metro Phase II will further boost connectivity and demand."
+  ],
+  "whyOmshakthy": "OmShakthy Homes brings 20+ years of delivering 100% CMDA approved plots in Avadi, with zero delays and transparent dealings. Our customer-first approach — free legal verification, post-sale support, and buyback options — has empowered thousands of buyers here.",
+  "mistakesToAvoid": [
+    "Verify DTCP/CMDA approvals to dodge illegal layouts, a common pitfall that can lead to demolitions.",
+    "Don't rush without soil tests or encumbrance checks, which can hide disputes.",
+    "Steer clear of verbal promises on amenities — insist on written agreements.",
+    "Don't ignore future development plans via CMDA portals; they directly impact value.",
+    "Compare land rates across verified projects to avoid hidden fees or deviations."
+  ],
   "faq": [
     { "q": "What is the price of plots for sale in Avadi?", "a": "Prices start around ₹4,500–₹5,500 per sq.ft. for compact 600 sq.ft. units, scaling to ₹6,500+ for premium 2,400 sq.ft. corner plots." },
     { "q": "Is investing in plots in Avadi a good long-term decision?", "a": "Yes — infrastructure growth and proximity to IT corridors support 12–15% annual appreciation, backed by CMDA and DTCP certification." },
@@ -34,6 +69,7 @@
     { "q": "What are the upcoming infrastructure projects near Avadi?", "a": "Satellite ring roads, IT parks, and hospital expansions, plus Metro Phase II and elevated corridors." },
     { "q": "What plot sizes are available in Avadi?", "a": "Sizes range from 600–2,400 sq.ft., including compact starters and villa-ready large plots." },
     { "q": "Are there gated community plots in Avadi?", "a": "Yes — OmShakthy offers gated community plots in Avadi with 24/7 security, amenities, and CMDA approval." },
+    { "q": "What is the Avadi land square feet rate?", "a": "Avadi land square feet rates average ₹4,500–₹6,500, varying by location and approvals. OmShakthy Homes offers competitive rates for premium properties in Avadi." },
     { "q": "Are property rates in Avadi rising?", "a": "Yes — property rates in Avadi are rising 12–15% annually due to infrastructure growth and demand." }
   ]
 }

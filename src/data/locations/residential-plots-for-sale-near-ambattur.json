@@ -14,6 +14,49 @@
     "Proximity to factories, offices, and transit nodes"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "Practical conveniences without overwhelming the brief.",
+  "amenities": [
+    "Gated community with secured access and compound wall.",
+    "Landscaped entry and basic street lighting.",
+    "Internal BT/PC surface roads and well-marked plots.",
+    "Underground drainage and reliable water supply provisions.",
+    "Power connection provision at individual plot level."
+  ],
+  "highlights": [
+    "Fully CMDA and DTCP approved: buyers get transparent title and sanctioned layout, reducing legal risk.",
+    "Proximity to industrial zones and IT corridors, creating strong rental and resale demand.",
+    "Competitive land price in Ambattur compared with similar new projects nearby.",
+    "Clear documentation and guided support for transfer and registration.",
+    "Near public transport, schools, and hospitals, increasing market value over time."
+  ],
+  "plotTypes": [
+    "Compact residential plots (ideal for nuclear families or single homes).",
+    "Medium-sized plots for customized villas and duplexes.",
+    "Larger plots for investors or builder collaborations."
+  ],
+  "purchaseSteps": [
+    { "title": "Site Visit & Shortlisting", "text": "Visit the OmShakthy Homes site to verify location benefits and plot sizes." },
+    { "title": "Document Verification", "text": "Ensure the plot is CMDA and DTCP approved; review title deed, encumbrance certificate, and approved layout plan." },
+    { "title": "Booking & Agreement", "text": "Pay the booking amount and sign the sale agreement that clearly spells out timelines and deliverables." },
+    { "title": "Payment Plan", "text": "Opt for available payment options; receive receipts for all transactions." },
+    { "title": "Registration & Mutation", "text": "Complete sale deed registration at the sub-registrar's office and apply for mutation to update municipal records." },
+    { "title": "Handing Over", "text": "Receive possession after clearing dues and completing legal formalities." }
+  ],
+  "reasonsToInvest": [
+    "Strong growth in Ambattur real estate: industrial legacy and expanding residential demand keep interest high from end-users and investors.",
+    "Appreciation potential: with stable guideline value trends and improving infrastructure, land value here shows steady upside.",
+    "Competitive land rate: compared to inner-city Chennai, land in Ambattur remains attainable, offering better returns.",
+    "Rentability: proximity to factories, offices, and transit nodes ensures steady rental demand for constructed properties.",
+    "New projects and infrastructure investments keep the area relevant for mid-term and long-term capital gains."
+  ],
+  "whyOmshakthy": "OmShakthy Homes builds credibility through transparent procedures and compliance. Every plot in Ambattur is CMDA and DTCP approved, with approved layouts and legitimate titles. We simplify property acquisition by assisting with document checks and registration guidance, with clear pricing (no hidden charges) and standardized handover timelines that cut through typical market uncertainty.",
+  "mistakesToAvoid": [
+    "Don't skip verification: always confirm CMDA and DTCP approvals, approved layout plan, and title search before any payment.",
+    "Don't ignore the local guideline value: it's what stamp duty and registration charges are calculated from.",
+    "Don't rely solely on verbal promises: get commitments and specifications in written sale agreements.",
+    "Don't underestimate connectivity checks: visit at different times to assess traffic, noise, and commuting time to work hubs.",
+    "Don't ignore future development plans: proposed infrastructure projects directly affect future appreciation."
+  ],
   "faq": [
     { "q": "What is the current price per sq.ft. for plots in Ambattur?", "a": "Rates vary by location, approvals, and amenities — check recent comparables and official Ambattur guideline values for accurate stamp duty calculations." },
     { "q": "What is the minimum budget to buy a plot in Ambattur?", "a": "Budget depends on plot size, location, and approvals. Include taxes, stamp duty, registration, and development charges when planning." },

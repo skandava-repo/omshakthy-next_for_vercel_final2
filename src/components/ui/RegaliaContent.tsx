@@ -831,7 +831,7 @@ const Regalia = () => {
               p: [
                 'The Omshakthy Regalia Tambaram location places residents close to many of the everyday destinations that matter. Tambaram continues to be valued by families and working professionals for its access to schools, colleges, healthcare facilities, workplaces, and major road networks.',
                 'The Outer Ring Road is approximately four minutes away, supporting easier travel to key parts of Chennai and its developing suburbs. Educational institutions such as Vels Global School, Sri Chaitanya Techno School, and Dhanalakshmi College of Engineering are within convenient reach. Annai Arul Hospital is also nearby, helping families stay connected to essential healthcare services.',
-                'For professionals, employment hubs such as Thirumudivakkam SIDCO and SIPCOT, as well as MEPZ, are accessible from the project. This connectivity can make the Omshakthy Regalia residential layout a practical choice for those who want to live close to work corridors without giving up the calm of a residential environment.',
+                'For professionals, employment hubs such as Thirumudivakkam SIDCO and SIPCOT, as well as MEPZ, are accessible from the project. This connectivity can make the Omshakthy Regalia residential layout Varadharajapuram a practical choice for those who want to live close to work corridors without giving up the calm of a residential environment.',
               ],
             },
             {

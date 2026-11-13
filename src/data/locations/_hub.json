@@ -10,6 +10,16 @@
   ],
   "amenitiesIntro": "OmShakthy Homes goes beyond just offering land — it ensures a foundation for a well-planned and comfortable living environment. The layouts are developed with attention to essential infrastructure, including wide metaled roads, underground drainage systems, and clear plot demarcations. These DTCP approved layouts in Chennai are provided with basic amenities like street lighting, avenue plantation and proper boundary walls.",
   "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "highlights": [
+    "All plots are CMDA or DTCP approved, complying with regulatory standards for layout planning, land use, and construction permissions.",
+    "Transparent documentation — buyers receive all necessary legal papers, including sale deeds, EC, and approval copies.",
+    "Low-budget CMDA/DTCP approved options available, catering to first-time buyers and investors looking for affordable yet secure land."
+  ],
+  "plotTypes": [
+    "Residential plots — ideal for those planning to construct independent homes.",
+    "Industrial plots — suited for businesses looking for compliant land in developing zones.",
+    "Plot sizes ranging from compact, budget-friendly options to larger parcels for expansive homes or commercial setups, depending on location."
+  ],
   "purchaseSteps": [
     { "title": "Site Visit & Selection", "text": "Schedule a free site visit to explore available plots and shortlist based on your needs." },
     { "title": "Document Verification", "text": "Review all legal documents, including CMDA/DTCP approval letters, EC, and sale deeds." },
@@ -18,6 +28,13 @@
     { "title": "Registration", "text": "Complete the registration process at the sub-registrar office with assistance from the OmShakthy team." },
     { "title": "Possession", "text": "Receive possession of your plot with all necessary handover documents." }
   ],
+  "reasonsToInvest": [
+    "Chennai's real estate market remains comparatively stable within South India, supporting steady long-term value growth.",
+    "New infrastructure projects and a growing IT industry are driving housing demand across the city.",
+    "Land is a finite resource — approved plots in particular tend to hold value better than unapproved layouts.",
+    "Flexibility to develop at your own pace or hold for long-term capital gains, unlike apartments."
+  ],
+  "whyOmshakthy": "OmShakthy Homes is known for transparency, timely delivery, and customer-first practices — offering only CMDA and DTCP approved plots in Chennai, so every transaction is legally sound. The team guides buyers through every step, from site visits to documentation and registration, with a focus on affordability and clear titles — making it easy even for first-time investors.",
   "mistakesToAvoid": [
     "Avoid unapproved layouts — always verify if the plot is CMDA or DTCP approved. Unapproved layouts can lead to legal issues and construction stoppages.",
     "Don't skip document verification — missing ECs, unclear titles, or incomplete approval letters can cause major problems later.",

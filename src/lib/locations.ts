@@ -24,6 +24,19 @@ export interface LocationPageData {
   amenities?: string[]
   featuredProjects: string[]
   faq: LocationFaqItem[]
+  // The rest are optional — real content ported from each location's own
+  // page on the old live site (not every location's page had every one
+  // of these sections), rendered by LocationPageContent.tsx whenever
+  // present rather than gated to the hub page only (that gating used to
+  // be `'purchaseSteps' in data`, i.e. hub-only; these same fields now
+  // work per-location too).
+  highlights?: string[]
+  plotTypes?: string[]
+  reasonsToInvest?: string[]
+  whyOmshakthy?: string
+  amenitiesIntro?: string
+  purchaseSteps?: { title: string; text: string }[]
+  mistakesToAvoid?: string[]
 }
 
 export interface LocationHubData extends LocationPageData {

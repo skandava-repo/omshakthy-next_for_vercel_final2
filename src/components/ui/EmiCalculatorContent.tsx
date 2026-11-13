@@ -63,8 +63,10 @@ function calcEmi(principal: number, annualRatePct: number, years: number) {
 const features = [
   { title: 'Instant Results', text: 'Get your EMI amount in seconds by entering just a few details.' },
   { title: 'Customizable Inputs', text: 'Adjust the loan amount, tenure, and interest rate to see how your EMI changes.' },
-  { title: 'Total Interest View', text: 'See the full interest outgo over the loan tenure, not just the monthly figure.' },
-  { title: 'Floating Rate Ready', text: 'Simulate scenarios with both fixed and floating rates, useful under the current MCLR regime.' },
+  { title: 'EMI with Prepayment', text: 'Plan for the future by factoring in lump sum payments and see how it impacts your loan tenure and interest outgo.' },
+  { title: 'Floating Interest Rate', text: 'Simulate scenarios with both fixed and floating rates — crucial under the current MCLR regime.' },
+  { title: 'Calculate Pre-EMI', text: 'For under-construction properties, calculate pre-EMI to understand your interest-only payments before the full EMI kicks in.' },
+  { title: 'EMI Eligibility Calculator', text: 'Check how much loan you can comfortably repay based on your income, existing EMIs, and other financial commitments.' },
 ]
 
 const areas = ['Anna Nagar', 'OMR (Old Mahabalipuram Road)', 'Velachery', 'Tambaram', 'Porur', 'Ambattur', 'Sholinganallur']

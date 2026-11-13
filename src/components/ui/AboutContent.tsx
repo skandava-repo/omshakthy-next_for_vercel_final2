@@ -521,6 +521,102 @@ const AboutContent = () => {
         </div>
       </section>
 
+      {/* ---------------- Reasons to Choose OmShakthy ----------------
+          Real content from the old live site's own about.php (via the
+          local mirror) — a 6-point operational-reassurance list this
+          rebuild never recreated. Complements "Why Thousands Choose
+          Us" above (that one's about title/location/expertise; this
+          one's about the build process itself) rather than repeating
+          it. Numbered circle badges, same light/rounded-card register
+          as the rest of this page — no new icon set introduced. */}
+      <section className="relative px-4 md:px-6 py-10 md:py-12" data-header-theme="light">
+        <div className="max-w-[1180px] mx-auto">
+          <Reveal className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold" style={{ ...display, color: C.ink, fontSize: '2.2rem', letterSpacing: '-0.03em' }}>
+              Reasons to Choose OmShakthy Builders
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { n: '01', title: 'Experienced Engineers', desc: 'Every project is overseen by qualified engineers with real on-ground delivery experience.' },
+              { n: '02', title: 'Custom Quote', desc: 'Transparent, project-specific pricing — no generic one-size-fits-all estimates.' },
+              { n: '03', title: 'Customer Service', desc: 'A dedicated team available from first enquiry through registration and beyond.' },
+              { n: '04', title: 'Best Quality', desc: 'Materials and execution standards we hold to regardless of project scale.' },
+              { n: '05', title: 'Ontime Delivery', desc: 'Realistic timelines, tracked and communicated, not quietly pushed back.' },
+              { n: '06', title: 'Dream Projects', desc: 'Locations and layouts planned around how people actually want to live.' },
+            ].map((r, i) => (
+              <Reveal key={r.n} delay={i * 0.05}>
+                <div
+                  className="h-full rounded-2xl p-7"
+                  style={{ backgroundColor: C.panel, border: `1px solid ${C.border}` }}
+                >
+                  <span
+                    className="inline-flex items-center justify-center rounded-full mb-4"
+                    style={{ width: 44, height: 44, backgroundColor: '#fff', color: C.blue, ...mono, fontSize: '0.85rem', fontWeight: 700 }}
+                  >
+                    {r.n}
+                  </span>
+                  <h3 className="text-lg font-semibold mb-2" style={{ ...display, color: C.ink }}>{r.title}</h3>
+                  <p className="text-sm" style={{ color: C.slate }}>{r.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- Our Clients ----------------
+          Real logo strip from the old live site's own about.php — 9
+          institutions OmShakthy has done land-aggregation/construction
+          work for or with (Mahindra World City, SIDCO, TWAD Board,
+          Reliance's two divisions, Pepsi, Asiana Hotels, the
+          Telecommunications & IT Employees Co-op Society, and the
+          Adhiparasakthi Charitable Trust — prod's own alt text called
+          that last one "Omshakthy" but the logo itself is the trust's,
+          so it's labelled correctly here). Plain grayscale-to-color
+          hover cards on the same light panel/rounded-card register as
+          "Reasons to Choose" above, rather than reusing
+          FinancialPartnersSection's dark full-bleed marquee treatment —
+          this is a compact in-page strip, not its own homepage slide. */}
+      <section className="relative px-4 md:px-6 py-10 md:py-12" data-header-theme="light">
+        <div className="max-w-[1180px] mx-auto">
+          <Reveal className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold" style={{ ...display, color: C.ink, fontSize: '2.2rem', letterSpacing: '-0.03em' }}>
+              Our Clients
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid grid-cols-3 sm:grid-cols-5 gap-4 md:gap-6">
+            {[
+              { name: 'Mahindra World City', file: '/clients/mahindra-world-city.webp' },
+              { name: 'Pepsi', file: '/clients/pepsi.webp' },
+              { name: 'Reliance Petroleum Limited', file: '/clients/reliance-petroleum.webp' },
+              { name: 'Asiana Hotels & Resorts', file: '/clients/asiana-hotels.webp' },
+              { name: 'Reliance Communications', file: '/clients/reliance-communications.webp' },
+              { name: 'Telecommunications & IT Employees Co-operative Society', file: '/clients/telecommunications-it-cooperative.webp' },
+              { name: 'Adhiparasakthi Charitable Trust', file: '/clients/adhiparasakthi-trust.webp' },
+              { name: 'Tamil Nadu SIDCO', file: '/clients/tn-sidco.webp' },
+              { name: 'TWAD Board', file: '/clients/twad-board.webp' },
+            ].map((c, i) => (
+              <Reveal key={c.name} delay={i * 0.04}>
+                <div
+                  className="h-full flex items-center justify-center rounded-2xl p-5 transition-all duration-300 hover:shadow-md"
+                  style={{ backgroundColor: '#fff', border: `1px solid ${C.border}` }}
+                  title={c.name}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={c.file}
+                    alt={c.name}
+                    loading="lazy"
+                    className="w-full h-auto max-h-16 object-contain"
+                  />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ---------------- Where We Build ----------------
           A separate card per location, moving in a continuous marquee —
           the same infinite x: 0% -> -50% loop technique used elsewhere

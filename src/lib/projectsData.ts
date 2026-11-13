@@ -12,14 +12,18 @@ export interface Project {
   image: string
   name: string
   location: string
-  /* Back to two states per request — a 'Completed' state briefly
-     existed here (Mathura/Kanopus Mithila were 'Sold' but their own
-     pages show real, live prices, not "Sold Out") but was folded back
-     into 'Ongoing' rather than 'Sold': both still have a real price on
-     their own page, which 'Ongoing' honestly reflects — 'Sold' stays
-     reserved for the one project whose own page literally says
-     "Price: Sold Out" (Elite Orchard). */
-  status: 'Ongoing' | 'Sold'
+  /* Was two states ('Ongoing' | 'Sold') per an earlier request — a
+     'Completed' state briefly existed (Mathura/Kanopus Mithila were
+     'Sold' but their own pages show real, live prices, not "Sold
+     Out") but was folded back into 'Ongoing' rather than 'Sold': both
+     still have a real price on their own page, which 'Ongoing'
+     honestly reflects — 'Sold' stays reserved for the one project
+     whose own page literally says "Price: Sold Out" (Elite Orchard).
+     'Upcoming' added back for the one real not-yet-launched project
+     prod's own upcoming-projects.php still lists (Proposed Scheme III
+     below) — distinct from 'Sold'/'Ongoing' since it has no live price
+     or sale at all yet, just a "Coming Soon" placeholder on prod too. */
+  status: 'Ongoing' | 'Sold' | 'Upcoming'
   type: string
   price: string
   /* Numeric ₹-lakh value for real price-range bucketing — null for
@@ -138,4 +142,15 @@ export const projects: Project[] = [
   { image: '/projects-legacy/omshakthy-sara-courtyard.webp', name: 'OmShakthy Sara Courtyard', location: 'K.K. Nagar, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
   { image: '/projects-legacy/omshakthy-santha-patio.webp', name: 'OmShakthy Santha Patio', location: 'Adyar, Chennai', status: 'Sold', type: 'Residential Apartment', price: 'Sold Out', priceLakh: null },
   { image: '/projects-legacy/omshakthy-temple-nagar.webp', name: 'OmShakthy Temple Nagar', location: 'Kundrathur, Chennai', status: 'Sold', type: 'Residential Land', price: 'Sold Out', priceLakh: null },
+  // Real project missing entirely before this pass — prod's own
+  // upcoming-projects.php (checked directly, not stale) still lists
+  // exactly one real upcoming card: "Proposed Scheme III - Industrial
+  // Plot," Thirumudivakkam, 8 Acres / 349,000 sq.ft., marked "Coming
+  // Soon" with no live link there either — same no-`link` treatment as
+  // the completed legacy entries above. No real photo exists for it
+  // (prod's own image there is a route/location map graphic, not a
+  // property shot), so this reuses Industrial Park's image above
+  // rather than inventing a fake one — same generic industrial-type
+  // treatment, not a claim they're the same project.
+  { image: '/projects/property-6.webp', name: 'Proposed Scheme III - Industrial Plot', location: 'Thirumudivakkam, Chennai', status: 'Upcoming', type: 'Industrial', price: 'Coming Soon', priceLakh: null },
 ]

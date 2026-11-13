@@ -13,6 +13,40 @@
     "Commutable distance to employment hubs, educational institutions, and healthcare centres"
   ],
   "featuredProjects": ["elite-grand", "kanopus-magha", "regalia"],
+  "amenitiesIntro": "Properly demarcated roads with street lighting, a landscaped green belt, dedicated water supply and underground drainage, and secured boundary fencing — essentials chosen to balance cost-efficiency with long-term maintenance.",
+  "amenities": ["Gated Township", "Kids Play Area", "Avenue Trees", "24/7 Security"],
+  "highlights": [
+    "Legally compliant: every parcel is CMDA and DTCP approved, with clear, marketable titles.",
+    "Direct access to GST Road's arterial network, within commutable distance of employment hubs, schools, and healthcare.",
+    "Investment-ready sizes suited to first-time homeowners, small builders, and investors alike.",
+    "Transparent documentation — full title checks, site plans, and approvals supplied to simplify transfers and financing."
+  ],
+  "plotTypes": [
+    "Residential plots ideal for single-family homes or duplex construction (small-to-medium sizes).",
+    "Larger plots suitable for builders or investors planning multiple units or rental properties."
+  ],
+  "purchaseSteps": [
+    { "title": "Initial Inquiry & Site Visit", "text": "Contact us to schedule a site visit and assess location advantages in person." },
+    { "title": "Document Verification", "text": "Review CMDA/DTCP approvals, title deeds, patta/RTC, and the sanctioned layout plan." },
+    { "title": "Booking & Agreement", "text": "Place a token deposit and sign the sale agreement, with clear payment and handover timelines." },
+    { "title": "Legal Due Diligence", "text": "Engage a lawyer for a title search, encumbrance checks, and tax/dues verification." },
+    { "title": "Payment & Registration", "text": "Complete payment, obtain receipts, then register the sale deed at the sub-registrar's office." },
+    { "title": "After-Sale Support", "text": "Take possession and connect utilities — we assist with NOC facilitation for building permissions." }
+  ],
+  "reasonsToInvest": [
+    "Rapid infrastructure growth: steady public and private investment keeps improving road networks and transit links.",
+    "Strong rental and resale demand from nearby industrial clusters, IT corridors, and logistics hubs.",
+    "Lower maintenance and higher control than an apartment — you stage construction cost and design yourself.",
+    "Clear CMDA/DTCP approvals reduce the legal uncertainty common in Chennai's peri-urban belts."
+  ],
+  "whyOmshakthy": "OmShakthy Homes is a reliable developer on GST Road with a transparent process oriented toward long-term buyers and investors — legally compliant, CMDA and DTCP-approved layouts, and local expertise that reduces transaction friction, from document handover to after-sale connections and construction approvals.",
+  "mistakesToAvoid": [
+    "Skipping approval checks — never buy without confirming CMDA and DTCP approvals.",
+    "Ignoring encumbrance history — validate past mortgages, liens, or litigation first.",
+    "Overlooking connectivity and future infrastructure projects that affect long-term value.",
+    "Falling for pressure sales — allow time for legal vetting and independent site assessment.",
+    "Neglecting practical costs like compound wall, levelling, and utility connections."
+  ],
   "faq": [
     { "q": "Is GST Road a good location to buy a plot?", "a": "Yes — strong connectivity to Chennai's southern suburbs, industrial hubs and the airport supports appreciation potential through infrastructure growth and residential demand. CMDA/DTCP approvals reduce legal risk." },
     { "q": "What is the average price of a plot on GST Road?", "a": "Prices vary by location, size, and road frontage — consult local listings or developers like OmShakthy Homes for current rates." },

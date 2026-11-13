@@ -149,9 +149,19 @@ const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color
     bg: 'rgba(180,83,9,0.1)',
     color: '#B45309',
   },
+  // Same slate as everywhere else on this page uses for "not live yet"
+  // text (C.slate) rather than inventing a third brand color — this
+  // status covers exactly one real project (Proposed Scheme III) with
+  // no price or sale yet, so a quieter neutral badge reads correctly
+  // next to Ongoing's blue and Sold's amber.
+  Upcoming: {
+    label: 'Coming Soon',
+    bg: 'rgba(100,116,139,0.1)',
+    color: C.slate,
+  },
 }
 
-const statusOptions = ['All Status', 'Ongoing', 'Sold'] as const
+const statusOptions = ['All Status', 'Ongoing', 'Upcoming', 'Sold'] as const
 const typeOptions = ['All Types', ...Array.from(new Set(projects.map((p) => p.type)))]
 const locationOptions = ['All Locations', ...Array.from(new Set(projects.map((p) => p.location)))]
 
