@@ -48,6 +48,23 @@ export const projects: Project[] = [
   // per direct request, so the listing/grid leads with what's newest/
   // coming rather than array order being arbitrary.
   //
+  // Three new real upcoming MSB (Multi-Storey Building) projects, with
+  // real renders provided directly — no `link` yet (no landing page
+  // exists for any of them), same as Proposed Scheme III below. Specs
+  // noted here since there's no dedicated field for acreage/floors/
+  // saleable area beyond `price`/`type`:
+  // - Paruthipattu: 1.76 acres, Basement + Stilt + 14 floors, 2,10,000 sq.ft. saleable
+  // name is 'Paruthi Pattu' (two words), not the location field's
+  // 'Paruthipattu' — this card's own title wraps at a real word
+  // boundary ("Paruthi" / "Pattu" on two lines) instead of splitting
+  // the single 12-character word mid-letter at this card's 210px
+  // column width, per direct instruction.
+  { image: '/projects/msb-paruthipattu.webp', name: 'Paruthi Pattu', location: 'Paruthipattu, Chennai', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 10%' },
+  // - Coimbatore: 2.45 acres, Stilt + 5 floors, 2,75,000 sq.ft. saleable
+  { image: '/projects/msb-coimbatore.webp', name: 'Coimbatore', location: 'Coimbatore, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '95% 20%' },
+  // - Madurai: 1.65 acres, Stilt + 5 floors, 2,00,000 sq.ft. saleable
+  { image: '/projects/msb-madurai.webp', name: 'Madurai', location: 'Madurai, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 12%' },
+  // 4th in the Upcoming group, per direct instruction (was 1st).
   // Real project missing entirely before an earlier pass — prod's own
   // upcoming-projects.php (checked directly, not stale) still lists
   // exactly one real upcoming card: "Proposed Scheme III - Industrial
@@ -59,17 +76,6 @@ export const projects: Project[] = [
   // below rather than inventing a fake one — same generic
   // industrial-type treatment, not a claim they're the same project.
   { image: '/projects/property-6.webp', name: 'Proposed Scheme III - Industrial Plot', location: 'Thirumudivakkam, Chennai', status: 'Upcoming', type: 'Industrial', price: 'Coming Soon', priceLakh: null },
-  // Three new real upcoming MSB (Multi-Storey Building) projects, with
-  // real renders provided directly — no `link` yet (no landing page
-  // exists for any of them), same as Proposed Scheme III above. Specs
-  // noted here since there's no dedicated field for acreage/floors/
-  // saleable area beyond `price`/`type`:
-  // - Paruthipattu: 1.76 acres, Basement + Stilt + 14 floors, 2,10,000 sq.ft. saleable
-  { image: '/projects/msb-paruthipattu.webp', name: 'Paruthipattu', location: 'Paruthipattu, Chennai', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 10%' },
-  // - Coimbatore: 2.45 acres, Stilt + 5 floors, 2,75,000 sq.ft. saleable
-  { image: '/projects/msb-coimbatore.webp', name: 'Coimbatore', location: 'Coimbatore, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '95% 20%' },
-  // - Madurai: 1.65 acres, Stilt + 5 floors, 2,00,000 sq.ft. saleable
-  { image: '/projects/msb-madurai.webp', name: 'Madurai', location: 'Madurai, Tamil Nadu', status: 'Upcoming', type: 'Residential Apartment', price: 'Coming Soon', priceLakh: null, imagePosition: '20% 12%' },
   //
   // Status per direct instruction: every project is Sold except these
   // two. Sold projects also lose their `link` — "for sold out project
