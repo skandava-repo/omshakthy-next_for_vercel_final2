@@ -105,12 +105,14 @@ const milestones = [
     description: 'Undertook a massive land aggregation spanning approximately **2,000 acres** in Madurai, strengthening our large-scale land strategy.',
     stat: '2,000',
     statLabel: 'Acres in Madurai',
-    // Temporary — timeline-2024.webp (this slide's old image) moved to
-    // the 2025 slide below, which fits its "PLOTS/VILLAS/..." category
-    // graphic better now that 2025 covers Manigantan's diversified
-    // expansion. Swap this for a dedicated land/expansion photo
-    // (aerial land parcel, survey markers) once one exists.
-    image: '/timeline-2000.webp',
+    // Real dedicated image now provided — an aerial shot of Madurai
+    // (temple towers recognizable in the background) with a highlighted
+    // land-parcel grid overlay and survey-marker pins, exactly the
+    // "aerial land parcel, survey markers" placeholder note below asked
+    // for. Already built with the same white-panel-left/photo-right
+    // template every other timeline slide uses, so no position/overlay
+    // CSS changes needed.
+    image: '/timeline-2020-madurai.webp',
     textFree: true,
   },
   {
