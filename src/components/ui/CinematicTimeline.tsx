@@ -30,15 +30,19 @@ const milestones = [
     // wherever a milestone's year is displayed, `year` itself untouched
     // so ct-slide--1993 keeps working.
     yearDisplay: '2000',
-    title: 'SIDCO Partnership',
+    // Real content, from "Journey Oms.txt": the company is "SITCO" in
+    // the source, not "SIDCO" (the fabricated spelling this slide used
+    // before), and the ₹350 crore figure is the project's value, not
+    // an acreage.
+    title: 'SITCO Partnership',
     // barTitle: the bottom-bar label's text, with \n marking where it
     // breaks on mobile (CinematicTimeline.css). Kept separate from
     // `title` so the big slide title isn't affected. Falls back to
     // `title` when omitted (1991 stays on one line).
-    barTitle: 'SIDCO\nPartnership',
-    description: 'Acquired **350 acres** for **SIDCO**, establishing credibility and laying the foundation for enduring partnerships.',
+    barTitle: 'SITCO\nPartnership',
+    description: 'Undertook a major land aggregation for **SITCO**, valued at approximately **₹350 crore** — a defining early challenge.',
     stat: '350',
-    statLabel: 'Acres Acquired',
+    statLabel: 'Crore Project Value',
     image: '/timeline-1993.webp',
     textFree: true,
   },
@@ -50,63 +54,82 @@ const milestones = [
     // used as plain text (.ct-bar__bigyear-label), where it just
     // collapses to whitespace like any other newline in inline HTML text.
     title: 'Mahindra\nWorld City',
-    description: 'Acquired 2000 acres for Mahindra World City SEZ without litigation.',
-    stat: '2,000',
-    statLabel: 'Acres for SEZ',
+    // Real content: the source document puts Phase 1 at 1,350 acres,
+    // not the 2,000-acre SEZ figure this slide fabricated before.
+    description: "Undertook one of the company's largest land aggregations — **1,350 acres** for Mahindra World City, Phase 1.",
+    stat: '1,350',
+    statLabel: 'Acres, Phase 1',
     image: '/timeline-1997.webp',
     textFree: true,
   },
   {
     year: '1998',
     yearDisplay: '2010',
-    title: 'Construction Era',
-    barTitle: 'Construction\nEra',
-    description: 'Entered construction, winning projects close to **5 million sq.ft.** — turning years of land aggregation into real, delivered developments.',
-    stat: '5M',
-    statLabel: 'Sq.Ft Projects',
+    // Retitled from "Construction Era" — the source document has no
+    // single construction milestone at this exact year; closest real
+    // match is its own "Growth into Real Estate Development" section
+    // (2006-2015), highlighted here via its largest listed project.
+    title: 'Real Estate\nGrowth',
+    barTitle: 'Real Estate\nGrowth',
+    description: 'Expanded into real estate with projects like **Omshakthy Kanopus**, spanning over **11.5 lakh sq.ft.** of plotted development.',
+    stat: '11.5L',
+    statLabel: 'Sq.Ft Developed',
     image: '/timeline-1998.webp',
     textFree: true,
   },
   {
     year: '2000',
     yearDisplay: '2015',
+    // Retitled copy only: the source document confirms PepsiCo, not
+    // Reliance (never mentioned), and gives no acreage figure — both
+    // were fabricated in the previous description.
     title: 'Corporate Giants',
     barTitle: 'Corporate\nGiants',
-    description: 'Partnered with **Pepsi** and **Reliance** across Tamil Nadu, aggregating industrial-grade parcels built to national corporate standards.',
-    stat: '40',
-    statLabel: 'Acres for Pepsi',
+    description: 'Executed a major land aggregation for **PepsiCo**, strengthening our experience with large corporate land requirements.',
+    stat: '2000',
+    statLabel: 'PepsiCo Partnership',
     image: '/timeline-2000.webp',
     textFree: true,
   },
   {
     year: '2024',
     yearDisplay: '2020',
-    title: 'Legacy Continues',
-    barTitle: 'Legacy\nContinues',
-    description: 'Over **5,000+** acres aggregated across residential, commercial and industrial real estate, backed by a 100% litigation-free record.',
-    stat: '5,000+',
-    statLabel: 'Acres Aggregated',
-    image: '/timeline-2024.webp',
+    // Real content for 2020, from "Journey Oms.txt" Part IV: replaces
+    // the fabricated "5,000+ acres aggregated" stat with the actual
+    // story — Mr. R. Ramachandran passing leadership to his son and
+    // moving into farming and community service. Image is a temporary
+    // placeholder (see below) pending a dedicated farming/orchard
+    // photo matching this new story.
+    title: 'Beyond\nBusiness',
+    barTitle: 'Beyond\nBusiness',
+    description: 'Mr. Ramachandran passed leadership to his son, embracing a new chapter in **farming** and community service.',
+    stat: '3,500',
+    statLabel: 'Coconut Trees Planted',
+    // Temporary — timeline-2024.webp (this slide's old image) moved to
+    // the 2025 slide below, which fits its "PLOTS/VILLAS/..." category
+    // graphic better now that 2025 covers Manigantan's diversified
+    // expansion. Swap this for the farming/orchard image once provided.
+    image: '/timeline-2000.webp',
     textFree: true,
   },
   {
-    // New 7th slide extending the timeline through 2025 — same slide
-    // this project had before, recreated here (that earlier pass was
-    // reverted for its year-display/font-size handling, not for this
-    // slide's own content). Reuses timeline-2000.webp as the
-    // background rather than timeline-2024.webp — that file has its
-    // own baked-in "PLOTS / VILLAS / ..." category labels, which clash
-    // with this slide's live text overlay. 2000's photo is clean and
-    // not adjacent in the sequence (slide 5, not slide 6), so
-    // repeating it reads less like an obvious duplicate. Swap in a
-    // dedicated asset when one exists.
+    // 7th slide extending the timeline through 2025. Now uses
+    // timeline-2024.webp (moved from the 2020 slide above, which needed
+    // it freed up for its own new farming-themed image) — its "PLOTS /
+    // VILLAS / APARTMENTS / COMMERCIAL / TOWNSHIPS / COMMUNITIES"
+    // category graphic fits this slide's real content (Manigantan's
+    // diversified expansion) better than the slide it came from.
     year: '2025',
     title: 'The Next Chapter',
     barTitle: 'The Next\nChapter',
-    description: 'Carrying **35+ years** of trust into a new era of growth across Tamil Nadu.',
-    stat: '2025',
-    statLabel: 'And Beyond',
-    image: '/timeline-2000.webp',
+    // Real content, from "Journey Oms.txt" Part V: Manigantan's
+    // 2021-2024 project launches, the Madurai land deal, and the NBE
+    // quarrying diversification — replaces the generic "35+ years of
+    // trust" copy this slide had as a placeholder.
+    description: 'Launched **Mithila, Elite Orchard, Mathura, Regalia** and more — while expanding into Madurai land and **NBE** quarrying.',
+    stat: '2,000',
+    statLabel: 'Acres in Madurai',
+    image: '/timeline-2024.webp',
     textFree: true,
   },
 ]
