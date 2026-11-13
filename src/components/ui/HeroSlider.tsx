@@ -24,16 +24,6 @@ const slides: { image: string; mobileImage?: string; title: string }[] = [
   { image: '/hero-slide-8.webp', title: 'Elite Apartments' },
   { image: '/hero-slide-2.webp', title: 'Kanopus Magha' },
   { image: '/hero-new-2.webp', title: 'Premium Living' },
-  // Three new upcoming MSB (Multi-Storey Building) projects — real
-  // renders provided directly, same images used for their /projects
-  // cards (projectsData.ts). Each already has its own baked-in title/
-  // stats bar across the TOP of the frame, not the bottom, so it
-  // doesn't collide with this slider's own caption overlay (bottom:
-  // 14%, per HeroSlider.css) the way an infographic with bottom-baked
-  // text would.
-  { image: '/msb-paruthipattu.webp', title: 'Paruthipattu' },
-  { image: '/msb-coimbatore.webp', title: 'Coimbatore' },
-  { image: '/msb-madurai.webp', title: 'Madurai' },
 ]
 
 const HeroSlider = () => {
