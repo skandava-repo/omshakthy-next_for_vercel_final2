@@ -492,7 +492,15 @@ const ProjectsContent = () => {
                       style={{
                         ...display,
                         margin: '0.3rem 0 0',
-                        fontSize: 28,
+                        // 28px wraps a single long word mid-letter
+                        // inside this 210px column (confirmed live:
+                        // "Paruthipattu," one unbroken 12-char word,
+                        // split into "PARUTHIPAT"/"TU") — multi-word
+                        // titles ("Elite Orchard") wrap fine at the
+                        // space between words and don't need this, so
+                        // this only checks the single longest word,
+                        // not the title's total length.
+                        fontSize: Math.max(...cardTitle(p.name).split(' ').map((w) => w.length)) > 10 ? 22 : 28,
                         fontWeight: 600,
                         lineHeight: 1.15,
                         letterSpacing: '0.02em',
