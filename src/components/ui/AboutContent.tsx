@@ -387,7 +387,11 @@ const locations = [
 const legacyStats = [
   { icon: 'calendar', to: 35, format: (n: number) => `${Math.round(n)}+`, label: 'Years of Real Estate Excellence' },
   { icon: 'users', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Happy Customers' },
-  { icon: 'map', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Acres Aggregated & Developed' },
+  // Was 7,500 — corrected to match the real figure in "Journey Oms.txt"
+  // (the real company-history doc) and this site's own already-corrected
+  // CinematicTimeline/mathura-elite-lp copy: "5,000+ acres facilitated",
+  // per direct instruction.
+  { icon: 'map', to: 5000, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Acres of Land Aggregated' },
   { icon: 'building', to: 30, format: (n: number) => `${Math.round(n)}+`, label: 'Landmark Projects Delivered' },
   { icon: 'coin', to: 2000, format: (n: number) => `₹${Math.round(n).toLocaleString('en-IN')}+ Cr`, label: 'In Business Transactions' },
   { icon: 'shield', to: 100, format: (n: number) => `${Math.round(n)}%`, label: 'Litigation-Free Track Record' },
