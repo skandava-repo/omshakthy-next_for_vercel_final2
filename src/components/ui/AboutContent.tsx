@@ -372,16 +372,24 @@ const whyChooseUs = [
    (CC-licensed, hotlinked via Special:FilePath — resolves to the
    actual file, no local copy needed). */
 const WIKI = 'https://commons.wikimedia.org/wiki/Special:FilePath/'
+// Every place below is a real project location from projectsData.ts
+// (sold, ongoing or upcoming) — the earlier list included OMR, GST Road,
+// Tirunelveli and Kanyakumari, where the group has no project. The tag
+// is the real project(s) there.
 const locations = [
-  { name: 'Avadi', tag: 'Industrial growth corridor', img: `${WIKI}Tidel_Park_Avadi.jpg` },
-  { name: 'Chromepet', tag: 'Established residential hub', img: `${WIKI}Chrompet_flyover.jpg` },
-  { name: 'GST Road', tag: 'Prime highway corridor', img: `${WIKI}Tambaram_highway_in_Chennai.jpg` },
-  { name: 'Guduvanchery', tag: 'Emerging southern suburb', img: `${WIKI}Arulmigu_Nandeeswarar_Temple_at_Guduvancheri,_South_Chennai_01.jpg` },
-  { name: 'Thirumudivakkam', tag: 'Riverside growth belt', img: `${WIKI}Kotturpuram_Bridge_Adyar_River_Chennai_Jul18_DSC05376.jpg` },
-  { name: 'OMR', tag: 'IT corridor gateway', img: `${WIKI}Chennai.tidelpark.jpg` },
-  { name: 'Coimbatore', tag: 'Textile city expansion', img: `${WIKI}Adiyogi_Statue_at_Coimbatore,_Tamil_Nadu.jpg` },
-  { name: 'Tirunelveli', tag: 'Southern Tamil Nadu gateway', img: `${WIKI}Tirunelveli_Nellaiappar_Temple_1.jpg` },
-  { name: 'Kanyakumari', tag: "India's coastal tip", img: `${WIKI}Vivekananda_Rock_Memorial,_Kanyakumari.jpg` },
+  { name: 'Avadi', tag: 'Kanopus & Santha Towers', img: `${WIKI}Tidel_Park_Avadi.jpg` },
+  { name: 'Thirumazhisai', tag: 'Mathura Elite', img: '/projects/mathura-elite.webp' },
+  { name: 'Chromepet', tag: 'OmShakthy Mathura', img: `${WIKI}Chrompet_flyover.jpg` },
+  { name: 'Tambaram', tag: 'OmShakthy Regalia', img: '/projects/regalia.webp' },
+  { name: 'Guduvanchery', tag: 'Elite Grand & Orchard', img: `${WIKI}Arulmigu_Nandeeswarar_Temple_at_Guduvancheri,_South_Chennai_01.jpg` },
+  { name: 'Kundrathur', tag: 'Eden & Temple Nagar', img: '/projects-legacy/omshakthy-eden.webp' },
+  { name: 'Thirumudivakkam', tag: 'Proposed Scheme III', img: `${WIKI}Kotturpuram_Bridge_Adyar_River_Chennai_Jul18_DSC05376.jpg` },
+  { name: 'Sriperumbudur', tag: 'Industrial Park', img: '/projects/property-6.webp' },
+  { name: 'Paruthipattu', tag: 'Upcoming apartments', img: '/projects/msb-paruthipattu.webp' },
+  { name: 'K.K. Nagar', tag: 'Sara Courtyard', img: '/projects-legacy/omshakthy-sara-courtyard.webp' },
+  { name: 'Adyar', tag: 'Santha Patio', img: '/projects-legacy/omshakthy-santha-patio.webp' },
+  { name: 'Coimbatore', tag: 'Upcoming apartments', img: `${WIKI}Adiyogi_Statue_at_Coimbatore,_Tamil_Nadu.jpg` },
+  { name: 'Madurai', tag: 'Upcoming apartments', img: '/projects/msb-madurai.webp' },
 ]
 
 const legacyStats = [
@@ -625,7 +633,7 @@ const AboutContent = () => {
           A separate card per location, moving in a continuous marquee —
           the same infinite x: 0% -> -50% loop technique used elsewhere
           for ticker text, just built out of real cards instead. The
-          array is duplicated exactly once (18 cards total) so the loop
+          array is duplicated exactly once (2× the cards) so the loop
           seams perfectly at the halfway point with no visible jump. */}
       <section className="relative px-4 md:px-6 py-10 md:py-12" data-header-theme="light">
         <div className="max-w-[1180px] mx-auto relative">
@@ -649,7 +657,7 @@ const AboutContent = () => {
               opacity: 0.4,
             }}
           >
-            09
+            {String(locations.length).padStart(2, '0')}
           </span>
           <div className="relative text-center">
             {/* Not wrapped in Reveal — KineticHeading animates its own
@@ -662,7 +670,7 @@ const AboutContent = () => {
             />
             <Reveal delay={0.35}>
               <p className="mt-4 text-base md:text-lg" style={{ color: C.slate }}>
-                Nine growth corridors across Tamil Nadu, always expanding
+                {locations.length} locations across Chennai and Tamil Nadu, always expanding
               </p>
             </Reveal>
           </div>
@@ -679,7 +687,7 @@ const AboutContent = () => {
             className="flex gap-3 px-4 md:px-6"
             style={{ width: 'max-content' }}
             animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 34, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 48, repeat: Infinity, ease: 'linear' }}
           >
             {[...locations, ...locations].map((loc, i) => (
               <div
