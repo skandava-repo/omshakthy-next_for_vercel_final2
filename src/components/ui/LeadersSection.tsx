@@ -47,7 +47,7 @@ const leaders: Leader[] = [
     role: 'Chairman',
     tag: 'Vision & Legacy',
     img: '/leaders/chairman.webp',
-    pos: '38% 6%',
+    pos: '-15% -5%',
     size: 'auto 168%',
     bio: [
       'A passion for engineering inspired him to establish a small-scale industry.',
@@ -61,8 +61,8 @@ const leaders: Leader[] = [
     role: 'Managing Director',
     tag: 'Strategy & Growth',
     img: '/leaders/manigantan.webp',
-    pos: '44% 8%',
-    size: 'auto 138%',
+    pos: '40% -1%',
+    size: 'cover',
     bio: [
       'More than two decades of experience in real estate and construction.',
       'Extensive knowledge in land acquisition and agglomeration.',

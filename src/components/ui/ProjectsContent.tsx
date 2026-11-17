@@ -141,8 +141,8 @@ const cardTitle = (name: string) => name.replace(/^OmShakthy\s+/, '')
 const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color: string }> = {
   Ongoing: {
     label: 'Ongoing',
-    bg: 'rgba(13,107,178,0.1)',
-    color: C.blue,
+    bg: 'rgba(5,150,105,0.12)',
+    color: '#047857',
   },
   Sold: {
     label: 'Sold Out',
@@ -156,8 +156,8 @@ const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color
   // next to Ongoing's blue and Sold's amber.
   Upcoming: {
     label: 'Coming Soon',
-    bg: 'rgba(100,116,139,0.1)',
-    color: C.slate,
+    bg: 'rgba(13,107,178,0.1)',
+    color: C.blue,
   },
 }
 
@@ -473,9 +473,9 @@ const ProjectsContent = () => {
                       className="inline-flex items-center gap-1 rounded-full uppercase w-fit"
                       style={{
                         ...body,
-                        padding: '0.2rem 0.5rem',
+                        padding: '0.3rem 0.7rem',
                         background: STATUS_STYLE[p.status].bg,
-                        fontSize: 9,
+                        fontSize: 12,
                         fontWeight: 800,
                         letterSpacing: '0.12em',
                         color: STATUS_STYLE[p.status].color,
@@ -483,7 +483,7 @@ const ProjectsContent = () => {
                     >
                       <span
                         className="rounded-full flex-shrink-0"
-                        style={{ width: 5, height: 5, background: 'currentColor' }}
+                        style={{ width: 7, height: 7, background: 'currentColor' }}
                       />
                       {STATUS_STYLE[p.status].label}
                     </span>
@@ -564,9 +564,9 @@ const ProjectsContent = () => {
                         ...body,
                         top: 10,
                         left: 10,
-                        padding: '0.25rem 0.6rem',
+                        padding: '0.35rem 0.8rem',
                         background: '#fff',
-                        fontSize: 9,
+                        fontSize: 12,
                         fontWeight: 800,
                         letterSpacing: '0.12em',
                         color: STATUS_STYLE[p.status].color,
@@ -574,7 +574,7 @@ const ProjectsContent = () => {
                     >
                       <span
                         className="rounded-full flex-shrink-0"
-                        style={{ width: 5, height: 5, background: 'currentColor' }}
+                        style={{ width: 7, height: 7, background: 'currentColor' }}
                       />
                       {STATUS_STYLE[p.status].label}
                     </span>
