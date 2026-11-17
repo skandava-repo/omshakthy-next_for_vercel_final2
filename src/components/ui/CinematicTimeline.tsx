@@ -114,7 +114,7 @@ const milestones = [
     // for. Already built with the same white-panel-left/photo-right
     // template every other timeline slide uses, so no position/overlay
     // CSS changes needed.
-    image: '/timeline-2020-madurai.webp',
+    image: '/timeline-2020-santha-kanopus.webp',
     textFree: true,
   },
   {
