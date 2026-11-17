@@ -100,11 +100,13 @@ const milestones = [
     // the company growth... not this stuff what company achieved").
     // The Madurai land aggregation is the real growth stat tied to
     // this era in the source document.
-    title: 'Madurai\nExpansion',
-    barTitle: 'Madurai\nExpansion',
-    description: 'Undertook a massive land aggregation spanning approximately **2,000 acres** in Madurai, strengthening our large-scale land strategy.',
-    stat: '2,000',
-    statLabel: 'Acres in Madurai',
+    // Copy updated on direct request: 2020 is now the Santha Towers
+    // completion (5 lakh sq.ft.) plus the aggressive Kanopus expansion.
+    title: 'Santha Towers\n& Kanopus',
+    barTitle: 'Santha Towers\n& Kanopus',
+    description: 'Completed **Santha Towers** spanning **5 lakh sq.ft.**, while aggressively expanding **Omshakthy Kanopus** with new phases and rapid growth.',
+    stat: '5L',
+    statLabel: 'Sq.Ft Santha Towers',
     // Real dedicated image now provided — an aerial shot of Madurai
     // (temple towers recognizable in the background) with a highlighted
     // land-parcel grid overlay and survey-marker pins, exactly the
