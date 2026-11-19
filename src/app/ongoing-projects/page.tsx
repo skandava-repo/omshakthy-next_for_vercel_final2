@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import ProjectStatusPageContent from '@/components/ui/ProjectStatusPageContent'
 import { projects } from '@/lib/projectsData'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
@@ -53,16 +55,18 @@ export const metadata: Metadata = {
 }
 
 export default function OngoingProjectsPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Ongoing Projects', path: '/ongoing-projects' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(FAQ.map((f) => ({ question: f.q, answer: f.a })))
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <ProjectStatusPageContent
         kicker="Live Now"
         title="Ongoing Projects"
@@ -72,6 +76,7 @@ export default function OngoingProjectsPage() {
         faq={FAQ}
         ctaText="Ready to Book Your Plot?"
       />
+      <SiteLinksSection />
       <Footer />
     </>
   )

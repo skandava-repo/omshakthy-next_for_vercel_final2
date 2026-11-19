@@ -43,7 +43,7 @@ type Leader = {
 
 const leaders: Leader[] = [
   {
-    name: 'R. Ramachanthran',
+    name: 'R Ramachanthran',
     role: 'Chairman',
     tag: 'Vision & Legacy',
     img: '/leaders/chairman.webp',

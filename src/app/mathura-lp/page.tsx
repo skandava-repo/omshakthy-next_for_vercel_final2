@@ -29,11 +29,12 @@ export default function MathuraPage() {
   // Breadcrumb on every project page; FAQ schema only for the ones with
   // real FAQ content in their data file (getFAQSchema was written
   // earlier but never actually wired into any page until now).
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: data.name, path: '/mathura-lp' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema =
     data.faq.length > 0
       ? getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
@@ -45,7 +46,7 @@ export default function MathuraPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
       <Header />
-      <ProjectLandingContent data={data} />
+      <ProjectLandingContent data={data} breadcrumbItems={breadcrumbItems} />
       <Footer />
     </>
   )

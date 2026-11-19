@@ -75,9 +75,13 @@ const tiles = [
     ],
   },
   {
+    // Was labeled "News Letter" — flagged in Adglobe's Nov 2026 audit
+    // as "a wrong signal" since this tile links to /blog, not a mailing
+    // list signup. Card key/images kept as-is (filenames only), label
+    // and caption corrected to actually describe where the card goes.
     key: 'newsletter',
-    label: 'News Letter',
-    caption: 'Stay in the loop with our latest updates and offers.',
+    label: 'Blogs',
+    caption: 'Latest articles, guides and updates from Omshakthy.',
     href: '/blog',
     switchMs: 5000,
     images: [

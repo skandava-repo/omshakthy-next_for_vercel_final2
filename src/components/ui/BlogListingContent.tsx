@@ -165,13 +165,31 @@ const BlogListingContent = () => {
   useEffect(() => {
     setMoreCount(MORE_PAGE_SIZE)
   }, [filter])
+  // Real element prod's own search-box.php has (Adglobe's Nov 2026
+  // audit flagged it missing here) — title-substring match with a
+  // live suggestion dropdown, same real behavior prod's own version
+  // has. Simpler than prod's: blogPosts is already a client-safe
+  // in-memory array here, so this filters it directly instead of
+  // prod's own fetch-the-index-page-and-parse-its-HTML approach.
+  const [searchQuery, setSearchQuery] = useState('')
+  const searchResults =
+    searchQuery.trim().length > 0
+      ? blogPosts.filter((b) => b.title.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 8)
+      : []
   const hero = bySlug(HERO_SLUG)
   const feature = bySlug(FEATURE_SLUG)
   const banner = bySlug(BANNER_SLUG)
   const [mixedA, mixedB] = MIXED_SLUGS.map(bySlug)
   const stripPosts = STRIP_SLUGS.map(bySlug)
   const curatedSlugs = new Set([HERO_SLUG, FEATURE_SLUG, BANNER_SLUG, ...MIXED_SLUGS, ...STRIP_SLUGS])
-  const filtered = filter === 'All' ? blogPosts : blogPosts.filter((b) => b.category === filter)
+  // Sorted newest-first by each post's real publishedAt (Adglobe's Nov
+  // 2026 audit: old posts were showing above newer ones on this exact
+  // "Recently Added" grid, since nothing here sorted by recency before).
+  // The hand-curated hero/feature/banner/mixed/strip slots above are
+  // untouched — those are deliberate editorial picks, not a recency bug.
+  const filtered = (filter === 'All' ? blogPosts : blogPosts.filter((b) => b.category === filter))
+    .slice()
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
   // The fixed-shape grid above stays exactly RECENT_GRID_SIZE cards.
   // Everything else matching the current filter — minus whatever's
   // already hand-placed elsewhere on the page — goes in the plain grid
@@ -398,6 +416,58 @@ const BlogListingContent = () => {
                 <span className="bp__tab-label">{c}</span>
               </Link>
             ))}
+          </div>
+          <div className="bp__search" style={{ position: 'relative', minWidth: 220 }}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search articles..."
+              aria-label="Search blog articles"
+              style={{
+                width: '100%',
+                padding: '0.55rem 1rem',
+                borderRadius: 999,
+                border: '1px solid var(--bp-line)',
+                fontSize: '0.85rem',
+                outline: 'none',
+              }}
+            />
+            {searchQuery.trim().length > 0 && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 6px)',
+                  left: 0,
+                  right: 0,
+                  background: '#fff',
+                  border: '1px solid var(--bp-line)',
+                  borderRadius: 12,
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+                  maxHeight: 280,
+                  overflowY: 'auto',
+                  zIndex: 20,
+                }}
+              >
+                {searchResults.length === 0 ? (
+                  <div className="p-3 text-sm" style={{ color: '#64748B' }}>
+                    No results found
+                  </div>
+                ) : (
+                  searchResults.map((r) => (
+                    <Link
+                      key={r.slug}
+                      href={`/blog/${r.slug}`}
+                      onClick={() => setSearchQuery('')}
+                      className="block px-4 py-2.5 text-sm hover:opacity-70"
+                      style={{ borderBottom: '1px solid var(--bp-line)' }}
+                    >
+                      {r.title}
+                    </Link>
+                  ))
+                )}
+              </div>
+            )}
           </div>
         </div>
 

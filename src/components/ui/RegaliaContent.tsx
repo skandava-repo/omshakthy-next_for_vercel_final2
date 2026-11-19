@@ -12,6 +12,7 @@ import {
 // reused directly from the home page rather than rebuilt, since a
 // real version of it already exists there (FinancialPartnersSection).
 import Link from 'next/link'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import FinancialPartnersSection from './FinancialPartnersSection'
 // The real, audited "Site Links" footer block — see that component's
 // own header comment for what it contains and why it's shared.
@@ -464,7 +465,13 @@ const RegaliaSiteVisitForm = () => {
   )
 }
 
-const Regalia = () => {
+const Regalia = ({
+  breadcrumbItems,
+}: {
+  // Optional, same reasoning as ProjectLandingContent.tsx's own prop:
+  // not every caller needs to pass this.
+  breadcrumbItems?: { name: string; path: string }[]
+} = {}) => {
   // Set page background to ink on mount
   useEffect(() => {
     document.body.style.backgroundColor = C.paper
@@ -621,6 +628,12 @@ const Regalia = () => {
           Scroll
         </motion.div>
       </div>
+
+      {/* Same fix as every other project page (ProjectLandingContent.tsx:
+          user feedback on Elite Grand's own fixed-overlay breadcrumb
+          floating over its hero) — in-flow, right where the hero ends,
+          not fixed-position over the video. */}
+      {breadcrumbItems && <Breadcrumbs items={breadcrumbItems} inline />}
 
       {/* ---------------- Brand story (paper) ----------------
           Was "pulled up over hero" — a -mt-16 negative margin +
@@ -911,7 +924,7 @@ const Regalia = () => {
           <Reveal>
             <Kicker center>Est. 1991 · Chennai</Kicker>
           </Reveal>
-          <OrnamentDivider color={C.hairLight} />
+          <div className="h-8" />
           <Reveal delay={0.1}>
             <p className="text-2xl md:text-4xl" style={{ ...display, color: C.ink, fontWeight: 500 }}>
               Incorporated in 1991 to consolidate land for the future — industries, Special Economic
@@ -1183,7 +1196,7 @@ const Regalia = () => {
           real version of this already exists on the home page
           (FinancialPartnersSection), reused here as-is rather than
           rebuilt from scratch. */}
-      <FinancialPartnersSection />
+      <FinancialPartnersSection roomy />
 
       {/* ---------------- Testimonials (footer-blue gradient) ----------------
           "Know More... Directly from the Owners" — every other project

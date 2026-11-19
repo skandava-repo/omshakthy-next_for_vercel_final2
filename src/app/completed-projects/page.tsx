@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import ProjectStatusPageContent from '@/components/ui/ProjectStatusPageContent'
 import { projects } from '@/lib/projectsData'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
@@ -49,16 +51,18 @@ export const metadata: Metadata = {
 }
 
 export default function CompletedProjectsPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Completed Projects', path: '/completed-projects' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(FAQ.map((f) => ({ question: f.q, answer: f.a })))
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <ProjectStatusPageContent
         kicker="Delivered"
         title="Completed Projects"
@@ -69,6 +73,7 @@ export default function CompletedProjectsPage() {
         faq={FAQ}
         ctaText="Have Questions About a Delivered Project?"
       />
+      <SiteLinksSection />
       <Footer />
     </>
   )

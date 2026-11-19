@@ -2,7 +2,15 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import BlogListingContent from '@/components/ui/BlogListingContent'
+import { getBreadcrumbSchema } from '@/lib/schema-org'
+
+const BREADCRUMB_ITEMS = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog' },
+]
 
 // The 4 real, indexed category-filter URLs the old site has
 // (sitemap.xml: /blog/?category=buying|investment|legal|lifestyle) —
@@ -58,12 +66,16 @@ export async function generateMetadata({
 }
 
 export default function BlogPage() {
+  const breadcrumbSchema = getBreadcrumbSchema(BREADCRUMB_ITEMS)
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
+      <Breadcrumbs items={BREADCRUMB_ITEMS} />
       <Suspense fallback={null}>
         <BlogListingContent />
       </Suspense>
+      <SiteLinksSection />
       <Footer />
     </>
   )

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import VideoGalleryContent from '@/components/ui/VideoGalleryContent'
 import { getBreadcrumbSchema } from '@/lib/schema-org'
 
@@ -12,15 +14,18 @@ export const metadata: Metadata = {
 }
 
 export default function VideoGalleryPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Video Gallery', path: '/video-gallery' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <VideoGalleryContent />
+      <SiteLinksSection />
       <Footer />
     </>
   )

@@ -28,18 +28,19 @@ export const metadata: Metadata = {
 
 export default function IndustrialParkThirumudivakkamPage() {
   const data = getProjectData('industrial-park')!
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: data.name, path: '/industrial-park' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
-      <ProjectLandingContent data={data} />
+      <ProjectLandingContent data={data} breadcrumbItems={breadcrumbItems} />
       <Footer />
     </>
   )

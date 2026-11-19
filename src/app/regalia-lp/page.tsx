@@ -52,18 +52,19 @@ export const metadata: Metadata = {
 }
 
 export default function RegaliaPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: 'OmShakthy Regalia', path: '/regalia-lp' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(REGALIA_FAQ)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
-      <RegaliaContent />
+      <RegaliaContent breadcrumbItems={breadcrumbItems} />
       <Footer />
     </>
   )

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import LocationPageContent from '@/components/ui/LocationPageContent'
 import { getLocationHubData } from '@/lib/locations'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
@@ -19,17 +21,20 @@ export const metadata: Metadata = {
 
 export default function BuyPlotsHubPage() {
   const data = getLocationHubData()
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Buy CMDA & DTCP Plots in Chennai', path: '/buy-cmda-dtcp-plots-for-sale-chennai' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <LocationPageContent data={data} />
+      <SiteLinksSection />
       <Footer />
     </>
   )

@@ -1,0 +1,26 @@
+/* Sits fixed, directly below Header (.site-nav is 102px tall on
+   desktop, ~68px below the 1024px breakpoint where Header.css's own
+   nav padding shrinks) inside the ~58px gap every page's hero already
+   reserves above its own heading (pt-40/pt-32 etc. was always bigger
+   than the header alone needs, by design, per that section's own
+   comments) — so this never touches any existing section's padding or
+   pushes page content down. Pure overlay, zero layout impact. */
+.breadcrumbs {
+  position: fixed;
+  top: 102px;
+  left: 0;
+  right: 0;
+  z-index: 998; /* below .site-nav (1000) and its dropdown, above page content */
+  pointer-events: none;
+}
+
+.breadcrumbs a,
+.breadcrumbs button {
+  pointer-events: auto;
+}
+
+@media (max-width: 1023px) {
+  .breadcrumbs {
+    top: 68px;
+  }
+}

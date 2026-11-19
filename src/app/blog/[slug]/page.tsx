@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import BlogPostContent from '@/components/ui/BlogPostContent'
 import { getAllBlogSlugs, getBlogPost } from '@/lib/blog'
 import { getBreadcrumbSchema } from '@/lib/schema-org'
@@ -76,17 +78,20 @@ export default async function BlogPostPage({
     .slice(0, 3)
     .map((s) => ({ slug: s.slug, title: s.title }))
 
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Blog', path: '/blog' },
     { name: post.title, path: `/blog/${canonicalSlug(post.slug)}` },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <BlogPostContent post={post} related={related} />
+      <SiteLinksSection />
       <Footer />
     </>
   )

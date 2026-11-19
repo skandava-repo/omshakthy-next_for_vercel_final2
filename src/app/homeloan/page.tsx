@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import HomeLoanContent from '@/components/ui/HomeLoanContent'
 import { getBreadcrumbSchema } from '@/lib/schema-org'
 
@@ -13,16 +15,19 @@ export const metadata: Metadata = {
 }
 
 export default function HomeLoanPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Home Loan', path: '/homeloan' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <HomeLoanContent />
-      <Footer />
+      <SiteLinksSection />
+      <Footer noDivider />
     </>
   )
 }

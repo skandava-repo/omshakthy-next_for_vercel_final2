@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import LandAggregationContent from '@/components/ui/LandAggregationContent'
 import { getFAQSchema, getBreadcrumbSchema } from '@/lib/schema-org'
 
@@ -31,18 +33,21 @@ export const metadata: Metadata = {
 }
 
 export default function LandAggregationPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema = getFAQSchema(FAQS)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <LandAggregationContent />
-      <Footer />
+      <SiteLinksSection />
+      <Footer noDivider />
     </>
   )
 }

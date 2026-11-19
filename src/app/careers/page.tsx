@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import CareersContent from '@/components/ui/CareersContent'
 import { getBreadcrumbSchema } from '@/lib/schema-org'
 
@@ -14,15 +16,18 @@ export const metadata: Metadata = {
 }
 
 export default function CareersPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Careers', path: '/careers' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
       <CareersContent />
+      <SiteLinksSection />
       <Footer />
     </>
   )

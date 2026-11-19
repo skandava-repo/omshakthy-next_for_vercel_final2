@@ -18,8 +18,38 @@ const navLinksLeft = [
 // data of its own; the index into this array (see the .map below) IS
 // the number, so nothing to keep in sync if entries get reordered.
 type ResourceChild = { name: string; path: string; desc: string }
+// Each dropdown's own right-hand feature card — was hardcoded to
+// Resources' one real photo/stat/link directly in the JSX; pulled out
+// here so a second dropdown (Locations, below) can have its own real
+// feature card using the exact same dropdown markup/CSS, nothing new.
+type DropdownFeature = { image: string; eyebrow: string; title: string; href: string }
 
-const navLinksRight: { name: string; path: string; children?: ResourceChild[] }[] = [
+const navLinksRight: { name: string; path: string; children?: ResourceChild[]; feature?: DropdownFeature }[] = [
+  {
+    // Fixes a real gap: the 11 real /buy-cmda-dtcp-plots-for-sale-chennai/*
+    // location pages (this site's actual money pages) had no nav entry
+    // anywhere — Adglobe's Nov 2026 audit flagged "no navigation for city
+    // pages". Capped at the same 6 slots Resources already uses (the
+    // dropdown grid below is a fixed 2x3 shape) rather than listing all 11
+    // and overflowing that shape — "All Locations" plus the 5 highest-
+    // traffic areas (most cross-linked elsewhere on the site this round).
+    name: 'Locations',
+    path: '/buy-cmda-dtcp-plots-for-sale-chennai',
+    children: [
+      { name: 'All Locations', path: '/buy-cmda-dtcp-plots-for-sale-chennai', desc: 'CMDA & DTCP approved plots across Chennai' },
+      { name: 'Avadi', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-avadi', desc: 'Plots near Avadi Railway Station' },
+      { name: 'Guduvanchery', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery', desc: "Chennai's fastest-growing suburb" },
+      { name: 'Tambaram', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram', desc: 'East & West Tambaram plots' },
+      { name: 'GST Road', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-gst-road', desc: "South Chennai's growth corridor" },
+      { name: 'Poonamallee', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-poonamallee', desc: 'Near Chennai-Bangalore Highway' },
+    ],
+    feature: {
+      image: '/canopus-magha.webp',
+      eyebrow: 'CMDA & DTCP Approved',
+      title: 'Explore All Locations',
+      href: '/buy-cmda-dtcp-plots-for-sale-chennai',
+    },
+  },
   {
     name: 'Resources',
     path: '/blog',
@@ -31,6 +61,12 @@ const navLinksRight: { name: string; path: string; children?: ResourceChild[] }[
       { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai', desc: 'How we assemble large parcels' },
       { name: 'Events', path: '/events', desc: 'Site visits, launches and meetups' },
     ],
+    feature: {
+      image: '/timeline-2024.webp',
+      eyebrow: '5,000+ Acres Aggregated',
+      title: 'See Our Projects',
+      href: '/projects',
+    },
   },
   { name: 'Contact', path: '/contact' },
 ]
@@ -42,7 +78,10 @@ const Header = () => {
   // '' (default gradient/dark), 'light' (paper sections), or 'solid-blue'
   // (flat brand blue, no gradient — currently just Leadership).
   const [theme, setTheme] = useState('')
-  const [resourcesOpen, setResourcesOpen] = useState(false)
+  // Was a single resourcesOpen boolean back when Resources was the only
+  // dropdown — now tracks which dropdown (by name) is open, since
+  // Locations is a second one using the exact same markup/CSS.
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   // Below 1024px .site-nav__links, .site-nav__phone and .site-nav__cta
   // all disappear via CSS with nothing left to replace them — this panel
   // is that replacement. Same content as the desktop nav (both link
@@ -205,8 +244,8 @@ const Header = () => {
                   <li
                     key={link.name}
                     className="site-nav__item site-nav__item--dropdown"
-                    onMouseEnter={() => setResourcesOpen(true)}
-                    onMouseLeave={() => setResourcesOpen(false)}
+                    onMouseEnter={() => setOpenDropdown(link.name)}
+                    onMouseLeave={() => setOpenDropdown((v) => (v === link.name ? null : v))}
                   >
                     <button
                       type="button"
@@ -214,17 +253,17 @@ const Header = () => {
                         link.children.some((c) => isActive(c.path)) ? ' site-nav__link--active' : ''
                       }`}
                       style={{ animationDelay: `${(i + 3) * 0.1}s` }}
-                      onClick={() => setResourcesOpen((v) => !v)}
-                      aria-expanded={resourcesOpen}
+                      onClick={() => setOpenDropdown((v) => (v === link.name ? null : link.name))}
+                      aria-expanded={openDropdown === link.name}
                     >
                       <span>{link.name}</span>
                     </button>
-                    {resourcesOpen && (
+                    {openDropdown === link.name && (
                       <div className="site-nav__dropdown">
                         <div className="site-nav__dropdown-main">
                           <span className="site-nav__dropdown-eyebrow">
                             <span className="site-nav__dropdown-eyebrow-line" />
-                            Resources
+                            {link.name}
                           </span>
                           <ul className="site-nav__dropdown-grid">
                             {link.children.map((child, ci) => (
@@ -238,7 +277,7 @@ const Header = () => {
                                   className={`site-nav__dropdown-link${
                                     isActive(child.path) ? ' site-nav__dropdown-link--active' : ''
                                   }`}
-                                  onClick={() => setResourcesOpen(false)}
+                                  onClick={() => setOpenDropdown(null)}
                                 >
                                   <span className="site-nav__dropdown-number" aria-hidden="true">
                                     {String(ci + 1).padStart(2, '0')}
@@ -256,25 +295,28 @@ const Header = () => {
                             photo-heavy every other part of this site is
                             (Hero, LeadersSection, WhatWeDoCloneContent all lean
                             on real photography, not just icons+type). One real
-                            project photo, same "5,000+ acres" figure already
-                            used in WhatWeDoCloneContent's stat card, ties this
-                            menu back into the site's own actual content instead
-                            of being a generic nav afterthought. */}
-                        <Link
-                          href="/projects"
-                          className="site-nav__dropdown-feature"
-                          style={{ animationDelay: '0.4s' }}
-                          onClick={() => setResourcesOpen(false)}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src="/timeline-2024.webp" alt="" aria-hidden="true" />
-                          <span className="site-nav__dropdown-feature-scrim" aria-hidden="true" />
-                          <span className="site-nav__dropdown-feature-content">
-                            <span className="site-nav__dropdown-feature-eyebrow">5,000+ Acres Aggregated</span>
-                            <span className="site-nav__dropdown-feature-title">See Our Projects</span>
-                            <span className="site-nav__dropdown-feature-cta">Explore &rarr;</span>
-                          </span>
-                        </Link>
+                            project photo per dropdown (each item's own
+                            `feature`, e.g. Resources' same "5,000+ acres" figure
+                            already used in WhatWeDoCloneContent's stat card)
+                            ties this menu back into the site's own actual
+                            content instead of being a generic nav afterthought. */}
+                        {link.feature && (
+                          <Link
+                            href={link.feature.href}
+                            className="site-nav__dropdown-feature"
+                            style={{ animationDelay: '0.4s' }}
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={link.feature.image} alt="" aria-hidden="true" />
+                            <span className="site-nav__dropdown-feature-scrim" aria-hidden="true" />
+                            <span className="site-nav__dropdown-feature-content">
+                              <span className="site-nav__dropdown-feature-eyebrow">{link.feature.eyebrow}</span>
+                              <span className="site-nav__dropdown-feature-title">{link.feature.title}</span>
+                              <span className="site-nav__dropdown-feature-cta">Explore &rarr;</span>
+                            </span>
+                          </Link>
+                        )}
                       </div>
                     )}
                   </li>

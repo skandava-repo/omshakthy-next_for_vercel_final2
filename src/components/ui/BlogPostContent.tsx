@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import type { BlogPost } from '@/lib/blog'
+import blogPosts from '@/data/blog/summary.json'
 import './BlogPostContent.css'
 
 /* BlogPostContent — same C/display/body/mono/Reveal pattern every other
@@ -33,6 +34,33 @@ const body: React.CSSProperties = { fontFamily: "'Inter', Helvetica, Arial, sans
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', Consolas, monospace", fontWeight: 700 }
 const ease = [0.16, 1, 0.3, 1] as const
 const WHATSAPP_NUMBER = '919150088097'
+
+// Three real sidebar widgets prod's own recent-blogs-new.php has
+// (Recent Blogs / Categories / Related Projects) that this rebuild's
+// sidebar only ever had the TOC from. Categories and Related Projects
+// are the same real 4-category and 7-project link sets prod itself
+// lists verbatim; Recent Blogs pulls the same real 4 newest posts via
+// this site's own real publishedAt dates rather than re-listing prod's
+// specific 4 (which happen to already match — prod's own list is just
+// "whatever's newest", same logic). Social share links (Facebook,
+// Twitter/X, LinkedIn, WhatsApp) are also real — prod's own set, minus
+// Pinterest (a real-estate blog post has no product image worth
+// pinning the way prod's own Pinterest icon implied).
+const CATEGORY_LINKS = [
+  { name: 'Buying Guide', slug: 'buying' },
+  { name: 'Investment', slug: 'investment' },
+  { name: 'Legal Documents', slug: 'legal' },
+  { name: 'Lifestyle & Decor', slug: 'lifestyle' },
+]
+const RELATED_PROJECT_LINKS = [
+  { name: 'OmShakthy Canopus Magha', path: '/canopus-magha-lp' },
+  { name: 'OmShakthy Industrial Park', path: '/industrial-park-lp' },
+  { name: 'OmShakthy Regalia', path: '/regalia-lp' },
+  { name: 'OmShakthy Elite Orchard', path: '/elite-orchard-lp' },
+  { name: 'OmShakthy Mathura', path: '/mathura-lp' },
+  { name: 'OmShakthy Canopus Mithila', path: '/canopus-mithila-lp' },
+  { name: 'OmShakthy Elite Grand', path: '/elite-grand-lp' },
+]
 
 const Reveal = ({
   children,
@@ -72,6 +100,12 @@ export default function BlogPostContent({ post, related }: { post: BlogPost; rel
   const whatsappText = encodeURIComponent(
     `Hi, I read "${post.title}" on the OmShakthy blog and had a question about it.`
   )
+  const pageUrl = `https://www.omshakthy.com/blog/${post.slug}`
+  const recentPosts = blogPosts
+    .filter((p) => p.slug !== post.slug)
+    .slice()
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, 4)
 
   return (
     <div style={{ backgroundColor: '#F8F8F5' }}>
@@ -86,12 +120,61 @@ export default function BlogPostContent({ post, related }: { post: BlogPost; rel
             <h1 className="text-3xl md:text-5xl mb-6" style={{ ...display, color: C.ink, lineHeight: 1.15 }}>
               {post.title}
             </h1>
+            {/* Was post.description here — the same text generateMetadata
+                uses for <meta name="description">, so the page showed the
+                identical sentence twice (once in <head>, once visibly).
+                post.excerpt is the article's own real opening line
+                instead (see lib/blog.ts), genuinely different copy. */}
             <p className="text-base md:text-lg mb-6" style={{ ...body, color: C.slate }}>
-              {post.description}
+              {post.excerpt}
             </p>
             <p style={{ ...mono, fontSize: '0.75rem', color: C.blue }}>
               OmShakthy Team &middot; {post.readTime}
             </p>
+            {/* Real icons prod's own social-share div has (Facebook,
+                Twitter/X, LinkedIn, WhatsApp — see this file's own note
+                near SIDEBAR_RECENT on why Pinterest is dropped), plain
+                text labels in this site's own link style rather than
+                importing prod's raw icon images. */}
+            <div className="flex items-center gap-4 mt-5">
+              <span style={{ ...mono, fontSize: '0.65rem', color: C.slate, letterSpacing: '0.06em' }}>SHARE</span>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mono, fontSize: '0.7rem', color: C.blue }}
+                className="hover:opacity-70"
+              >
+                Facebook
+              </a>
+              <a
+                href={`https://twitter.com/share?url=${encodeURIComponent(pageUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mono, fontSize: '0.7rem', color: C.blue }}
+                className="hover:opacity-70"
+              >
+                X
+              </a>
+              <a
+                href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(pageUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mono, fontSize: '0.7rem', color: C.blue }}
+                className="hover:opacity-70"
+              >
+                LinkedIn
+              </a>
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${post.title} ${pageUrl}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mono, fontSize: '0.7rem', color: C.blue }}
+                className="hover:opacity-70"
+              >
+                WhatsApp
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -116,24 +199,85 @@ export default function BlogPostContent({ post, related }: { post: BlogPost; rel
             <div dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
           </Reveal>
 
-          {post.toc.length > 1 && (
-            <Reveal delay={0.1} className="hidden md:block">
-              <div className="sticky top-28">
-                <p className="mb-3" style={{ ...mono, fontSize: '0.7rem', color: C.blue, letterSpacing: '0.06em' }}>
-                  ON THIS PAGE
-                </p>
-                <ul className="flex flex-col gap-2 text-sm" style={{ borderLeft: `2px solid ${C.border}`, paddingLeft: '1rem' }}>
-                  {post.toc.map((t) => (
-                    <li key={t.id}>
-                      <a href={`#${t.id}`} style={{ color: C.slate }} className="hover:opacity-70">
-                        {t.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="hidden md:block">
+            {post.toc.length > 1 && (
+              <Reveal delay={0.1}>
+                <div className="sticky top-28">
+                  <p className="mb-3" style={{ ...mono, fontSize: '0.7rem', color: C.blue, letterSpacing: '0.06em' }}>
+                    ON THIS PAGE
+                  </p>
+                  <ul className="flex flex-col gap-2 text-sm" style={{ borderLeft: `2px solid ${C.border}`, paddingLeft: '1rem' }}>
+                    {post.toc.map((t) => (
+                      <li key={t.id}>
+                        <a href={`#${t.id}`} style={{ color: C.slate }} className="hover:opacity-70">
+                          {t.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            )}
+
+            {/* Three real sidebar widgets prod's own recent-blogs-new.php
+                has (see this file's top-of-file note). Not wrapped in
+                "sticky" like the TOC above — prod's own sidebar scrolls
+                with the page past the TOC, not pinned alongside it. */}
+            <Reveal delay={0.15} className="mt-10">
+              <p className="mb-3" style={{ ...mono, fontSize: '0.7rem', color: C.blue, letterSpacing: '0.06em' }}>
+                RECENT BLOGS
+              </p>
+              <ul className="flex flex-col gap-4 text-sm">
+                {recentPosts.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={`/blog/${p.slug}`} className="flex gap-3 group">
+                      {p.heroImage && (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={p.heroImage}
+                          alt={p.title}
+                          className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                        />
+                      )}
+                      <span style={{ color: C.ink }} className="group-hover:opacity-70 leading-snug">
+                        {p.title}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </Reveal>
-          )}
+
+            <Reveal delay={0.2} className="mt-10">
+              <p className="mb-3" style={{ ...mono, fontSize: '0.7rem', color: C.blue, letterSpacing: '0.06em' }}>
+                CATEGORIES
+              </p>
+              <ul className="flex flex-col gap-2 text-sm">
+                {CATEGORY_LINKS.map((c) => (
+                  <li key={c.slug}>
+                    <Link href={`/blog?category=${c.slug}`} style={{ color: C.slate }} className="hover:opacity-70">
+                      {c.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={0.25} className="mt-10">
+              <p className="mb-3" style={{ ...mono, fontSize: '0.7rem', color: C.blue, letterSpacing: '0.06em' }}>
+                RELATED PROJECTS
+              </p>
+              <ul className="flex flex-col gap-2 text-sm">
+                {RELATED_PROJECT_LINKS.map((p) => (
+                  <li key={p.path}>
+                    <Link href={p.path} style={{ color: C.slate }} className="hover:opacity-70">
+                      {p.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
         </div>
       </section>
 

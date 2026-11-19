@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence, useInView, animate, useScroll, useTransform } from 'framer-motion'
 import FinancialPartnersSection from './FinancialPartnersSection'
 import SiteLinksSection from './SiteLinksSection'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import type { ProjectData } from '@/lib/projects'
 import { projects } from '@/lib/projectsData'
 import blogPosts from '@/data/blog/summary.json'
@@ -480,7 +481,15 @@ function assignBackgrounds<T extends { id: string }>(sections: T[]): (T & { bg: 
 const bgStyle = (bg: 'paper' | 'panel' | 'dark') =>
   bg === 'dark' ? { background: darkGradient } : { backgroundColor: bg === 'paper' ? C.paper : C.panel, color: C.ink }
 
-export default function ProjectLandingContent({ data }: { data: ProjectData }) {
+export default function ProjectLandingContent({
+  data,
+  breadcrumbItems,
+}: {
+  data: ProjectData
+  // Optional: pages not yet passing this just render without a
+  // breadcrumb strip, same as before this prop existed.
+  breadcrumbItems?: { name: string; path: string }[]
+}) {
   const address = `${data.name}, Chennai`
   const hasNarrative = data.narrativeSections.length > 0
   const hasFaq = data.faq.length > 0
@@ -632,6 +641,14 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         </motion.div>
       </section>
 
+      {/* User feedback on Elite Grand specifically: the fixed-overlay
+          breadcrumb (every other page's default, see Breadcrumbs.tsx)
+          sat awkwardly floating over this page's own ~88vh hero video
+          with nothing to visually anchor it to. Moved here, in-flow,
+          right above Specifications instead — same real trail, just
+          placed where it actually reads cleanly on this page. */}
+      {breadcrumbItems && <Breadcrumbs items={breadcrumbItems} inline />}
+
       {/* ---------------- Specifications ---------------- */}
       {data.specs.length > 0 && (
         <section className="relative overflow-hidden px-6 md:px-16 py-20" style={bgStyle(bgs.specs)}>
@@ -769,7 +786,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
               style={{ ...display, color: bgs.keyfigures === 'dark' ? C.paper : C.ink, fontWeight: 500 }}
             />
           </div>
-          <CornerFrame>
+          {/* Gold corner brackets removed (UI review #10). */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { icon: 'map', to: 7500, format: (n: number) => `${Math.round(n).toLocaleString('en-IN')}+`, label: 'Acres successfully aggregated & developed' },
@@ -786,7 +803,6 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
                 </Reveal>
               ))}
             </div>
-          </CornerFrame>
         </div>
       </section>
 
@@ -801,7 +817,8 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
         <TreeAccent side="right" tone={bgs.since1991 === 'dark' ? 'navy' : 'natural'} size={280} bottom={-30} opacity={bgs.since1991 === 'dark' ? 0.18 : 0.14} />
         <div className="relative max-w-3xl mx-auto">
           <Reveal><Kicker center color={bgs.since1991 === 'dark' ? C.mist : C.blue}>Est. 1991 · Chennai</Kicker></Reveal>
-          <OrnamentDivider color={bgs.since1991 === 'dark' ? C.paperMuted : C.hairLight} />
+          {/* Ornament divider removed — it doubled up with the kicker's own rule (UI review #11). */}
+          <div className="h-8" />
           <Reveal delay={0.1}>
             <p className="text-2xl md:text-4xl" style={{ ...display, color: bgs.since1991 === 'dark' ? C.paper : C.ink, fontWeight: 500 }}>
               Incorporated in 1991 to consolidate land for the future — industries, Special Economic
@@ -1047,7 +1064,7 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
       )}
 
       {/* ---------------- Banks Offering Loans ---------------- */}
-      <FinancialPartnersSection />
+      <FinancialPartnersSection roomy />
 
       {/* ---------------- Testimonials ----------------
           Real quotes, real buyers — "Know More about Our Projects
@@ -1223,6 +1240,30 @@ export default function ProjectLandingContent({ data }: { data: ProjectData }) {
             <SiteVisitForm projectName={data.name} />
           </Reveal>
         </div>
+      </section>
+
+      {/* ---------------- Contact (footer-blue gradient) ----------------
+          Was only on Regalia's page (RegaliaContent.tsx) — added here so
+          every project detail page ends the same way (UI review #12).
+          Same copy and styling as Regalia's. */}
+      <section className="px-6 md:px-16 py-24 text-center" style={{ background: darkGradient, color: C.paper }}>
+        <Reveal>
+          <Kicker center color={C.mist}>Get in Touch</Kicker>
+          <p className="text-2xl md:text-4xl mb-4" style={{ ...display, color: C.paper, fontWeight: 500 }}>
+            Omshakthy Agencies (Madras) Pvt Ltd
+          </p>
+          <p style={{ ...mono, color: C.paperMuted, fontSize: '0.7rem' }}>
+            OmShakthy Tower · 1N1 Jawaharlal Nehru Salai · Ekkaduthangal · Chennai 600032
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4" style={{ ...mono, color: C.paper }}>
+            <a href="tel:04440303040" className="hover:opacity-70">044 40303040</a>
+            <span style={{ color: C.hairLight }}>·</span>
+            <a href="mailto:marketing@omshakthy.net" className="hover:opacity-70">marketing@omshakthy.net</a>
+          </div>
+          <p className="mt-10" style={{ ...mono, color: C.paperMuted, fontSize: '0.66rem' }}>
+            Generating Real Assets
+          </p>
+        </Reveal>
       </section>
 
       <SiteLinksSection backgroundColor={C.paper} />

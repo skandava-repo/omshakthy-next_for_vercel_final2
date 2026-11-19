@@ -1,5 +1,18 @@
 import type { Metadata } from 'next'
+import StickyEnquiryBox from '@/components/layout/StickyEnquiryBox'
+import ChatbotLoader from '@/components/layout/ChatbotLoader'
 import './globals.css'
+
+// Indexing is OFF by default everywhere (noindex, nofollow) until this
+// is deliberately flipped on for the real production launch — per
+// Adglobe's Nov 2026 audit: the .in dev domain was found indexable,
+// flagged as a priority SEO/migration risk ("implement <meta
+// name="robots" content="noindex"> across all pages"). Set the env var
+// NEXT_PUBLIC_ALLOW_INDEXING=true (only on the final www.omshakthy.com
+// production deploy, never on the .in dev domain or any preview/
+// staging deploy) to allow indexing again once this site is the real
+// live site and the migration checklist below is actually done.
+const ALLOW_INDEXING = process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.omshakthy.com'),
@@ -31,10 +44,9 @@ export const metadata: Metadata = {
     title: 'OmShakthy Homes',
     description: 'Best plot developers in Chennai since 1991.',
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: ALLOW_INDEXING
+    ? { index: true, follow: true }
+    : { index: false, follow: false, nocache: true },
 }
 
 export default function RootLayout({
@@ -55,6 +67,22 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {children}
+        {/* Real element prod has (footer-new.php: .enquire-vertical-btn
+            + .floating-visit-form) — see StickyEnquiryBox.tsx's own
+            comment. Rendered once here rather than wired into every
+            page.tsx, same as the chatbot script below it. */}
+        <StickyEnquiryBox />
+        {/* Real chatbot prod already runs (footer-new.php) — a hosted
+            Kenyt.ai widget, same bot ID, loaded via their own script.
+            No UI of ours to design: Kenyt renders its own floating
+            widget entirely from this one tag, same as it does on
+            the live site. Adglobe's Nov 2026 audit flagged this as
+            one of the rebuild's "missing essentials". Loading itself
+            is gated (see ChatbotLoader.tsx) — was auto-opening with a
+            greeting right on top of the homepage's own intro video
+            (user report); now waits for the intro to actually finish
+            there, same as it always did on every other page. */}
+        <ChatbotLoader />
       </body>
     </html>
   )

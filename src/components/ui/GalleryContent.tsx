@@ -32,15 +32,39 @@ const baseImages = [
   { src: '/elite-grand.webp', size: 'sm' },
 ] as const
 
-// Second pass swaps each tile's size (sm<->md, lg stays lg but shifted in
-// the sequence) so a repeated photo doesn't land in an identically-shaped
-// slot right after its first appearance.
+// Second pass used to just repeat baseImages (size-swapped so a repeat
+// didn't land in an identically-shaped slot) — flagged in Adglobe's Nov
+// 2026 audit as real photos showing twice on the same gallery page.
+// Fixed with 15 more real, already-used-elsewhere OmShakthy photos
+// (projects, MSB apartments, company-history timeline shots) instead —
+// same tile count/size pattern as before (grid structure untouched),
+// just genuinely different photos filling it. Only the last 3 slots
+// still repeat a first-pass photo: the real asset pool ran out, and
+// inventing a stock photo to avoid that felt worse than 3 repeats.
+const altImages = [
+  '/mathura.webp',
+  '/regalia.webp',
+  '/property-5.webp',
+  '/property-6.webp',
+  '/msb-coimbatore.webp',
+  '/msb-madurai.webp',
+  '/msb-paruthipattu.webp',
+  '/timeline-1991.webp',
+  '/timeline-1993.webp',
+  '/timeline-1997.webp',
+  '/timeline-1998.webp',
+  '/timeline-2000.webp',
+  '/timeline-2020-madurai.webp',
+  '/timeline-2020-santha-kanopus.webp',
+  '/timeline-2024.webp',
+] as const
+
 const SWAP_SIZE: Record<string, 'lg' | 'md' | 'sm'> = { lg: 'lg', md: 'sm', sm: 'md' }
 
 const images = [
   ...baseImages.map((img, i) => ({ ...img, key: `a-${i}` })),
   ...baseImages.map((img, i) => ({
-    ...img,
+    src: altImages[i] ?? img.src,
     size: SWAP_SIZE[img.size],
     key: `b-${i}`,
   })),

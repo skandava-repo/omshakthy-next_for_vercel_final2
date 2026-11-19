@@ -23,11 +23,12 @@ export const metadata: Metadata = {
 
 export default function MathuraElitePage() {
   const data = getProjectData('mathura-elite-lp')!
-  const breadcrumbSchema = getBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: data.name, path: '/mathura-elite-lp' },
-  ])
+  ]
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems)
   const faqSchema =
     data.faq.length > 0
       ? getFAQSchema(data.faq.map((f) => ({ question: f.q, answer: f.a })))
@@ -39,7 +40,7 @@ export default function MathuraElitePage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
       <Header />
-      <ProjectLandingContent data={data} />
+      <ProjectLandingContent data={data} breadcrumbItems={breadcrumbItems} />
       <Footer />
     </>
   )

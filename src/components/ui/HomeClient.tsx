@@ -16,6 +16,7 @@ import HomeFaqSection from '@/components/ui/HomeFaqSection'
 import PageController from '@/components/ui/PageController'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import SiteLinksSection from '@/components/ui/SiteLinksSection'
 import { useState, useEffect } from 'react'
 
 export default function HomeClient() {
@@ -104,6 +105,7 @@ export default function HomeClient() {
         <HomeLatestBlogsSection />
         <HomeFaqSection />
       </main>
+      <SiteLinksSection />
       <Footer />
     </>
   )
