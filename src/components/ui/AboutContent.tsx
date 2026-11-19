@@ -601,6 +601,7 @@ const AboutContent = () => {
             {[
               { name: 'Mahindra World City', file: '/clients/mahindra-world-city.webp' },
               { name: 'Pepsi', file: '/clients/pepsi.webp' },
+              { name: 'Unitech', file: '/clients/unitech.webp' },
               { name: 'Reliance Petroleum Limited', file: '/clients/reliance-petroleum.webp' },
               { name: 'Asiana Hotels & Resorts', file: '/clients/asiana-hotels.webp' },
               { name: 'Reliance Communications', file: '/clients/reliance-communications.webp' },

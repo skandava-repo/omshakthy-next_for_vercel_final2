@@ -85,9 +85,9 @@ const milestones = [
     // were fabricated in the previous description.
     title: 'Corporate Giants',
     barTitle: 'Corporate\nGiants',
-    description: 'Executed a major land aggregation for **PepsiCo**, strengthening our experience with large corporate land requirements.',
+    description: 'Executed major land aggregations for corporate giants **PepsiCo** and **Unitech**, strengthening our experience with large corporate land requirements.',
     stat: '2000',
-    statLabel: 'PepsiCo Partnership',
+    statLabel: 'PepsiCo & Unitech',
     image: '/timeline-2000.webp',
     textFree: true,
   },
