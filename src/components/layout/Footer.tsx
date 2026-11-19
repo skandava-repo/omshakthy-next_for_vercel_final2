@@ -10,12 +10,15 @@ interface FooterProps {
   // smaller) without touching the shared .ft__deco rule every other
   // page (including home) still uses.
   decoClassName?: string
+  // Drops the 2px light divider on top — for pages whose last section is
+  // dark, where that line shows up as a stray white stripe (UI review #14).
+  noDivider?: boolean
 }
 
-const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName }: FooterProps) => {
+const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName, noDivider = false }: FooterProps) => {
   return (
     <>
-    <footer className="ft">
+    <footer className={`ft${noDivider ? ' ft--flush' : ''}`}>
       <div className="ft__inner">
         <div className="ft__top">
           {/* Brand */}

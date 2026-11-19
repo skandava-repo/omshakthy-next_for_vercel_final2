@@ -429,8 +429,9 @@
 }
 
 .property-cta__btn:hover {
-  background-color: #8F592D;
-  border-color: #8F592D;
+  /* Same darken-on-hover blue as the header CTA and the other buttons. */
+  background-color: #004385;
+  border-color: #004385;
 }
 
 /* Arrow + end-of-section divider are mobile-only additions — hidden on

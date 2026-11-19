@@ -70,7 +70,7 @@ const features = [
 ]
 
 const areas = ['Anna Nagar', 'OMR (Old Mahabalipuram Road)', 'Velachery', 'Tambaram', 'Porur', 'Ambattur', 'Sholinganallur']
-const banks = ['State Bank of India (SBI)', 'HDFC Bank', 'ICICI Bank', 'Axis Bank']
+const banks = ['Indian Bank', 'ICICI Bank', 'HDFC Bank', 'Kotak Mahindra Bank', 'Axis Bank', 'IDFC FIRST Bank', 'Bajaj Finserv'] // same list as the homepage Financial Partners strip (UI review #13)
 
 const steps = [
   'Use the home loan EMI calculator to estimate your monthly outflow and plan your budget.',

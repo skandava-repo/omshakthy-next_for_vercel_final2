@@ -25,7 +25,7 @@ const partnerLogos = [
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-const FinancialPartnersSection = () => {
+const FinancialPartnersSection = ({ roomy = false }: { roomy?: boolean }) => {
   const sectionRef = useRef<HTMLElement>(null)
   const built = useSectionEnter(sectionRef, 150)
 
@@ -33,7 +33,7 @@ const FinancialPartnersSection = () => {
   // as LeadersSection/WhatWeDoCloneContent) so the header shows the
   // same dark gradient bar as Hero instead of a mismatched light one.
   return (
-    <section ref={sectionRef} className="fp" aria-label="Financial partners">
+    <section ref={sectionRef} className={`fp${roomy ? ' fp--roomy' : ''}`} aria-label="Financial partners">
       <div className="fp__inner">
         <span className="fp__label">Financial Partners</span>
         <motion.h3

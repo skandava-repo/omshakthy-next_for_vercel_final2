@@ -64,7 +64,7 @@ const eligibility = [
   'Employment Stability: Consistent work history is preferred.',
 ]
 
-const banks = ['State Bank of India (SBI)', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Canara Bank', 'Tamilnad Mercantile Bank']
+const banks = ['Indian Bank', 'ICICI Bank', 'HDFC Bank', 'Kotak Mahindra Bank', 'Axis Bank', 'IDFC FIRST Bank', 'Bajaj Finserv'] // same list as the homepage Financial Partners strip (UI review #13)
 
 const steps = [
   { title: 'Initial Consultation', text: 'We assess your requirements, budget, and preferred location to suggest the best financing options.' },

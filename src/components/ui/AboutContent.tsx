@@ -597,7 +597,7 @@ const AboutContent = () => {
               Our Clients
             </h2>
           </Reveal>
-          <div className="mt-10 grid grid-cols-3 sm:grid-cols-5 gap-4 md:gap-6">
+          <div className="mt-10 flex flex-wrap justify-center gap-4 md:gap-6">
             {[
               { name: 'Mahindra World City', file: '/clients/mahindra-world-city.webp' },
               { name: 'Pepsi', file: '/clients/pepsi.webp' },
@@ -609,7 +609,7 @@ const AboutContent = () => {
               { name: 'Tamil Nadu SIDCO', file: '/clients/tn-sidco.webp' },
               { name: 'TWAD Board', file: '/clients/twad-board.webp' },
             ].map((c, i) => (
-              <Reveal key={c.name} delay={i * 0.04}>
+              <Reveal key={c.name} delay={i * 0.04} className="basis-[calc((100%-2rem)/3)] sm:basis-[calc((100%-4rem)/5)] md:basis-[calc((100%-6rem)/5)]">
                 <div
                   className="h-full flex items-center justify-center rounded-2xl p-5 transition-all duration-300 hover:shadow-md"
                   style={{ backgroundColor: '#fff', border: `1px solid ${C.border}` }}

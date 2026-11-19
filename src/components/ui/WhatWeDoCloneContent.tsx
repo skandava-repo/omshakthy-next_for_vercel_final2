@@ -19,11 +19,18 @@ import './WhatWeDoCloneContent.css'
    the same way the reference's photos are. */
 
 const RowIcons = {
+  // Land parcel plan: a surveyed plot split into lots, with a marker at
+  // each corner — reads as "land", where the old folded-map shape read
+  // as generic navigation (UI review #3).
   map: () => (
     <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M6 9l7-3 6 3 7-3v17l-7 3-6-3-7 3Z" />
-      <path d="M13 6v17M19 9v17" />
-      <circle cx="16" cy="15" r="2.2" fill="currentColor" stroke="none" />
+      <path d="M5 11l10-5 12 4-3 15-15 3Z" />
+      <path d="M15 6l-2 17M9.5 12.5l17 3.5M8 22l16-1" />
+      <circle cx="5" cy="11" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="6" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="27" cy="10" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="24" cy="25" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="28" r="1.6" fill="currentColor" stroke="none" />
     </svg>
   ),
   buildings: () => (
@@ -40,13 +47,14 @@ const RowIcons = {
       <path d="M5 18h22" />
     </svg>
   ),
-  // Pickaxe over a ground line — same 32-grid, stroke-only style as the
-  // other row icons.
+  // Pickaxe (curved head crossing a handle) resting on a rock pile — the
+  // old single-stroke version didn't read as mining (UI review #3).
   mining: () => (
     <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M8 6c5-2.5 11.5-2 17 2.5" />
-      <path d="M16.5 5.5L7 24" />
-      <path d="M4 27h24" />
+      <path d="M9 26L21 11" />
+      <path d="M7 10C14 3.5 23 4 29 11" />
+      <path d="M7 10l2.2 1.2M29 11l-2.4.4" />
+      <path d="M15 28l3-4.5 3 1.5 2.5-3 3.5 6Z" />
     </svg>
   ),
 }
@@ -83,7 +91,7 @@ const rows: Row[] = [
   },
   {
     code: '04',
-    title: 'Mining',
+    title: 'Nellai Bhavana Enterprisers',
     // TODO: placeholder copy — replace with the approved Mining description.
     desc: 'Responsible extraction of construction-grade materials at source.',
     image: '/tp/tp-mining.webp',

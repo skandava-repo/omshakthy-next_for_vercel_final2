@@ -40,10 +40,12 @@ const Reveal = ({ children, delay = 0, className, style }: { children: React.Rea
   </motion.div>
 )
 
-const Kicker = ({ children, color = C.blue }: { children: React.ReactNode; color?: string }) => (
+// `center` centres the gold rule under centred headings — it used to sit at
+// the left edge even when the heading text above it was centred (UI review #15).
+const Kicker = ({ children, color = C.blue, center = false }: { children: React.ReactNode; color?: string; center?: boolean }) => (
   <div>
     <span style={{ ...mono, color }}>{children}</span>
-    <span aria-hidden style={{ display: 'block', width: 34, height: 2.5, borderRadius: 999, background: C.gold, marginTop: 8 }} />
+    <span aria-hidden style={{ display: 'block', width: 34, height: 2.5, borderRadius: 999, background: C.gold, marginTop: 8, ...(center ? { marginLeft: 'auto', marginRight: 'auto' } : {}) }} />
   </div>
 )
 
@@ -113,7 +115,7 @@ export default function LandAggregationContent() {
       <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.panel }}>
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-10">
-            <Kicker color={C.blue}>Trusted at Scale</Kicker>
+            <Kicker center color={C.blue}>Trusted at Scale</Kicker>
             <h2 className="text-2xl md:text-3xl mt-3" style={{ ...display, color: C.ink, fontWeight: 500 }}>
               Major Land Aggregation Clients
             </h2>
@@ -173,7 +175,7 @@ export default function LandAggregationContent() {
       <section className="px-6 md:px-16 py-20" style={{ backgroundColor: C.panel }}>
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-10">
-            <Kicker color={C.blue}>Prime Locations, Profitable Investments</Kicker>
+            <Kicker center color={C.blue}>Prime Locations, Profitable Investments</Kicker>
             <h2 className="text-2xl md:text-3xl mt-3" style={{ ...display, color: C.ink, fontWeight: 500 }}>
               Ongoing Land Aggregation Projects
             </h2>

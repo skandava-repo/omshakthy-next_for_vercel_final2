@@ -75,6 +75,102 @@ const DropdownChevron = () => (
     </span>
   </span>
 )
+
+/* Custom dropdown replacing the native <select>: on macOS/iPad the native
+   popup is drawn *over* the field itself, hiding the selected value
+   (UI review #5). This keeps the field visible and opens the list
+   directly beneath it. */
+const FilterSelect = ({
+  value,
+  options,
+  onChange,
+  label,
+}: {
+  value: string
+  options: readonly string[]
+  onChange: (v: string) => void
+  label: string
+}) => {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: MouseEvent | TouchEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('touchstart', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('touchstart', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+  return (
+    <div className="relative" ref={rootRef} style={{ zIndex: open ? 30 : 1 }}>
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={label}
+        onClick={() => setOpen((o) => !o)}
+        className="w-full text-left px-5 pr-14 py-3.5 rounded-full text-sm outline-none"
+        style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
+      >
+        {value}
+      </button>
+      <DropdownChevron />
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute left-0 right-0 overflow-auto"
+          style={{
+            top: 'calc(100% + 6px)',
+            maxHeight: 260,
+            margin: 0,
+            padding: 6,
+            listStyle: 'none',
+            borderRadius: 18,
+            background: '#fff',
+            border: `1px solid ${C.border}`,
+            boxShadow: '0 18px 40px -16px rgba(11,31,58,0.35)',
+          }}
+        >
+          {options.map((o) => (
+            <li
+              key={o}
+              role="option"
+              aria-selected={o === value}
+              onClick={() => {
+                onChange(o)
+                setOpen(false)
+              }}
+              className="cursor-pointer"
+              style={{
+                ...body,
+                padding: '0.6rem 0.9rem',
+                borderRadius: 12,
+                fontSize: 14,
+                color: o === value ? C.blue : C.ink,
+                fontWeight: o === value ? 700 : 400,
+                background: o === value ? 'rgba(13,107,178,0.08)' : 'transparent',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(13,107,178,0.08)')}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = o === value ? 'rgba(13,107,178,0.08)' : 'transparent')
+              }
+            >
+              {o}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 const ease = [0.16, 1, 0.3, 1] as const
 
 // Cheap 2-layer shadow, not .hero-slider__title's full 8-layer stack —
@@ -273,7 +369,8 @@ const ProjectsContent = () => {
           and bathrooms, which our land/plot inventory doesn't have. */}
       {/* Back to white with the animated building-sketch watermark — the
           real aerial photo tried here didn't work out, reverted. */}
-      <section className="relative overflow-hidden px-6 md:px-10 pt-16 pb-16" style={{ backgroundColor: '#fff' }} data-header-theme="light">
+      {/* overflow-x clipped only (not hidden): the custom filter dropdown lists open below the last row and must not be cut off. */}
+      <section className="relative px-6 md:px-10 pt-16 pb-16" style={{ backgroundColor: '#fff', overflowX: 'clip', zIndex: 20 }} data-header-theme="light">
         <motion.img
           src="/about/building-sketch.webp"
           alt=""
@@ -328,49 +425,13 @@ const ProjectsContent = () => {
                 right next to it), the same "custom-styled to match, not
                 left as whatever the OS defaults to" idea Header.tsx's
                 own dropdown already went through. */}
-            <div className="relative">
-              <select
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
-                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-              >
-                {locationOptions.map((l) => (
-                  <option key={l} value={l}>{l}</option>
-                ))}
-              </select>
-              <DropdownChevron />
-            </div>
+            <FilterSelect label="Location" value={location} options={locationOptions} onChange={(v) => setLocation(v)} />
 
-            <div className="relative">
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
-                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-              >
-                {typeOptions.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-              <DropdownChevron />
-            </div>
+            <FilterSelect label="Type" value={type} options={typeOptions} onChange={(v) => setType(v)} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-            <div className="relative">
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value as (typeof statusOptions)[number])}
-                className="w-full appearance-none px-5 pr-11 py-3.5 rounded-full text-sm outline-none"
-                style={{ ...body, border: `1px solid ${C.border}`, color: C.ink, backgroundColor: C.panel }}
-              >
-                {statusOptions.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-              <DropdownChevron />
-            </div>
+            <FilterSelect label="Status" value={status} options={statusOptions} onChange={(v) => setStatus(v as (typeof statusOptions)[number])} />
             <button
               type="button"
               onClick={resetFilters}
@@ -444,7 +505,7 @@ const ProjectsContent = () => {
                  the scrim as plain dark text. gap-3 -> gap-5 to narrow
                  each card slightly, per request. */
               const desktopCardInner = (
-                <div className="relative overflow-hidden" style={{ aspectRatio: '2.5 / 1' }}>
+                <div className="relative overflow-hidden" style={{ aspectRatio: '2.2 / 1' }}>
                   <img
                     src={p.image}
                     alt={p.name}
@@ -491,10 +552,10 @@ const ProjectsContent = () => {
                       className="uppercase"
                       style={{
                         ...display,
-                        margin: '0.3rem 0 0',
-                        fontSize: 28,
+                        margin: '0.85rem 0 0',
+                        fontSize: 21,
                         fontWeight: 600,
-                        lineHeight: 1.15,
+                        lineHeight: 1.25,
                         letterSpacing: '0.02em',
                         color: C.ink,
                         overflowWrap: 'break-word',
@@ -507,7 +568,7 @@ const ProjectsContent = () => {
                     </h3>
                     <p
                       className="flex items-center gap-1"
-                      style={{ ...body, margin: '0.15rem 0 0', fontSize: 15, color: C.slate, minWidth: 0 }}
+                      style={{ ...body, margin: '0.7rem 0 0', fontSize: 14, color: C.slate, minWidth: 0 }}
                     >
                       <svg viewBox="0 0 24 24" width={13} height={13} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                         <path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z" />
@@ -515,13 +576,13 @@ const ProjectsContent = () => {
                       </svg>
                       {p.location}
                     </p>
-                    <p style={{ ...body, marginTop: '0.35rem', fontSize: 14.5, fontWeight: 600, color: C.ink }}>
+                    <p style={{ ...body, marginTop: '0.9rem', fontSize: 14.5, fontWeight: 600, color: C.ink }}>
                       {p.price}
                     </p>
                     {/* Same type label already shown top-right on the
                         photo (className="block text-sm") — also added
                         here in the details panel, per request. */}
-                    <p className="block text-sm" style={{ ...body, marginTop: '0.35rem', color: C.slate }}>
+                    <p className="block text-sm" style={{ ...body, marginTop: '0.45rem', color: C.slate }}>
                       {p.type}
                     </p>
                   </div>

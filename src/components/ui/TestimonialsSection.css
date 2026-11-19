@@ -161,7 +161,10 @@
   color: #0B1F3A;
 }
 .tw__title em {
-  font-style: italic;
+  /* Upright, not italic: the italic Playfair digits/comma/plus looked
+     mismatched against the upright "Happy Customers" (UI review #2). */
+  font-style: normal;
+  font-weight: inherit;
   color: #0D6BB2;
 }
 .tw__rating {

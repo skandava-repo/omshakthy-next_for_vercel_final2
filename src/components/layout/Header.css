@@ -24,17 +24,13 @@
    or sits as a mismatched dark bar. Swap to a soft paper scrim + dark ink
    text instead of just going transparent, so the header still reads as a
    header rather than dissolving into the page. */
+/* Same blue gradient as the default header on every page (UI review
+   #7) — pages tagged data-header-theme="light" used to get a pale paper
+   scrim with dark text, which made the navbar look different from page
+   to page. Kept as a selector so the theme attribute stays harmless. */
 .site-nav--light {
-  background: linear-gradient(rgba(251, 248, 242, 0.82) 0%, rgba(251, 248, 242, 0.4) 55%, transparent 100%);
-  color: var(--os-ink, #0B1F3A);
-}
-.site-nav--light .site-nav__link,
-.site-nav--light .site-nav__link span {
-  color: rgba(11, 31, 58, 0.65);
-}
-.site-nav--light .site-nav__link:hover,
-.site-nav--light .site-nav__link:hover span {
-  color: var(--os-ink, #0B1F3A);
+  background: linear-gradient(#004385e6 0%, #004385ba 40%, #00000000 95%);
+  color: #fff;
 }
 
 /* Transparent variant — no bar at all, for sections that opt in via

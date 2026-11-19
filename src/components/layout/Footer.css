@@ -30,6 +30,10 @@
   background: var(--gradient-dark-section, linear-gradient(180deg, #004385 0%, #0D6BB2 100%));
 }
 
+.ft--flush {
+  border-top: 0;
+}
+
 .ft__inner {
   position: relative;
   z-index: 2;
