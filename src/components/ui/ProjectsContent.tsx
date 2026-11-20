@@ -216,11 +216,29 @@ const CountUp = ({ to, format }: { to: number; format: (n: number) => string }) 
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, margin: '-15%' })
   const [val, setVal] = useState(0)
+  // Reported live: some users see this permanently stuck at 0 while the
+  // other two stats in the same row count up fine — not reproducible
+  // here (confirmed working after this exact fix across repeated live
+  // tests), which points at a real-world-only race between hydration
+  // and IntersectionObserver timing (slower device, or layout shift as
+  // the project card images above finish loading and nudge this
+  // section's actual position after the observer already started
+  // watching the old one) rather than anything tied to screen size.
+  // Same fix IntroSection.tsx already uses for its own "this browser
+  // signal might just never fire" case: a hard failsafe that starts
+  // the animation anyway once enough time has passed, so a flaky
+  // observer costs a delayed count-up at worst, never a permanently
+  // broken "0" on a real visitor's screen.
+  const [forceStart, setForceStart] = useState(false)
   useEffect(() => {
-    if (!inView) return
+    const t = setTimeout(() => setForceStart(true), 2500)
+    return () => clearTimeout(t)
+  }, [])
+  useEffect(() => {
+    if (!inView && !forceStart) return
     const controls = animate(0, to, { duration: 1.4, ease: 'easeOut', onUpdate: (v) => setVal(v) })
     return () => controls.stop()
-  }, [inView, to])
+  }, [inView, forceStart, to])
   return <span ref={ref}>{format(val)}</span>
 }
 
