@@ -711,7 +711,15 @@ const ProjectsContent = () => {
         <div className="max-w-[1180px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
             { to: 35, format: (n: number) => `${Math.round(n)}+`, label: 'years shaping Tamil Nadu’s real estate landscape.' },
-            { to: projects.length, format: (n: number) => `${Math.round(n)}`, label: 'landmark developments delivered across Tamil Nadu.' },
+            // "delivered" was wrong — this count is projects.length, the
+            // FULL real portfolio listed above (Sold, Ongoing, and
+            // Upcoming all included, on purpose, per this section's own
+            // comment on staying in sync with that grid). Several of
+            // those genuinely aren't delivered yet. Reworded instead of
+            // filtering the count down, since the number itself is the
+            // honest one: every real OmShakthy project, not just the
+            // finished ones.
+            { to: projects.length, format: (n: number) => `${Math.round(n)}`, label: 'landmark developments across Tamil Nadu.' },
             { to: 100, format: (n: number) => `${Math.round(n)}%`, label: 'litigation-free track record, every single time.' },
           ].map((s) => (
             <Reveal key={s.label} className="flex items-baseline gap-4">
