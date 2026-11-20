@@ -80,7 +80,18 @@ export default function StickyEnquiryBox() {
           <span
             style={{
               writingMode: 'vertical-rl',
-              fontFamily: "'JetBrains Mono', Consolas, monospace",
+              // Was 'JetBrains Mono', Consolas, monospace — measured,
+              // real difference between Chrome and the iPad Simulator:
+              // same height (~129px both), but width 34px in Chrome
+              // vs ~15.5px in the Simulator. A vertical-text element's
+              // width is driven by the font's line-height, not its
+              // font-size, so a font that hadn't finished loading (or
+              // failed to) falling back to Consolas — not an iOS font
+              // at all — then to the bare `monospace` keyword, with
+              // different metrics than JetBrains Mono's real ones,
+              // explains it exactly. Prod's own real button has no
+              // custom font-family either — removing it matches prod
+              // and removes the font-load race this depended on.
               fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.12em',
