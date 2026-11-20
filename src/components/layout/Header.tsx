@@ -4,12 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import './Header.css'
 
-const navLinksLeft = [
-  { name: 'Projects', path: '/projects' },
-  { name: 'About', path: '/about' },
-  { name: 'Gallery', path: '/image-gallery' },
-]
-
 // No icons — a stroke-icon-in-a-circle per row read as generic-corporate
 // (roughly the same complaint as the flat list it replaced, just with
 // icons added). Each row gets a plain numeral instead — 01 through 06,
@@ -23,16 +17,47 @@ type ResourceChild = { name: string; path: string; desc: string }
 // here so a second dropdown (Locations, below) can have its own real
 // feature card using the exact same dropdown markup/CSS, nothing new.
 type DropdownFeature = { image: string; eyebrow: string; title: string; href: string }
+type NavLink = { name: string; path: string; children?: ResourceChild[]; feature?: DropdownFeature }
 
-const navLinksRight: { name: string; path: string; children?: ResourceChild[]; feature?: DropdownFeature }[] = [
+// Was a plain link to /projects — prod's own nav has Projects as a
+// dropdown (ongoing/upcoming/completed/land aggregation/industrial
+// park each their own direct entry, confirmed against the real site
+// mirror), none of which had a nav path here at all even though every
+// one of these is a real, indexed page. Flagged back by the client/
+// Adglobe team as "navigation is missing priority pages" — this is
+// what that meant, not a vague note.
+const navLinksLeft: NavLink[] = [
   {
-    // Fixes a real gap: the 11 real /buy-cmda-dtcp-plots-for-sale-chennai/*
+    name: 'Projects',
+    path: '/projects',
+    children: [
+      { name: 'All Projects', path: '/projects', desc: 'Every OmShakthy project, one place' },
+      { name: 'Ongoing Projects', path: '/ongoing-projects', desc: 'Currently under development' },
+      { name: 'Upcoming Projects', path: '/upcoming-projects', desc: 'Launching soon across Tamil Nadu' },
+      { name: 'Completed Projects', path: '/completed-projects', desc: 'Delivered and handed over' },
+      { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai', desc: 'How we assemble large parcels' },
+      { name: 'Industrial Park', path: '/industrial-park', desc: 'Industrial land in Thirumudivakkam' },
+    ],
+    feature: {
+      image: '/timeline-2024.webp',
+      eyebrow: '5,000+ Acres Aggregated',
+      title: 'See Our Projects',
+      href: '/projects',
+    },
+  },
+  { name: 'About', path: '/about' },
+  { name: 'Gallery', path: '/image-gallery' },
+]
+
+const navLinksRight: NavLink[] = [
+  {
+    // Fixes a real gap: the 12 real /buy-cmda-dtcp-plots-for-sale-chennai/*
     // location pages (this site's actual money pages) had no nav entry
     // anywhere — Adglobe's Nov 2026 audit flagged "no navigation for city
-    // pages". Capped at the same 6 slots Resources already uses (the
-    // dropdown grid below is a fixed 2x3 shape) rather than listing all 11
-    // and overflowing that shape — "All Locations" plus the 5 highest-
-    // traffic areas (most cross-linked elsewhere on the site this round).
+    // pages". Was capped at 6 slots assuming the dropdown grid was a fixed
+    // 2x3 shape — it isn't (`.site-nav__dropdown-grid` is 2 explicit
+    // columns, implicit/auto rows, confirmed in Header.css), so there's no
+    // layout reason to drop 6 of 12 real pages from nav. All of them now.
     name: 'Locations',
     path: '/buy-cmda-dtcp-plots-for-sale-chennai',
     children: [
@@ -42,6 +67,12 @@ const navLinksRight: { name: string; path: string; children?: ResourceChild[]; f
       { name: 'Tambaram', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram', desc: 'East & West Tambaram plots' },
       { name: 'GST Road', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-gst-road', desc: "South Chennai's growth corridor" },
       { name: 'Poonamallee', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-poonamallee', desc: 'Near Chennai-Bangalore Highway' },
+      { name: 'Thirumullaivoyal', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-thirumullaivoyal', desc: 'Close to Avadi & Ambattur' },
+      { name: 'Paruthipattu', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-paruthipattu', desc: 'Near Avadi, off the GST corridor' },
+      { name: 'Vandalur', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-vandalur', desc: 'Near Vandalur Zoo & GST Road' },
+      { name: 'Maraimalai Nagar', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-maraimalai-nagar', desc: 'South Chennai industrial corridor' },
+      { name: 'Ambattur', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-near-ambattur', desc: 'Established industrial suburb' },
+      { name: 'Chrompet', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-chrompet', desc: 'Well-connected South Chennai suburb' },
     ],
     feature: {
       image: '/canopus-magha.webp',
@@ -225,18 +256,91 @@ const Header = () => {
               the phone/CTA on the right. */}
           <div className="site-nav__center">
             <ul className="site-nav__links">
-              {navLinksLeft.map((link, i) => (
-                <li key={link.name} className="site-nav__item">
-                  <Link
-                    href={link.path}
-                    className={`site-nav__link${isActive(link.path) ? ' site-nav__link--active' : ''}`}
-                    style={{ animationDelay: `${i * 0.1}s` }}
-                    aria-current={isActive(link.path) ? 'page' : undefined}
+              {navLinksLeft.map((link, i) =>
+                link.children ? (
+                  <li
+                    key={link.name}
+                    className="site-nav__item site-nav__item--dropdown"
+                    onMouseEnter={() => setOpenDropdown(link.name)}
+                    onMouseLeave={() => setOpenDropdown((v) => (v === link.name ? null : v))}
                   >
-                    <span>{link.name}</span>
-                  </Link>
-                </li>
-              ))}
+                    <button
+                      type="button"
+                      className={`site-nav__link site-nav__link--dropdown${
+                        link.children.some((c) => isActive(c.path)) ? ' site-nav__link--active' : ''
+                      }`}
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                      onClick={() => setOpenDropdown((v) => (v === link.name ? null : link.name))}
+                      aria-expanded={openDropdown === link.name}
+                    >
+                      <span>{link.name}</span>
+                    </button>
+                    {openDropdown === link.name && (
+                      <div className="site-nav__dropdown">
+                        <div className="site-nav__dropdown-main">
+                          <span className="site-nav__dropdown-eyebrow">
+                            <span className="site-nav__dropdown-eyebrow-line" />
+                            {link.name}
+                          </span>
+                          <ul className="site-nav__dropdown-grid">
+                            {link.children.map((child, ci) => (
+                              <li
+                                key={child.name}
+                                className="site-nav__dropdown-item"
+                                style={{ animationDelay: `${0.05 + ci * 0.05}s` }}
+                              >
+                                <Link
+                                  href={child.path}
+                                  className={`site-nav__dropdown-link${
+                                    isActive(child.path) ? ' site-nav__dropdown-link--active' : ''
+                                  }`}
+                                  onClick={() => setOpenDropdown(null)}
+                                >
+                                  <span className="site-nav__dropdown-number" aria-hidden="true">
+                                    {String(ci + 1).padStart(2, '0')}
+                                  </span>
+                                  <span className="site-nav__dropdown-text">
+                                    <span className="site-nav__dropdown-title">{child.name}</span>
+                                    <span className="site-nav__dropdown-desc">{child.desc}</span>
+                                  </span>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        {link.feature && (
+                          <Link
+                            href={link.feature.href}
+                            className="site-nav__dropdown-feature"
+                            style={{ animationDelay: '0.4s' }}
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={link.feature.image} alt="" aria-hidden="true" />
+                            <span className="site-nav__dropdown-feature-scrim" aria-hidden="true" />
+                            <span className="site-nav__dropdown-feature-content">
+                              <span className="site-nav__dropdown-feature-eyebrow">{link.feature.eyebrow}</span>
+                              <span className="site-nav__dropdown-feature-title">{link.feature.title}</span>
+                              <span className="site-nav__dropdown-feature-cta">Explore &rarr;</span>
+                            </span>
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </li>
+                ) : (
+                  <li key={link.name} className="site-nav__item">
+                    <Link
+                      href={link.path}
+                      className={`site-nav__link${isActive(link.path) ? ' site-nav__link--active' : ''}`}
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                      aria-current={isActive(link.path) ? 'page' : undefined}
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
             <ul className="site-nav__links">
               {navLinksRight.map((link, i) =>
@@ -383,17 +487,36 @@ const Header = () => {
         <div className="mobile-nav__backdrop" onClick={() => setMobileMenuOpen(false)} />
         <div className="mobile-nav__panel">
           <ul className="mobile-nav__links">
-            {navLinksLeft.map((link) => (
-              <li key={link.name}>
-                <Link
-                  href={link.path}
-                  className={isActive(link.path) ? 'mobile-nav__link--active' : undefined}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
+            {navLinksLeft.map((link) =>
+              link.children ? (
+                <li key={link.name} className="mobile-nav__group">
+                  <span className="mobile-nav__group-label">{link.name}</span>
+                  <ul>
+                    {link.children.map((child) => (
+                      <li key={child.name}>
+                        <Link
+                          href={child.path}
+                          className={isActive(child.path) ? 'mobile-nav__link--active' : undefined}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {child.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={link.name}>
+                  <Link
+                    href={link.path}
+                    className={isActive(link.path) ? 'mobile-nav__link--active' : undefined}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              )
+            )}
             {navLinksRight.map((link) =>
               link.children ? (
                 <li key={link.name} className="mobile-nav__group">
