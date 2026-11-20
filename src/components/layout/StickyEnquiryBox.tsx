@@ -64,41 +64,33 @@ export default function StickyEnquiryBox() {
           cursor: 'pointer',
         }}
       >
-        {/* Was writing-mode:vertical-rl + transform:rotate(180deg) on
-            this SAME span — reported live, cut off on an actual iPad:
-            a known WebKit bug where a vertical-writing-mode element
-            that also carries its own transform gets its post-rotation
-            bounding box computed from the pre-rotation (unrotated)
-            layout size, clipping the rotated text to that wrong box.
-            Chrome computes it correctly, which is why this never
-            showed up in any of this session's own Chrome testing.
-            Splitting the two properties onto separate elements — the
-            rotate on this outer span, vertical-rl on the inner one —
-            means neither single element carries both at once, which
-            avoids the specific pairing the bug triggers on. */}
-        <span style={{ display: 'inline-block', transform: 'rotate(180deg)' }}>
-          <span
-            style={{
-              writingMode: 'vertical-rl',
-              // Was 'JetBrains Mono', Consolas, monospace — measured,
-              // real difference between Chrome and the iPad Simulator:
-              // same height (~129px both), but width 34px in Chrome
-              // vs ~15.5px in the Simulator. A vertical-text element's
-              // width is driven by the font's line-height, not its
-              // font-size, so a font that hadn't finished loading (or
-              // failed to) falling back to Consolas — not an iOS font
-              // at all — then to the bare `monospace` keyword, with
-              // different metrics than JetBrains Mono's real ones,
-              // explains it exactly. Prod's own real button has no
-              // custom font-family either — removing it matches prod
-              // and removes the font-load race this depended on.
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-            }}
-          >
-            ENQUIRE NOW
-          </span>
+        {/* writing-mode:vertical-rl + a transform (rotate(180deg), on
+            this span first, then split onto a separate wrapper span)
+            kept producing real, reproducible WebKit bugs — in order:
+            text clipped on an actual iPad, a bogus width reading that
+            turned out to be a flawed measurement script, and then a
+            genuine one confirmed on-device: the button's own 14px
+            top/bottom padding barely rendering at all around the
+            text, unlike Chrome where it's clearly visible. Three
+            separate bugs from the same pairing is enough — rebuilt as
+            plain stacked letters instead (one real horizontal
+            character per row, normal text, zero rotation and zero
+            writing-mode anywhere), which has no equivalent cross-
+            browser history of sizing bugs because it's just ordinary
+            block layout. */}
+        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {['ENQUIRE', 'NOW'].map((word, wi) => (
+            <span
+              key={word}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: wi > 0 ? '10px' : 0 }}
+            >
+              {word.split('').map((ch, ci) => (
+                <span key={ci} style={{ fontSize: '0.75rem', fontWeight: 700, lineHeight: 1.35 }}>
+                  {ch}
+                </span>
+              ))}
+            </span>
+          ))}
         </span>
       </button>
 
