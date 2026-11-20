@@ -71,7 +71,13 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
+        {/* Clips the transient off-screen animation overflow some
+            sections create (see globals.css's own note on
+            .page-overflow-guard) without putting overflow-x on <body>
+            itself — StickyEnquiryBox and ChatbotLoader below need to
+            stay real, direct children of <body> with no overflow
+            ancestor, or their own position:fixed breaks on iOS Safari. */}
+        <div className="page-overflow-guard">{children}</div>
         {/* Real element prod has (footer-new.php: .enquire-vertical-btn
             + .floating-visit-form) — see StickyEnquiryBox.tsx's own
             comment. Rendered once here rather than wired into every

@@ -117,10 +117,21 @@
    document.scrollWidth even though the element is invisible
    (opacity: 0) there, which was making the page horizontally
    scrollable on narrow viewports despite nothing actually being cut
-   off or visible past the edge. html+body overflow-x: hidden clips
-   exactly that transient/invisible overflow at the document root —
-   it changes nothing about how any visible element renders. */
-html {
+   off or visible past the edge.
+   This used to be overflow-x:hidden directly on html+body — reported
+   live: the "ENQUIRE NOW" sticky tab (position:fixed; right:0, a
+   direct child of <body>, same as the Kenyt chatbot) was clipped to a
+   sliver on an actual iPad, invisible in Chrome testing. Real, known
+   WebKit/iOS Safari bug: `overflow` set on html or body itself gets
+   treated as establishing a new containing block for position:fixed
+   descendants there (it doesn't, per spec — Chrome gets this right),
+   so a fixed element anchors to that clipped box's edge instead of
+   the true viewport. Moving the clip to .page-overflow-guard (wraps
+   just {children} in layout.tsx, not html/body) keeps the original
+   fix for the transient animation overflow, while StickyEnquiryBox/
+   ChatbotLoader — real siblings of that wrapper, not descendants —
+   go back to anchoring on the real viewport on every browser. */
+.page-overflow-guard {
   overflow-x: hidden;
 }
 
@@ -130,7 +141,6 @@ body {
   color: var(--charcoal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
