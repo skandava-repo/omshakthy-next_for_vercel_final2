@@ -34,23 +34,17 @@
 }
 
 /* Both rules above fade to fully transparent (#00000000) at 95% of the
-   header's own height — correct ONLY while it's sitting over a hero
-   image/video, which is the one case it was designed for. "scrolled"
-   specifically means the opposite: the user is now over plain page
-   content, not a hero, so that same fade-to-transparent instead let
-   real content (e.g. Projects page's own stat counters) bleed straight
-   through the header — confirmed live, reported back as "dropdown
-   under Projects is not properly accessible" when what was actually
-   broken was the header behind/around it, not the dropdown itself.
-   Two opaque stops, zero transparency, same navy — same color, just
-   actually solid once scrolled. Doubled-up selector (not just
-   .site-nav--scrolled alone) beats .site-nav--light on specificity so
-   it wins on every content page, which always carries both classes at
-   once past the hero. */
-.site-nav--scrolled,
-.site-nav--scrolled.site-nav--light {
-  background: linear-gradient(#004385 0%, #003a6e 100%);
-}
+   header's own height — correct only while it's sitting over a hero
+   image/video. Once scrolled past that into plain page content, real
+   text/numbers visibly bleed straight through the header (confirmed
+   live, reported back as "dropdown under Projects is not properly
+   accessible" — the header behind it was actually the broken part).
+   A fully-opaque override for .site-nav--scrolled fixed that, but was
+   reverted on direct request — "maintain the header how it was like
+   before i dont like this full blue" — after the tradeoff (bleed-
+   through returns) was explicitly raised and accepted. This comment
+   is the paper trail for why that bug is back by choice, not an
+   oversight, if it gets reported again. */
 
 /* Transparent variant — no bar at all, for sections that opt in via
    data-header-theme="transparent". Nav links sit directly on the
@@ -401,13 +395,18 @@
    silently drop the centering out from under it for the animation's
    own duration. */
 @keyframes dropdownPanelIn {
+  /* translateX(-50%) dropped from both steps — that was centering the
+     panel on itself to pair with the old left:50% positioning; now
+     that Header.tsx sets a real, clamped left in pixels, adding it
+     back here would shift the panel half its own width off whatever
+     correct position JS just computed. */
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 @keyframes dropdownItemIn {
@@ -422,11 +421,24 @@
 }
 
 .site-nav__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 12px;
+  /* Was position:absolute, centered via left:50%/translateX(-50%) on
+     the triggering <li> itself — fine for a button near the middle of
+     the nav, but "Projects" sits near the far-left edge, so an 820px
+     panel centered under it ran off the left edge of the viewport on
+     a narrower screen (reported and reproduced live: the left half of
+     the Projects dropdown — item numbers 01/03/05, half the column
+     titles — was cut off entirely, inaccessible, not just visually
+     tight). Same root cause as the earlier proximity bug: a fixed-
+     width panel centered on its OWN trigger's position, with no
+     awareness of where that trigger actually sits relative to the
+     viewport. Fixed `position`, `top` and `left` here are deliberately
+     NOT the real values — Header.tsx computes and sets the real top/
+     left inline every time a dropdown opens, clamped to stay fully
+     within the viewport regardless of which button triggered it or
+     how narrow the screen is. These are just a sane fallback. */
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: stretch;
   animation: dropdownPanelIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
