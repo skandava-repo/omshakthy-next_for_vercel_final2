@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import './Header.css'
@@ -30,13 +30,13 @@ const navLinksLeft: NavLink[] = [
   {
     name: 'Projects',
     path: '/projects',
+    // "All Projects" and "Upcoming Projects" dropped, Land Aggregation
+    // moved below Industrial Park, per direct request.
     children: [
-      { name: 'All Projects', path: '/projects', desc: 'Every OmShakthy project, one place' },
       { name: 'Ongoing Projects', path: '/ongoing-projects', desc: 'Currently under development' },
-      { name: 'Upcoming Projects', path: '/upcoming-projects', desc: 'Launching soon across Tamil Nadu' },
       { name: 'Completed Projects', path: '/completed-projects', desc: 'Delivered and handed over' },
-      { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai', desc: 'How we assemble large parcels' },
       { name: 'Industrial Park', path: '/industrial-park', desc: 'Industrial land in Thirumudivakkam' },
+      { name: 'Land Aggregation', path: '/land-aggregation-projects-chennai', desc: 'How we assemble large parcels' },
     ],
     feature: {
       image: '/timeline-2024.webp',
@@ -61,7 +61,7 @@ const navLinksRight: NavLink[] = [
     name: 'Locations',
     path: '/buy-cmda-dtcp-plots-for-sale-chennai',
     children: [
-      { name: 'All Locations', path: '/buy-cmda-dtcp-plots-for-sale-chennai', desc: 'CMDA & DTCP approved plots across Chennai' },
+      { name: 'All Locations', path: '/projects', desc: 'CMDA & DTCP approved plots across Chennai' },
       { name: 'Avadi', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-avadi', desc: 'Plots near Avadi Railway Station' },
       { name: 'Guduvanchery', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-guduvanchery', desc: "Chennai's fastest-growing suburb" },
       { name: 'Tambaram', path: '/buy-cmda-dtcp-plots-for-sale-chennai/residential-plots-for-sale-tambaram', desc: 'East & West Tambaram plots' },
@@ -139,6 +139,41 @@ const Header = () => {
     }
     document.addEventListener('mousedown', onDocClick)
     return () => document.removeEventListener('mousedown', onDocClick)
+  }, [openDropdown])
+  // The panel used to center itself on its own trigger via CSS
+  // (left:50%/translateX(-50%) on the <li>) — reported and reproduced
+  // live on a narrower screen: "Projects" sits near the left edge of
+  // the nav, so an 820px panel centered under it ran straight off the
+  // left side of the viewport, cutting off item numbers 01/03/05 and
+  // half the column titles entirely (not just visually tight —
+  // actually inaccessible). Same fix real floating-UI libraries use
+  // for this exact class of problem: measure where the trigger and
+  // panel actually are in the viewport once the panel exists, then
+  // clamp its position to stay fully on-screen regardless of which
+  // button opened it or how narrow the window is. Runs as a layout
+  // effect (before paint) so the panel never visibly jumps from a
+  // wrong position to the clamped one.
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null)
+  useLayoutEffect(() => {
+    if (!openDropdown) {
+      setDropdownPos(null)
+      return
+    }
+    const panel = navRef.current?.querySelector('.site-nav__dropdown') as HTMLElement | null
+    // There can be more than one .site-nav__item--dropdown (Projects,
+    // Locations, Resources) — only the one currently holding the open
+    // panel is relevant, so find it by which one actually contains it.
+    const openLi = [...(navRef.current?.querySelectorAll('.site-nav__item--dropdown') ?? [])].find((el) =>
+      el.contains(panel)
+    ) as HTMLElement | undefined
+    if (!openLi || !panel) return
+    const liRect = openLi.getBoundingClientRect()
+    const margin = 16
+    const gap = 12
+    const panelWidth = panel.offsetWidth
+    let left = liRect.left + liRect.width / 2 - panelWidth / 2
+    left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin))
+    setDropdownPos({ top: liRect.bottom + gap, left })
   }, [openDropdown])
   // Below 1024px .site-nav__links, .site-nav__phone and .site-nav__cta
   // all disappear via CSS with nothing left to replace them — this panel
@@ -303,6 +338,7 @@ const Header = () => {
                     {openDropdown === link.name && (
                       <div
                         className="site-nav__dropdown"
+                        style={dropdownPos ? { top: dropdownPos.top, left: dropdownPos.left } : { opacity: 0, pointerEvents: 'none' }}
                       >
                         <div className="site-nav__dropdown-main">
                           <span className="site-nav__dropdown-eyebrow">
@@ -390,6 +426,7 @@ const Header = () => {
                     {openDropdown === link.name && (
                       <div
                         className="site-nav__dropdown"
+                        style={dropdownPos ? { top: dropdownPos.top, left: dropdownPos.left } : { opacity: 0, pointerEvents: 'none' }}
                       >
                         <div className="site-nav__dropdown-main">
                           <span className="site-nav__dropdown-eyebrow">
