@@ -113,35 +113,33 @@ const Header = () => {
   // dropdown — now tracks which dropdown (by name) is open, since
   // Locations is a second one using the exact same markup/CSS.
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  // Closing on mouseleave the instant the pointer exits the <li> looked
-  // right in theory (an invisible ::before bridge fills the real gap
-  // between button and panel, see Header.css's own note on it) but
-  // still closed early in practice — reported live moving the cursor
-  // from Projects down into "All Projects" itself.
-  //
-  // First fix here was a close delay cancelled on re-entry — didn't
-  // actually hold up. The real problem: the delay only gets cancelled
-  // by a FRESH onMouseEnter on the <li>, but the panel is already a DOM
-  // descendant of it, so moving from the button straight into the panel
-  // never re-fires enter on the <li> at all (you never left its
-  // subtree to re-enter). So if a spurious leave ever queued a close,
-  // nothing was left to cancel it even while the cursor sat right on
-  // top of "All Projects" — the timer just fired anyway a moment later.
-  // Fix: wire the same open/close handlers directly onto the panel
-  // itself too (see its own onMouseEnter/onMouseLeave below), so
-  // entering it is its own independent, always-fires signal rather
-  // than relying on the <li>'s enter/leave semantics at all.
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const openDropdownNow = (name: string) => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    setOpenDropdown(name)
-  }
-  const scheduleCloseDropdown = (name: string) => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    closeTimerRef.current = setTimeout(() => {
-      setOpenDropdown((v) => (v === name ? null : v))
-    }, 200)
-  }
+  // Was hover-to-open, patched twice trying to fix a dropdown closing
+  // mid-hover (a delay cancelled on re-entry, then handlers wired onto
+  // the panel too) — both real fixes for that specific symptom, but the
+  // actual report underneath it was broader: resting the cursor
+  // anywhere near the header could pop open the WRONG dropdown. Cause:
+  // each trigger's invisible hover-bridge/panel is a fixed 820px wide,
+  // centered on ITS OWN button — for buttons that aren't centered in a
+  // wide nav bar, that 820px sprawls well past the button itself and
+  // overlaps neighboring triggers' own hover zones, so hovering near
+  // Locations or Gallery could land inside Resources' bridge instead.
+  // No amount of timing-fixing solves that; the geometry itself is the
+  // problem. Click-to-open sidesteps it entirely — a click only ever
+  // targets the one real button under the cursor, no bridge, no
+  // geometry to get wrong. Closes on click-away (see the effect below)
+  // or by clicking the same button again (the existing toggle onClick
+  // already did this).
+  const navRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    if (!openDropdown) return
+    const onDocClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null)
+      }
+    }
+    document.addEventListener('mousedown', onDocClick)
+    return () => document.removeEventListener('mousedown', onDocClick)
+  }, [openDropdown])
   // Below 1024px .site-nav__links, .site-nav__phone and .site-nav__cta
   // all disappear via CSS with nothing left to replace them — this panel
   // is that replacement. Same content as the desktop nav (both link
@@ -160,12 +158,6 @@ const Header = () => {
   // detail page" behavior for free instead of silently not working.
   const isActive = (path: string) =>
     location.pathname === path || location.pathname?.startsWith(`${path}/`)
-
-  useEffect(() => {
-    return () => {
-      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    }
-  }, [])
 
   useEffect(() => {
     document.body.style.overflowY = mobileMenuOpen ? 'hidden' : ''
@@ -270,7 +262,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className={`site-nav ${scrolled || solid ? 'site-nav--scrolled' : ''} ${theme ? `site-nav--${theme}` : ''}`}>
+      <nav ref={navRef} className={`site-nav ${scrolled || solid ? 'site-nav--scrolled' : ''} ${theme ? `site-nav--${theme}` : ''}`}>
         <div className="site-nav__inner">
           {/* Logo — left aligned */}
           <Link href="/" className="site-nav__logo">
@@ -296,8 +288,6 @@ const Header = () => {
                   <li
                     key={link.name}
                     className="site-nav__item site-nav__item--dropdown"
-                    onMouseEnter={() => openDropdownNow(link.name)}
-                    onMouseLeave={() => scheduleCloseDropdown(link.name)}
                   >
                     <button
                       type="button"
@@ -305,10 +295,7 @@ const Header = () => {
                         link.children.some((c) => isActive(c.path)) ? ' site-nav__link--active' : ''
                       }`}
                       style={{ animationDelay: `${i * 0.1}s` }}
-                      onClick={() => {
-                        if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-                        setOpenDropdown((v) => (v === link.name ? null : link.name))
-                      }}
+                      onClick={() => setOpenDropdown((v) => (v === link.name ? null : link.name))}
                       aria-expanded={openDropdown === link.name}
                     >
                       <span>{link.name}</span>
@@ -316,8 +303,6 @@ const Header = () => {
                     {openDropdown === link.name && (
                       <div
                         className="site-nav__dropdown"
-                        onMouseEnter={() => openDropdownNow(link.name)}
-                        onMouseLeave={() => scheduleCloseDropdown(link.name)}
                       >
                         <div className="site-nav__dropdown-main">
                           <span className="site-nav__dropdown-eyebrow">
@@ -390,8 +375,6 @@ const Header = () => {
                   <li
                     key={link.name}
                     className="site-nav__item site-nav__item--dropdown"
-                    onMouseEnter={() => openDropdownNow(link.name)}
-                    onMouseLeave={() => scheduleCloseDropdown(link.name)}
                   >
                     <button
                       type="button"
@@ -399,10 +382,7 @@ const Header = () => {
                         link.children.some((c) => isActive(c.path)) ? ' site-nav__link--active' : ''
                       }`}
                       style={{ animationDelay: `${(i + 3) * 0.1}s` }}
-                      onClick={() => {
-                        if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-                        setOpenDropdown((v) => (v === link.name ? null : link.name))
-                      }}
+                      onClick={() => setOpenDropdown((v) => (v === link.name ? null : link.name))}
                       aria-expanded={openDropdown === link.name}
                     >
                       <span>{link.name}</span>
@@ -410,8 +390,6 @@ const Header = () => {
                     {openDropdown === link.name && (
                       <div
                         className="site-nav__dropdown"
-                        onMouseEnter={() => openDropdownNow(link.name)}
-                        onMouseLeave={() => scheduleCloseDropdown(link.name)}
                       >
                         <div className="site-nav__dropdown-main">
                           <span className="site-nav__dropdown-eyebrow">

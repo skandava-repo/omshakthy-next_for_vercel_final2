@@ -358,30 +358,15 @@
 .site-nav__item--dropdown {
   position: relative;
 }
-/* The dropdown mouseenter/mouseleave logic (Header.tsx) is on THIS li,
-   but .site-nav__dropdown itself is a position:absolute descendant
-   sitting margin-top:12px below the button — that 12px is real, empty
-   space (not part of the li's own layout box, which is only as tall as
-   the button; not part of the panel either, which only starts after
-   the gap). Moving the mouse from the button straight down into the
-   panel passes through whatever's actually rendered there instead
-   (the page behind the header), which is NOT a descendant of this li —
-   a genuine mouseleave fires the instant the pointer crosses that
-   empty strip, closing the panel before it's ever reached. This
-   invisible bridge — same width/centering as the panel itself, exactly
-   as tall as that gap — fills the dead zone with real (if invisible)
-   li content, so hovering through it still counts as "inside" the li
-   the whole way from button to panel. */
-.site-nav__item--dropdown::before {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 820px;
-  max-width: calc(100vw - 32px);
-  height: 12px;
-}
+/* Used to also carry an invisible ::before "bridge" — a hover-open
+   dropdown needs something to fill the real gap between button and
+   panel, or a mouseleave fires crossing it. Gone now along with the
+   hover-open mechanism itself (Header.tsx): that same fixed-820px,
+   button-centered bridge was wide enough to sprawl into NEIGHBORING
+   triggers' own hover zones on a wide nav bar, so just resting the
+   cursor near one button could pop open a completely different one's
+   dropdown. Click-to-open has no gap to bridge in the first place — a
+   click only ever targets the one real element under the cursor. */
 
 .site-nav__link--dropdown {
   font: inherit;
