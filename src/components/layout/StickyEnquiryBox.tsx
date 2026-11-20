@@ -64,17 +64,30 @@ export default function StickyEnquiryBox() {
           cursor: 'pointer',
         }}
       >
-        <span
-          style={{
-            writingMode: 'vertical-rl',
-            transform: 'rotate(180deg)',
-            fontFamily: "'JetBrains Mono', Consolas, monospace",
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-          }}
-        >
-          ENQUIRE NOW
+        {/* Was writing-mode:vertical-rl + transform:rotate(180deg) on
+            this SAME span — reported live, cut off on an actual iPad:
+            a known WebKit bug where a vertical-writing-mode element
+            that also carries its own transform gets its post-rotation
+            bounding box computed from the pre-rotation (unrotated)
+            layout size, clipping the rotated text to that wrong box.
+            Chrome computes it correctly, which is why this never
+            showed up in any of this session's own Chrome testing.
+            Splitting the two properties onto separate elements — the
+            rotate on this outer span, vertical-rl on the inner one —
+            means neither single element carries both at once, which
+            avoids the specific pairing the bug triggers on. */}
+        <span style={{ display: 'inline-block', transform: 'rotate(180deg)' }}>
+          <span
+            style={{
+              writingMode: 'vertical-rl',
+              fontFamily: "'JetBrains Mono', Consolas, monospace",
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              letterSpacing: '0.12em',
+            }}
+          >
+            ENQUIRE NOW
+          </span>
         </span>
       </button>
 
