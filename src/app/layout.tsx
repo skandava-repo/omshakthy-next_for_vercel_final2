@@ -57,7 +57,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/omshakthy-logo.webp" />
+        {/* src/app/favicon.ico (Next's own file-convention icon, auto-
+            linked below) used to be a leftover placeholder — a plain
+            black circle/white triangle, no OmShakthy branding at all.
+            Replaced it with the real logo. This manual webp link was
+            a second, competing <link rel="icon">, which is why removed
+            rather than kept alongside the now-correct one. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

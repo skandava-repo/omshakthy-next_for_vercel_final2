@@ -1,12 +1,20 @@
-/* Sits fixed, directly below Header (.site-nav is 102px tall on
-   desktop, ~68px below the 1024px breakpoint where Header.css's own
-   nav padding shrinks) inside the ~58px gap every page's hero already
+/* Sits directly below Header (.site-nav is 102px tall on desktop,
+   ~68px below the 1024px breakpoint where Header.css's own nav
+   padding shrinks) inside the ~58px gap every page's hero already
    reserves above its own heading (pt-40/pt-32 etc. was always bigger
    than the header alone needs, by design, per that section's own
    comments) — so this never touches any existing section's padding or
-   pushes page content down. Pure overlay, zero layout impact. */
+   pushes page content down. Pure overlay, zero layout impact.
+   Was `position: fixed` — stayed glued to the viewport at every scroll
+   position, not just the top, so once a user scrolled past the hero it
+   kept floating over body text indefinitely (translucent, no
+   background of its own) — a real bug, caught live on blog post pages
+   with their own in-flow hero image. `absolute` anchors it to the
+   document instead: still sits in the same spot on load (nothing
+   visually changes there), but scrolls away with the rest of the page
+   afterward like it was always meant to. */
 .breadcrumbs {
-  position: fixed;
+  position: absolute;
   top: 102px;
   left: 0;
   right: 0;
