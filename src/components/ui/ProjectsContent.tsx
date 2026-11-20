@@ -276,6 +276,10 @@ const STATUS_STYLE: Record<Project['status'], { label: string; bg: string; color
 }
 
 const statusOptions = ['All Status', 'Ongoing', 'Upcoming', 'Sold'] as const
+
+// Display order for the project grid — Ongoing first, Upcoming next,
+// Sold last, per direct request.
+const STATUS_PRIORITY: Record<Project['status'], number> = { Ongoing: 0, Upcoming: 1, Sold: 2 }
 const typeOptions = ['All Types', ...Array.from(new Set(projects.map((p) => p.type)))]
 const locationOptions = ['All Locations', ...Array.from(new Set(projects.map((p) => p.location)))]
 
@@ -324,13 +328,19 @@ const ProjectsContent = () => {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return projects.filter((p) => {
-      const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.location.toLowerCase().includes(q)
-      const matchesStatus = status === 'All Status' || p.status === status
-      const matchesType = type === 'All Types' || p.type === type
-      const matchesLocation = location === 'All Locations' || p.location === location
-      return matchesQuery && matchesStatus && matchesType && matchesLocation
-    })
+    return projects
+      .filter((p) => {
+        const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.location.toLowerCase().includes(q)
+        const matchesStatus = status === 'All Status' || p.status === status
+        const matchesType = type === 'All Types' || p.type === type
+        const matchesLocation = location === 'All Locations' || p.location === location
+        return matchesQuery && matchesStatus && matchesType && matchesLocation
+      })
+      // Was raw array order (projectsData.ts happens to list Upcoming
+      // first) — per direct request, Ongoing first, Upcoming next, Sold
+      // last. A stable sort by status priority only, so projects within
+      // the same status keep their existing relative order.
+      .sort((a, b) => STATUS_PRIORITY[a.status] - STATUS_PRIORITY[b.status])
   }, [search, status, type, location])
 
   const resetFilters = () => {
