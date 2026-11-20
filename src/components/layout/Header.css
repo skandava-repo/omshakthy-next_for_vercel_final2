@@ -33,6 +33,25 @@
   color: #fff;
 }
 
+/* Both rules above fade to fully transparent (#00000000) at 95% of the
+   header's own height — correct ONLY while it's sitting over a hero
+   image/video, which is the one case it was designed for. "scrolled"
+   specifically means the opposite: the user is now over plain page
+   content, not a hero, so that same fade-to-transparent instead let
+   real content (e.g. Projects page's own stat counters) bleed straight
+   through the header — confirmed live, reported back as "dropdown
+   under Projects is not properly accessible" when what was actually
+   broken was the header behind/around it, not the dropdown itself.
+   Two opaque stops, zero transparency, same navy — same color, just
+   actually solid once scrolled. Doubled-up selector (not just
+   .site-nav--scrolled alone) beats .site-nav--light on specificity so
+   it wins on every content page, which always carries both classes at
+   once past the hero. */
+.site-nav--scrolled,
+.site-nav--scrolled.site-nav--light {
+  background: linear-gradient(#004385 0%, #003a6e 100%);
+}
+
 /* Transparent variant — no bar at all, for sections that opt in via
    data-header-theme="transparent". Nav links sit directly on the
    section's own background instead of a scrim/color bar, so the section
