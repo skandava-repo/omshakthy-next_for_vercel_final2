@@ -163,6 +163,12 @@ const Footer = ({ decoSrc = '/footer-mono.webp', decoClassName, noDivider = fals
           Privacy Policy
         </Link>
       </p>
+      <p className="ft__copyright ft__dev">
+        Developed by{' '}
+        <a href="https://www.skandava.com" target="_blank" rel="noopener noreferrer" className="ft__bottom-link ft__dev-link">
+          Skandava
+        </a>
+      </p>
     </div>
 
     {/* WhatsApp Floating Button */}
