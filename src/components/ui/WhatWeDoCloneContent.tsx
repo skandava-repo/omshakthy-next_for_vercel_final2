@@ -91,7 +91,7 @@ const rows: Row[] = [
   },
   {
     code: '04',
-    title: 'Nellai Bhavana Enterprisers',
+    title: 'Nellai Buwana Enterprises',
     // TODO: placeholder copy — replace with the approved Mining description.
     desc: 'Responsible extraction of construction-grade materials at source.',
     image: '/tp/tp-mining.webp',
