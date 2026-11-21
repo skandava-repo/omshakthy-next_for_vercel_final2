@@ -76,7 +76,7 @@ const leaders: Leader[] = [
     tag: 'Governance & Ethics',
     credential: 'IRS (Retd.)',
     img: '/leaders/hota.webp',
-    pos: 'center 22%',
+    pos: '90% 39%',
     size: 'cover',
     bio: [
       'Post-graduated from Delhi University, with an enrolment with the Bar Council and an MBA diploma from LIBA.',
