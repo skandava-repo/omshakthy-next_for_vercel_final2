@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // Real element prod has (footer-new.php: .enquire-vertical-btn +
 // .floating-visit-form, "Book a free Site Visit" / Name·Phone·Email)
@@ -23,6 +23,22 @@ export default function StickyEnquiryBox() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  // Reported live: tapping the tab on an actual phone did nothing
+  // visible — it actually DOES open every time, `right: 430` (chosen
+  // to clear Kenyt's ~380px desktop chat panel, see below) plus this
+  // form's own 300px width need 730px of viewport to fit at all. On
+  // any phone-width screen that puts the whole form off-screen to the
+  // left, invisible, not failing to open. Centering it on narrow
+  // viewports instead — the chat panel this was dodging isn't
+  // anywhere near full desktop width there either.
+  const [isNarrow, setIsNarrow] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const check = () => setIsNarrow(mq.matches)
+    check()
+    mq.addEventListener('change', check)
+    return () => mq.removeEventListener('change', check)
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -100,15 +116,20 @@ export default function StickyEnquiryBox() {
           aria-label="Book a free site visit"
           style={{
             position: 'fixed',
-            // Kenyt's chatbot panel (separately embedded, see
-            // layout.tsx) can be open at the same time and occupies a
-            // ~380px-wide strip on the right — sitting this clear of
-            // that strip, rather than directly behind it, so neither
-            // widget hides the other regardless of which opened first.
-            right: 430,
             top: '50%',
-            transform: 'translateY(-50%)',
-            width: 300,
+            ...(isNarrow
+              ? // Centered instead of dodging the chat panel — that
+                // 430px clearance doesn't fit at all below 730px wide,
+                // and Kenyt's own widget isn't anywhere near desktop
+                // width here either, so there's nothing to clear.
+                { left: '50%', transform: 'translate(-50%, -50%)', width: 'min(300px, calc(100vw - 32px))' }
+              : // Kenyt's chatbot panel (separately embedded, see
+                // layout.tsx) can be open at the same time and occupies
+                // a ~380px-wide strip on the right — sitting this clear
+                // of that strip, rather than directly behind it, so
+                // neither widget hides the other regardless of which
+                // opened first.
+                { right: 430, transform: 'translateY(-50%)', width: 300 }),
             background: INK,
             color: '#fff',
             padding: '1.5rem',
